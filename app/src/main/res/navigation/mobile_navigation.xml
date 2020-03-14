@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_aktiviteter">
+
+    <fragment
+        android:id="@+id/navigation_aktiviteter"
+        android:name="com.example.kobenhavn.ui.aktiviteter.AktiviteterFragment"
+        android:label="@string/title_aktiviteter"
+        tools:layout="@layout/aktiviteter_fragment" />
+
+    <fragment
+        android:id="@+id/navigation_legepladser"
+        android:name="com.example.kobenhavn.ui.legepladser.LegepladserFragment"
+        android:label="@string/title_legepladser"
+        tools:layout="@layout/legepladser_fragment" />
+
+    <fragment
+        android:id="@+id/navigation_indstillinger"
+        android:name="com.example.kobenhavn.ui.indstillinger.IndstillingerFragment"
+        android:label="@string/title_indstillinger"
+        tools:layout="@layout/indstillinger_fragment" />
+</navigation>
