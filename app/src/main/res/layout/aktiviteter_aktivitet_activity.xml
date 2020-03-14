@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"/>
+
+    <include
+        android:id="@+id/card"
+        layout="@layout/aktiviteter_card_list_item"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
+
+    <TextView
+        android:id="@+id/laes_mere"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Læs mere"
+        app:layout_constraintTop_toBottomOf="@id/card"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/deltag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deltag"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:id="@+id/interesseret"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Interesseret"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/deltag" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

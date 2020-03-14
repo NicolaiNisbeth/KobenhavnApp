@@ -16,7 +16,7 @@
             android:id="@+id/dato_tekst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fredag, 29 Januar 2020"
+            android:text="Dato"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             />
 
@@ -24,7 +24,7 @@
             android:id="@+id/subtitle_tekst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lindevangsparken"
+            android:text="subtitle"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             />
 
@@ -32,7 +32,7 @@
             android:id="@+id/title_tekst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Fodbold og Snobrød"
+            android:text="title"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             />
 
@@ -46,7 +46,7 @@
             android:id="@+id/beskrivelse_tekst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Some circle puzzles ask you to work forwards to find the solutions, and some backwards. To solve this one, you might need to do both,"
+            android:text="beskrivelse"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             />
 
@@ -54,7 +54,7 @@
             android:id="@+id/interesseret_tekst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="20 people are going"
+            android:text="interesseret"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             />
     </LinearLayout>

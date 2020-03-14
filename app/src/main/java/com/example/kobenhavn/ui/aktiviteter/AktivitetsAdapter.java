@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,20 +14,23 @@ import com.example.kobenhavn.R;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /***
  * The adapter class for the RecyclerView, contains the sports data
  */
-class AktivitetsAdapter extends RecyclerView.Adapter<AktivitetsAdapter.ViewHolder>  {
+class AktivitetsAdapter extends RecyclerView.Adapter<AktivitetsAdapter.ViewHolder> {
 
     //Member variables
-    private ArrayList<AktivitetModel> aktivitetsData;
+    private List<AktivitetModel> aktivitetsData;
     private Context context;
+    private OnItemClickListener listener;
 
     /**
      * Constructor that passes in the aktivitetes data and the context
+     *
      * @param aktivitetsData ArrayList containing the sports data
-     * @param context Context of the application
+     * @param context        Context of the application
      */
     AktivitetsAdapter(Context context, ArrayList<AktivitetModel> aktivitetsData) {
         this.aktivitetsData = aktivitetsData;
@@ -36,7 +40,8 @@ class AktivitetsAdapter extends RecyclerView.Adapter<AktivitetsAdapter.ViewHolde
 
     /**
      * Required method for creating the viewholder objects.
-     * @param parent The ViewGroup into which the new View will be added after it is bound to an adapter position.
+     *
+     * @param parent   The ViewGroup into which the new View will be added after it is bound to an adapter position.
      * @param viewType The view type of the new View.
      * @return The newly create ViewHolder.
      */
@@ -48,7 +53,8 @@ class AktivitetsAdapter extends RecyclerView.Adapter<AktivitetsAdapter.ViewHolde
 
     /**
      * Required method that binds the data to the viewholder.
-     * @param holder The viewholder into which the data should be put.
+     *
+     * @param holder   The viewholder into which the data should be put.
      * @param position The adapter position.
      */
     @Override
@@ -60,6 +66,7 @@ class AktivitetsAdapter extends RecyclerView.Adapter<AktivitetsAdapter.ViewHolde
 
     /**
      * Required method for determining the size of the data set.
+     *
      * @return Size of the data set.
      */
     @Override
@@ -71,7 +78,7 @@ class AktivitetsAdapter extends RecyclerView.Adapter<AktivitetsAdapter.ViewHolde
     /**
      * ViewHolder class that represents each row of data in the RecyclerView
      */
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         //Member Variables for the TextViews
         private TextView dato_tekst;
         private TextView subtitle_tekst;
@@ -81,9 +88,10 @@ class AktivitetsAdapter extends RecyclerView.Adapter<AktivitetsAdapter.ViewHolde
 
         /**
          * Constructor for the ViewHolder, used in onCreateViewHolder().
+         *
          * @param itemView The rootview of the aktiviteter_card_list_item.xml layout file
          */
-        ViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
 
             //Initialize the views
@@ -92,9 +100,19 @@ class AktivitetsAdapter extends RecyclerView.Adapter<AktivitetsAdapter.ViewHolde
             title_tekst = itemView.findViewById(R.id.title_tekst);
             beskrivelse_tekst = itemView.findViewById(R.id.beskrivelse_tekst);
             interesseret_tekst = itemView.findViewById(R.id.interesseret_tekst);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null & position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(aktivitetsData.get(position));
+                    }
+                }
+            });
         }
 
-        void bindTo(AktivitetModel aktivitet){
+        void bindTo(AktivitetModel aktivitet) {
             //Populate the textviews with data
             dato_tekst.setText(aktivitet.getDato());
             subtitle_tekst.setText(aktivitet.getSubtitle());
@@ -103,4 +121,14 @@ class AktivitetsAdapter extends RecyclerView.Adapter<AktivitetsAdapter.ViewHolde
             interesseret_tekst.setText(aktivitet.getInteresseret());
         }
     }
+
+    public interface OnItemClickListener {
+        void onItemClick(AktivitetModel aktivitetModel);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+
 }
