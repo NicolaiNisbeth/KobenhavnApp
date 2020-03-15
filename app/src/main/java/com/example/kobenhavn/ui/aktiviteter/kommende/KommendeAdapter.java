@@ -1,4 +1,4 @@
-package com.example.kobenhavn.ui.aktiviteter;
+package com.example.kobenhavn.ui.aktiviteter.kommende;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kobenhavn.R;
+import com.example.kobenhavn.ui.aktiviteter.AktivitetModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +19,7 @@ import java.util.List;
 /***
  * The adapter class for the RecyclerView, contains the sports data
  */
-public class AdapterAktivitet extends RecyclerView.Adapter<AdapterAktivitet.ViewHolder> {
+public class KommendeAdapter extends RecyclerView.Adapter<KommendeAdapter.ViewHolder> {
 
     //Member variables
     private List<AktivitetModel> aktivitetsData;
@@ -31,7 +32,7 @@ public class AdapterAktivitet extends RecyclerView.Adapter<AdapterAktivitet.View
      * @param aktivitetsData ArrayList containing the sports data
      * @param context        Context of the application
      */
-    public AdapterAktivitet(Context context, ArrayList<AktivitetModel> aktivitetsData) {
+    public KommendeAdapter(Context context, ArrayList<AktivitetModel> aktivitetsData) {
         this.aktivitetsData = aktivitetsData;
         this.context = context;
     }
@@ -45,8 +46,8 @@ public class AdapterAktivitet extends RecyclerView.Adapter<AdapterAktivitet.View
      */
     @NotNull
     @Override
-    public AdapterAktivitet.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.aktiviteter_kommende_aktivitet_item, parent, false));
+    public KommendeAdapter.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.aktiviteter_kommende_item, parent, false));
     }
 
     /**
@@ -56,7 +57,7 @@ public class AdapterAktivitet extends RecyclerView.Adapter<AdapterAktivitet.View
      * @param position The adapter position.
      */
     @Override
-    public void onBindViewHolder(AdapterAktivitet.ViewHolder holder, int position) {
+    public void onBindViewHolder(KommendeAdapter.ViewHolder holder, int position) {
         AktivitetModel currentAktivitet = aktivitetsData.get(position);
         //Populate the textviews with data
         holder.bindTo(currentAktivitet);
@@ -87,7 +88,7 @@ public class AdapterAktivitet extends RecyclerView.Adapter<AdapterAktivitet.View
         /**
          * Constructor for the ViewHolder, used in onCreateViewHolder().
          *
-         * @param itemView The rootview of the aktiviteter_kommende_aktivitet_item.xml_item.xml layout file
+         * @param itemView The rootview of the aktiviteter_kommende_item.xml_item.xml layout file
          */
         public ViewHolder(View itemView) {
             super(itemView);

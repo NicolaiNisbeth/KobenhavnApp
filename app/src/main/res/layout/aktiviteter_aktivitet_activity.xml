@@ -11,7 +11,7 @@
 
     <include
         android:id="@+id/card"
-        layout="@layout/aktiviteter_kommende_aktivitet_item"
+        layout="@layout/aktiviteter_kommende_item"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"/>

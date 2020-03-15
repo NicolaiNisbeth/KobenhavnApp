@@ -3,7 +3,9 @@ package com.example.kobenhavn.ui.aktiviteter.tilmeldte;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.ui.aktiviteter.AdapterAktivitet;
 import com.example.kobenhavn.ui.aktiviteter.AktivitetModel;
 import com.example.kobenhavn.ui.aktiviteter.CardAktivitetActivity;
 
@@ -27,7 +28,7 @@ public class TilmeldteAktiviteterFragment extends Fragment {
     //Member variables
     private RecyclerView recyclerView;
     private ArrayList<AktivitetModel> aktivitetsData;
-    private AdapterAktivitet adapter;
+    private TilmeldteAdapter adapter;
 
     public TilmeldteAktiviteterFragment() {
         // Required empty public constructor
@@ -58,11 +59,24 @@ public class TilmeldteAktiviteterFragment extends Fragment {
         aktivitetsData = new ArrayList<>();
 
         //Initialize the adapter and set it ot the RecyclerView
-        adapter = new AdapterAktivitet(root.getContext(), aktivitetsData);
+        adapter = new TilmeldteAdapter(root.getContext(), aktivitetsData);
         recyclerView.setAdapter(adapter);
 
-        //Make the views listen on onclick
-        adapter.setOnItemClickListener(new AdapterAktivitet.OnItemClickListener() {
+        //Allows swipe left and right for delete
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                adapter.deleteItem(viewHolder.getAdapterPosition());
+            }
+        }).attachToRecyclerView(recyclerView);
+
+        adapter.setOnItemClickListener(new TilmeldteAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(AktivitetModel aktivitetModel) {
                 Intent intent = new Intent(getContext(), CardAktivitetActivity.class);

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.ui.aktiviteter.AdapterAktivitet;
 import com.example.kobenhavn.ui.aktiviteter.AktivitetModel;
 import com.example.kobenhavn.ui.aktiviteter.CardAktivitetActivity;
 
@@ -22,7 +21,7 @@ public class KommendeAktiviteterFragment extends Fragment {
     //Member variables
     private RecyclerView recyclerView;
     private ArrayList<AktivitetModel> aktivitetsData;
-    private AdapterAktivitet adapter;
+    private KommendeAdapter adapter;
 
     public KommendeAktiviteterFragment() {
         // Required empty public constructor
@@ -51,11 +50,11 @@ public class KommendeAktiviteterFragment extends Fragment {
         aktivitetsData = new ArrayList<>();
 
         //Initialize the adapter and set it ot the RecyclerView
-        adapter = new AdapterAktivitet(root.getContext(), aktivitetsData);
+        adapter = new KommendeAdapter(root.getContext(), aktivitetsData);
         recyclerView.setAdapter(adapter);
 
         //Make the views listen on onclick
-        adapter.setOnItemClickListener(new AdapterAktivitet.OnItemClickListener() {
+        adapter.setOnItemClickListener(new KommendeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(AktivitetModel aktivitetModel) {
                 Intent intent = new Intent(getContext(), CardAktivitetActivity.class);

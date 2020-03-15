@@ -16,7 +16,6 @@
             android:id="@+id/dato_tekst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="dato"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             />
 
@@ -24,7 +23,6 @@
             android:id="@+id/subtitle_tekst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="subtitle"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             />
 
@@ -32,7 +30,6 @@
             android:id="@+id/title_tekst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="title"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             />
 
@@ -40,7 +37,6 @@
             android:id="@+id/tid_tekst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="tid"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             />
 
@@ -54,7 +50,6 @@
             android:id="@+id/beskrivelse_tekst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="beskrivelse"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             />
 
@@ -62,7 +57,6 @@
             android:id="@+id/interesseret_tekst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="interesseret"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             />
     </LinearLayout>
