@@ -10,6 +10,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.kobenhavn.R;
 
+
+// https://github.com/yuyakaido/CardStackView
 public class CardActivity extends AppCompatActivity {
     public static final String EXTRA_DATO = "com.example.kobenhavn.EXTRA_DATO";
     public static final String EXTRA_SUBTITLE= "com.example.kobenhavn.EXTRA_SUBTITLE";
