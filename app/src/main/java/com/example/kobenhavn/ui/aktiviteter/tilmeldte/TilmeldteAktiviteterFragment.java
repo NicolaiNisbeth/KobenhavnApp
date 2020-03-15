@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.ui.aktiviteter.AktivitetModel;
-import com.example.kobenhavn.ui.aktiviteter.CardAktivitetActivity;
+import com.example.kobenhavn.ui.aktiviteter.CardActivity;
 
 import java.util.ArrayList;
 
@@ -79,13 +79,13 @@ public class TilmeldteAktiviteterFragment extends Fragment {
         adapter.setOnItemClickListener(new TilmeldteAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(AktivitetModel aktivitetModel) {
-                Intent intent = new Intent(getContext(), CardAktivitetActivity.class);
-                intent.putExtra(CardAktivitetActivity.EXTRA_DATO, aktivitetModel.getDato());
-                intent.putExtra(CardAktivitetActivity.EXTRA_TITLE, aktivitetModel.getTitle());
-                intent.putExtra(CardAktivitetActivity.EXTRA_TID, aktivitetModel.getTid());
-                intent.putExtra(CardAktivitetActivity.EXTRA_SUBTITLE, aktivitetModel.getSubtitle());
-                intent.putExtra(CardAktivitetActivity.EXTRA_BESKRIVELSE, aktivitetModel.getBeskrivelse());
-                intent.putExtra(CardAktivitetActivity.EXTRA_INTERESSERET, aktivitetModel.getInteresseret());
+                Intent intent = new Intent(getContext(), CardActivity.class);
+                intent.putExtra(CardActivity.EXTRA_DATO, aktivitetModel.getDato());
+                intent.putExtra(CardActivity.EXTRA_TITLE, aktivitetModel.getTitle());
+                intent.putExtra(CardActivity.EXTRA_TID, aktivitetModel.getTid());
+                intent.putExtra(CardActivity.EXTRA_SUBTITLE, aktivitetModel.getSubtitle());
+                intent.putExtra(CardActivity.EXTRA_BESKRIVELSE, aktivitetModel.getBeskrivelse());
+                intent.putExtra(CardActivity.EXTRA_INTERESSERET, aktivitetModel.getInteresseret());
                 startActivity(intent);
             }
         });

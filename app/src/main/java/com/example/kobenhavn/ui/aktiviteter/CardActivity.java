@@ -13,7 +13,7 @@ import androidx.core.app.NavUtils;
 
 import com.example.kobenhavn.R;
 
-public class CardAktivitetActivity extends AppCompatActivity {
+public class CardActivity extends AppCompatActivity {
     public static final String EXTRA_DATO = "com.example.kobenhavn.EXTRA_DATO";
     public static final String EXTRA_SUBTITLE= "com.example.kobenhavn.EXTRA_SUBTITLE";
     public static final String EXTRA_TITLE = "com.example.kobenhavn.EXTRA_TITLE";
