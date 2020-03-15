@@ -1,4 +1,4 @@
-package com.example.kobenhavn.ui.legepladser;
+package com.example.kobenhavn.ui.legepladser.tilfoj;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.ui.aktiviteter.AktivitetModel;
+import com.example.kobenhavn.ui.legepladser.LegepladsModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -24,18 +25,18 @@ import java.util.List;
 public class TilfojLegepladsAdapter extends RecyclerView.Adapter<TilfojLegepladsAdapter.ViewHolder> {
 
     //Member variables
-    private List<AktivitetModel> aktivitetsData;
+    private List<LegepladsModel> legepladsData;
     private Context context;
     private OnItemClickListener listener;
 
     /**
      * Constructor that passes in the aktivitetes data and the context
      *
-     * @param aktivitetsData ArrayList containing the sports data
+     * @param legepladsData ArrayList containing the sports data
      * @param context        Context of the application
      */
-    public TilfojLegepladsAdapter(Context context, ArrayList<AktivitetModel> aktivitetsData) {
-        this.aktivitetsData = aktivitetsData;
+    public TilfojLegepladsAdapter(Context context, ArrayList<LegepladsModel> legepladsData) {
+        this.legepladsData = legepladsData;
         this.context = context;
     }
 
@@ -53,8 +54,8 @@ public class TilfojLegepladsAdapter extends RecyclerView.Adapter<TilfojLegeplads
     }
 
 
-    public void addItem(int position, AktivitetModel aktivitetModel){
-        aktivitetsData.remove(position);
+    public void addItem(int position, LegepladsModel legepladsmodel){
+        legepladsData.remove(position);
         notifyDataSetChanged();
         Toast.makeText(context, "Legeplads er tilføjet", Toast.LENGTH_SHORT).show();
     }
@@ -67,9 +68,9 @@ public class TilfojLegepladsAdapter extends RecyclerView.Adapter<TilfojLegeplads
      */
     @Override
     public void onBindViewHolder(TilfojLegepladsAdapter.ViewHolder holder, int position) {
-        AktivitetModel currentAktivitet = aktivitetsData.get(position);
+        LegepladsModel nuvaerendeLegeplads = legepladsData.get(position);
         //Populate the textviews with data
-        holder.bindTo(currentAktivitet);
+        holder.bindTo(nuvaerendeLegeplads);
     }
 
     /**
@@ -79,7 +80,7 @@ public class TilfojLegepladsAdapter extends RecyclerView.Adapter<TilfojLegeplads
      */
     @Override
     public int getItemCount() {
-        return aktivitetsData.size();
+        return legepladsData.size();
     }
 
     /**
@@ -88,7 +89,7 @@ public class TilfojLegepladsAdapter extends RecyclerView.Adapter<TilfojLegeplads
     class ViewHolder extends RecyclerView.ViewHolder {
         //Member Variables for the TextViews
         private TextView title_tekst;
-        private TextView subtitle_tekst;
+        private TextView adresse_tekst;
         private ImageButton imageButton;
 
         /**
@@ -101,7 +102,7 @@ public class TilfojLegepladsAdapter extends RecyclerView.Adapter<TilfojLegeplads
 
             //Initialize the views
             title_tekst = itemView.findViewById(R.id.legepladser_tilfoj_item_title);
-            subtitle_tekst = itemView.findViewById(R.id.legepladser_tilfoj_item_subtitle);
+            adresse_tekst = itemView.findViewById(R.id.legepladser_tilfoj_item_adresse);
             imageButton = itemView.findViewById(R.id.legepladser_tilfoj_item_addbtn);
 
             imageButton.setOnClickListener(new View.OnClickListener() {
@@ -109,16 +110,16 @@ public class TilfojLegepladsAdapter extends RecyclerView.Adapter<TilfojLegeplads
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        addItem(position, aktivitetsData.get(position));
+                        addItem(position, legepladsData.get(position));
                     }
                 }
             });
         }
 
-        void bindTo(AktivitetModel aktivitet) {
+        void bindTo(LegepladsModel legepladsMode) {
             //Populate the textviews with data
-            title_tekst.setText(aktivitet.getTitle());
-            subtitle_tekst.setText(aktivitet.getSubtitle());
+            title_tekst.setText(legepladsMode.getTitel());
+            adresse_tekst.setText(legepladsMode.getAdresse());
         }
     }
 

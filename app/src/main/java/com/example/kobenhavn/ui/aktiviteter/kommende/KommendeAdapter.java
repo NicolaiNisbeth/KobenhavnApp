@@ -94,10 +94,10 @@ public class KommendeAdapter extends RecyclerView.Adapter<KommendeAdapter.ViewHo
             super(itemView);
 
             //Initialize the views
-            dato_tekst = itemView.findViewById(R.id.dato_tekst);
-            subtitle_tekst = itemView.findViewById(R.id.subtitle_tekst);
-            title_tekst = itemView.findViewById(R.id.title_tekst);
-            tid_tekst = itemView.findViewById(R.id.tid_tekst);
+            dato_tekst = itemView.findViewById(R.id.legepladser_info_titel);
+            subtitle_tekst = itemView.findViewById(R.id.legepladser_info_adresse);
+            title_tekst = itemView.findViewById(R.id.legepladser_info_beskrivelse);
+            tid_tekst = itemView.findViewById(R.id.legepladser_info_kontaktpersoner);
             beskrivelse_tekst = itemView.findViewById(R.id.beskrivelse_tekst);
             interesseret_tekst = itemView.findViewById(R.id.interesseret_tekst);
 

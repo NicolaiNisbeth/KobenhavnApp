@@ -11,9 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.kobenhavn.R;
@@ -28,7 +25,7 @@ import java.util.Objects;
 public class ContainerAktiviteterFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View root = inflater.inflate(R.layout.aktiviteter_fragment_main, container, false);
+        final View root = inflater.inflate(R.layout.aktiviteter_container_fragment, container, false);
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(root.getContext(), getChildFragmentManager());
         ViewPager viewPager = root.findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);

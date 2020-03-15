@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_legepladser"
-        android:name="com.example.kobenhavn.ui.legepladser.LegepladserFragment"
+        android:name="com.example.kobenhavn.ui.legepladser.LegepladserContainerFragment"
         android:label="@string/title_legepladser"
-        tools:layout="@layout/legepladser_fragment" />
+        tools:layout="@layout/legepladser_container_fragment" />
 
     <fragment
         android:id="@+id/navigation_indstillinger"

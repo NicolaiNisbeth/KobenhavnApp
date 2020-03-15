@@ -2,14 +2,11 @@ package com.example.kobenhavn.ui.aktiviteter;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NavUtils;
 
 import com.example.kobenhavn.R;
 
@@ -32,12 +29,12 @@ public class CardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.aktiviteter_aktivitet_activity);
+        setContentView(R.layout.aktiviteter_card_activity);
 
-        dato_tekst = findViewById(R.id.dato_tekst);
-        subtitle_tekst = findViewById(R.id.subtitle_tekst);
-        title_tekst = findViewById(R.id.title_tekst);
-        tid_tekst = findViewById(R.id.tid_tekst);
+        dato_tekst = findViewById(R.id.legepladser_info_titel);
+        subtitle_tekst = findViewById(R.id.legepladser_info_adresse);
+        title_tekst = findViewById(R.id.legepladser_info_beskrivelse);
+        tid_tekst = findViewById(R.id.legepladser_info_kontaktpersoner);
         beskrivelse_tekst = findViewById(R.id.beskrivelse_tekst);
         interesseret_tekst = findViewById(R.id.interesseret_tekst);
 
