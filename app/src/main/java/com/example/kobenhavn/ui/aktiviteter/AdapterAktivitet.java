@@ -18,7 +18,7 @@ import java.util.List;
 /***
  * The adapter class for the RecyclerView, contains the sports data
  */
-class AdapterAktivitet extends RecyclerView.Adapter<AdapterAktivitet.ViewHolder> {
+public class AdapterAktivitet extends RecyclerView.Adapter<AdapterAktivitet.ViewHolder> {
 
     //Member variables
     private List<AktivitetModel> aktivitetsData;
@@ -31,7 +31,7 @@ class AdapterAktivitet extends RecyclerView.Adapter<AdapterAktivitet.ViewHolder>
      * @param aktivitetsData ArrayList containing the sports data
      * @param context        Context of the application
      */
-    AdapterAktivitet(Context context, ArrayList<AktivitetModel> aktivitetsData) {
+    public AdapterAktivitet(Context context, ArrayList<AktivitetModel> aktivitetsData) {
         this.aktivitetsData = aktivitetsData;
         this.context = context;
     }
@@ -46,7 +46,7 @@ class AdapterAktivitet extends RecyclerView.Adapter<AdapterAktivitet.ViewHolder>
     @NotNull
     @Override
     public AdapterAktivitet.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.aktiviteter_card_list_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.aktiviteter_kommende_aktivitet_item, parent, false));
     }
 
     /**
@@ -87,7 +87,7 @@ class AdapterAktivitet extends RecyclerView.Adapter<AdapterAktivitet.ViewHolder>
         /**
          * Constructor for the ViewHolder, used in onCreateViewHolder().
          *
-         * @param itemView The rootview of the aktiviteter_card_list_item.xml layout file
+         * @param itemView The rootview of the aktiviteter_kommende_aktivitet_item.xml_item.xml layout file
          */
         public ViewHolder(View itemView) {
             super(itemView);
