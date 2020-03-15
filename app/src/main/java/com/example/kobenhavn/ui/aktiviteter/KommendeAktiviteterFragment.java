@@ -15,14 +15,14 @@ import com.example.kobenhavn.R;
 
 import java.util.ArrayList;
 
-public class AktiviteterFragment extends Fragment {
+public class KommendeAktiviteterFragment extends Fragment {
     //Member variables
     private RecyclerView recyclerView;
     private ArrayList<AktivitetModel> aktivitetsData;
-    private AktivitetsAdapter adapter;
+    private AdapterAktivitet adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View root = inflater.inflate(R.layout.aktiviteter_fragment, container, false);
+        final View root = inflater.inflate(R.layout.aktiviteter_kommende_fragment, container, false);
 
         //Initialize the RecyclerView
         recyclerView = root.findViewById(R.id.recyclerView);
@@ -34,20 +34,20 @@ public class AktiviteterFragment extends Fragment {
         aktivitetsData = new ArrayList<>();
 
         //Initialize the adapter and set it ot the RecyclerView
-        adapter = new AktivitetsAdapter(root.getContext(), aktivitetsData);
+        adapter = new AdapterAktivitet(root.getContext(), aktivitetsData);
         recyclerView.setAdapter(adapter);
 
         //Make the views listen on onclick
-        adapter.setOnItemClickListener(new AktivitetsAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new AdapterAktivitet.OnItemClickListener() {
             @Override
             public void onItemClick(AktivitetModel aktivitetModel) {
                 System.out.println("something was clicked " + aktivitetModel.getDato());
-                Intent intent = new Intent(getContext(), AktivitetActivity.class);
-                intent.putExtra(AktivitetActivity.EXTRA_DATO, aktivitetModel.getDato());
-                intent.putExtra(AktivitetActivity.EXTRA_TITLE, aktivitetModel.getTitle());
-                intent.putExtra(AktivitetActivity.EXTRA_SUBTITLE, aktivitetModel.getSubtitle());
-                intent.putExtra(AktivitetActivity.EXTRA_BESKRIVELSE, aktivitetModel.getBeskrivelse());
-                intent.putExtra(AktivitetActivity.EXTRA_INTERESSERET, aktivitetModel.getInteresseret());
+                Intent intent = new Intent(getContext(), CardAktivitetActivity.class);
+                intent.putExtra(CardAktivitetActivity.EXTRA_DATO, aktivitetModel.getDato());
+                intent.putExtra(CardAktivitetActivity.EXTRA_TITLE, aktivitetModel.getTitle());
+                intent.putExtra(CardAktivitetActivity.EXTRA_SUBTITLE, aktivitetModel.getSubtitle());
+                intent.putExtra(CardAktivitetActivity.EXTRA_BESKRIVELSE, aktivitetModel.getBeskrivelse());
+                intent.putExtra(CardAktivitetActivity.EXTRA_INTERESSERET, aktivitetModel.getInteresseret());
                 startActivity(intent);
             }
         });

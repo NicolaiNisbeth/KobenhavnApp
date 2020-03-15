@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_aktiviteter"
-        android:name="com.example.kobenhavn.ui.aktiviteter.AktiviteterFragment"
+        android:name="com.example.kobenhavn.ui.aktiviteter.ContainerAktiviteterFragment"
         android:label="@string/title_aktiviteter"
-        tools:layout="@layout/aktiviteter_fragment" />
+        tools:layout="@layout/aktiviteter_kommende_fragment" />
 
     <fragment
         android:id="@+id/navigation_legepladser"

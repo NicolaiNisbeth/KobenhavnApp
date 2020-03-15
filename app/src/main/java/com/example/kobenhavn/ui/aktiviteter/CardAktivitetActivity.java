@@ -13,7 +13,7 @@ import androidx.core.app.NavUtils;
 
 import com.example.kobenhavn.R;
 
-public class AktivitetActivity extends AppCompatActivity {
+public class CardAktivitetActivity extends AppCompatActivity {
     public static final String EXTRA_DATO = "com.example.kobenhavn.EXTRA_DATO";
     public static final String EXTRA_SUBTITLE= "com.example.kobenhavn.EXTRA_SUBTITLE";
     public static final String EXTRA_TITLE = "com.example.kobenhavn.EXTRA_TITLE";
@@ -39,7 +39,7 @@ public class AktivitetActivity extends AppCompatActivity {
         interesseret_tekst = findViewById(R.id.interesseret_tekst);
 
         Intent intent = getIntent();
-        dato_tekst.setVisibility(View.INVISIBLE);
+        dato_tekst.setText(intent.getStringExtra(EXTRA_DATO));
         subtitle_tekst.setText(intent.getStringExtra(EXTRA_SUBTITLE));
         title_tekst.setText(intent.getStringExtra(EXTRA_TITLE));
         beskrivelse_tekst.setText(intent.getStringExtra(EXTRA_BESKRIVELSE));
@@ -52,7 +52,5 @@ public class AktivitetActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setTitle(intent.getStringExtra(EXTRA_DATO));
     }
 }

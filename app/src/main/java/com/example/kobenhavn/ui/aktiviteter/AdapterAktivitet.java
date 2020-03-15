@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +18,7 @@ import java.util.List;
 /***
  * The adapter class for the RecyclerView, contains the sports data
  */
-class AktivitetsAdapter extends RecyclerView.Adapter<AktivitetsAdapter.ViewHolder> {
+class AdapterAktivitet extends RecyclerView.Adapter<AdapterAktivitet.ViewHolder> {
 
     //Member variables
     private List<AktivitetModel> aktivitetsData;
@@ -32,11 +31,10 @@ class AktivitetsAdapter extends RecyclerView.Adapter<AktivitetsAdapter.ViewHolde
      * @param aktivitetsData ArrayList containing the sports data
      * @param context        Context of the application
      */
-    AktivitetsAdapter(Context context, ArrayList<AktivitetModel> aktivitetsData) {
+    AdapterAktivitet(Context context, ArrayList<AktivitetModel> aktivitetsData) {
         this.aktivitetsData = aktivitetsData;
         this.context = context;
     }
-
 
     /**
      * Required method for creating the viewholder objects.
@@ -47,7 +45,7 @@ class AktivitetsAdapter extends RecyclerView.Adapter<AktivitetsAdapter.ViewHolde
      */
     @NotNull
     @Override
-    public AktivitetsAdapter.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
+    public AdapterAktivitet.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.aktiviteter_card_list_item, parent, false));
     }
 
@@ -58,7 +56,7 @@ class AktivitetsAdapter extends RecyclerView.Adapter<AktivitetsAdapter.ViewHolde
      * @param position The adapter position.
      */
     @Override
-    public void onBindViewHolder(AktivitetsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterAktivitet.ViewHolder holder, int position) {
         AktivitetModel currentAktivitet = aktivitetsData.get(position);
         //Populate the textviews with data
         holder.bindTo(currentAktivitet);
@@ -73,7 +71,6 @@ class AktivitetsAdapter extends RecyclerView.Adapter<AktivitetsAdapter.ViewHolde
     public int getItemCount() {
         return aktivitetsData.size();
     }
-
 
     /**
      * ViewHolder class that represents each row of data in the RecyclerView
@@ -129,6 +126,4 @@ class AktivitetsAdapter extends RecyclerView.Adapter<AktivitetsAdapter.ViewHolde
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
-
-
 }

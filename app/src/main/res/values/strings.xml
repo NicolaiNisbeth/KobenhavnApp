@@ -3,4 +3,7 @@
     <string name="title_aktiviteter">Aktiviteter</string>
     <string name="title_legepladser">Legepladser</string>
     <string name="title_indstillinger">Indstillinger</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Tilmeldte aktiviteter</string>
 </resources>

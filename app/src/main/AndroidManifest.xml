@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.aktiviteter.AktivitetActivity"
+            android:name=".ui.aktiviteter.CardAktivitetActivity"
             android:parentActivityName=".MainActivity">
         </activity>
         <meta-data
