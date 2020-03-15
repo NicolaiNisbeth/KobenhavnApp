@@ -16,7 +16,7 @@
             android:id="@+id/dato_tekst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dato"
+            android:text="dato"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             />
 
@@ -34,6 +34,14 @@
             android:layout_height="wrap_content"
             android:text="title"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            />
+
+        <TextView
+            android:id="@+id/tid_tekst"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="tid"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             />
 
         <ImageView

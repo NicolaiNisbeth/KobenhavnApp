@@ -80,6 +80,7 @@ class AdapterAktivitet extends RecyclerView.Adapter<AdapterAktivitet.ViewHolder>
         private TextView dato_tekst;
         private TextView subtitle_tekst;
         private TextView title_tekst;
+        private TextView tid_tekst;
         private TextView beskrivelse_tekst;
         private TextView interesseret_tekst;
 
@@ -95,6 +96,7 @@ class AdapterAktivitet extends RecyclerView.Adapter<AdapterAktivitet.ViewHolder>
             dato_tekst = itemView.findViewById(R.id.dato_tekst);
             subtitle_tekst = itemView.findViewById(R.id.subtitle_tekst);
             title_tekst = itemView.findViewById(R.id.title_tekst);
+            tid_tekst = itemView.findViewById(R.id.tid_tekst);
             beskrivelse_tekst = itemView.findViewById(R.id.beskrivelse_tekst);
             interesseret_tekst = itemView.findViewById(R.id.interesseret_tekst);
 
@@ -114,6 +116,7 @@ class AdapterAktivitet extends RecyclerView.Adapter<AdapterAktivitet.ViewHolder>
             dato_tekst.setText(aktivitet.getDato());
             subtitle_tekst.setText(aktivitet.getSubtitle());
             title_tekst.setText(aktivitet.getTitle());
+            tid_tekst.setText(aktivitet.getTid());
             beskrivelse_tekst.setText(aktivitet.getBeskrivelse());
             interesseret_tekst.setText(aktivitet.getInteresseret());
         }

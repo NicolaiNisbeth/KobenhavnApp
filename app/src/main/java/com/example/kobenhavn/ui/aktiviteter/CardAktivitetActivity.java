@@ -17,12 +17,14 @@ public class CardAktivitetActivity extends AppCompatActivity {
     public static final String EXTRA_DATO = "com.example.kobenhavn.EXTRA_DATO";
     public static final String EXTRA_SUBTITLE= "com.example.kobenhavn.EXTRA_SUBTITLE";
     public static final String EXTRA_TITLE = "com.example.kobenhavn.EXTRA_TITLE";
+    public static final String EXTRA_TID = "com.example.kobenhavn.EXTRA_TID";
     public static final String EXTRA_BESKRIVELSE = "com.example.kobenhavn.EXTRA_BESKRIVELSE";
     public static final String EXTRA_INTERESSERET = "com.example.kobenhavn.EXTRA_INTERESSERET";
 
     private TextView dato_tekst;
     private TextView subtitle_tekst;
     private TextView title_tekst;
+    private TextView tid_tekst;
     private TextView beskrivelse_tekst;
     private TextView interesseret_tekst;
 
@@ -35,6 +37,7 @@ public class CardAktivitetActivity extends AppCompatActivity {
         dato_tekst = findViewById(R.id.dato_tekst);
         subtitle_tekst = findViewById(R.id.subtitle_tekst);
         title_tekst = findViewById(R.id.title_tekst);
+        tid_tekst = findViewById(R.id.tid_tekst);
         beskrivelse_tekst = findViewById(R.id.beskrivelse_tekst);
         interesseret_tekst = findViewById(R.id.interesseret_tekst);
 
@@ -42,6 +45,7 @@ public class CardAktivitetActivity extends AppCompatActivity {
         dato_tekst.setText(intent.getStringExtra(EXTRA_DATO));
         subtitle_tekst.setText(intent.getStringExtra(EXTRA_SUBTITLE));
         title_tekst.setText(intent.getStringExtra(EXTRA_TITLE));
+        tid_tekst.setText(intent.getStringExtra(EXTRA_TID));
         beskrivelse_tekst.setText(intent.getStringExtra(EXTRA_BESKRIVELSE));
         interesseret_tekst.setText(intent.getStringExtra(EXTRA_INTERESSERET));
 

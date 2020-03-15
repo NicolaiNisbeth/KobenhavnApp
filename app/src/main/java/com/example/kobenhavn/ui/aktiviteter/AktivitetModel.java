@@ -1,12 +1,13 @@
 package com.example.kobenhavn.ui.aktiviteter;
 
 public class AktivitetModel {
-    private String dato, subtitle, title, beskrivelse, interesseret;
+    private String dato, subtitle, title, tid, beskrivelse, interesseret;
 
-    public AktivitetModel(String dato, String subtitle, String title, String beskrivelse, String interesseret) {
+    public AktivitetModel(String dato, String subtitle, String title, String tid, String beskrivelse, String interesseret) {
         this.dato = dato;
         this.subtitle = subtitle;
         this.title = title;
+        this.tid = tid;
         this.beskrivelse = beskrivelse;
         this.interesseret = interesseret;
     }
@@ -30,6 +31,14 @@ public class AktivitetModel {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getTid() {
+        return tid;
+    }
+
+    public void setTid(String tid) {
+        this.tid = tid;
     }
 
     public void setTitle(String title) {

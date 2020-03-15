@@ -41,10 +41,10 @@ public class KommendeAktiviteterFragment extends Fragment {
         adapter.setOnItemClickListener(new AdapterAktivitet.OnItemClickListener() {
             @Override
             public void onItemClick(AktivitetModel aktivitetModel) {
-                System.out.println("something was clicked " + aktivitetModel.getDato());
                 Intent intent = new Intent(getContext(), CardAktivitetActivity.class);
                 intent.putExtra(CardAktivitetActivity.EXTRA_DATO, aktivitetModel.getDato());
                 intent.putExtra(CardAktivitetActivity.EXTRA_TITLE, aktivitetModel.getTitle());
+                intent.putExtra(CardAktivitetActivity.EXTRA_TID, aktivitetModel.getTid());
                 intent.putExtra(CardAktivitetActivity.EXTRA_SUBTITLE, aktivitetModel.getSubtitle());
                 intent.putExtra(CardAktivitetActivity.EXTRA_BESKRIVELSE, aktivitetModel.getBeskrivelse());
                 intent.putExtra(CardAktivitetActivity.EXTRA_INTERESSERET, aktivitetModel.getInteresseret());
@@ -64,6 +64,7 @@ public class KommendeAktiviteterFragment extends Fragment {
         String[] aktivitets_dato = new String[]{"Fredag, 29 Januar 2020", "Lørdag, 30 Januar 2020", "Søndag, 31 Januar 2020"};
         String[] aktivitets_subtitle = new String[]{"Lindevangsparken", "Sørbyparken", "Frederiksbergparken"};
         String[] aktivitets_title = new String[]{"Snobrød og Boller", "Fodbold og Grill", "Fangeleg og dåsekast"};
+        String[] aktivitets_tid = new String[]{"12:00 - 14:00", "15:00 - 17:00", "09:00 - 16:00"};
         String[] aktivitets_beskrivelse = new String[]{"Lang beskrivelse af aktivitet...", "Lang beskrivelse af aktivitet...", "Lang beskrivelse af aktivitet..."};
         String[] aktivitets_interesseret = new String[]{"20 er interesseret", "199 er interesseret", "3 er interesseret"};
 
@@ -72,7 +73,7 @@ public class KommendeAktiviteterFragment extends Fragment {
 
         //Create the ArrayList of Sports objects with the titles and information about each sport
         for(int i=0;i<aktivitets_dato.length;i++){
-            aktivitetsData.add(new AktivitetModel(aktivitets_dato[i], aktivitets_subtitle[i], aktivitets_title[i], aktivitets_beskrivelse[i], aktivitets_interesseret[i]));
+            aktivitetsData.add(new AktivitetModel(aktivitets_dato[i], aktivitets_subtitle[i], aktivitets_title[i], aktivitets_tid[i], aktivitets_beskrivelse[i], aktivitets_interesseret[i]));
         }
 
         //Notify the adapter of the change
