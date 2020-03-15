@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,15 +17,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+
 /***
  * The adapter class for the RecyclerView, contains the sports data
  */
 public class KommendeAdapter extends RecyclerView.Adapter<KommendeAdapter.ViewHolder> {
 
     //Member variables
-    private List<AktivitetModel> aktivitetsData;
-    private Context context;
-    private OnItemClickListener listener;
+    private List<AktivitetModel> _aktivitetsData;
+    private Context _context;
+    private OnItemClickListener _listener;
 
     /**
      * Constructor that passes in the aktivitetes data and the context
@@ -33,8 +36,8 @@ public class KommendeAdapter extends RecyclerView.Adapter<KommendeAdapter.ViewHo
      * @param context        Context of the application
      */
     public KommendeAdapter(Context context, ArrayList<AktivitetModel> aktivitetsData) {
-        this.aktivitetsData = aktivitetsData;
-        this.context = context;
+        this._aktivitetsData = aktivitetsData;
+        this._context = context;
     }
 
     /**
@@ -47,7 +50,7 @@ public class KommendeAdapter extends RecyclerView.Adapter<KommendeAdapter.ViewHo
     @NotNull
     @Override
     public KommendeAdapter.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.aktiviteter_kommende_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(_context).inflate(R.layout.aktiviteter_kommende_item, parent, false));
     }
 
     /**
@@ -58,7 +61,7 @@ public class KommendeAdapter extends RecyclerView.Adapter<KommendeAdapter.ViewHo
      */
     @Override
     public void onBindViewHolder(KommendeAdapter.ViewHolder holder, int position) {
-        AktivitetModel currentAktivitet = aktivitetsData.get(position);
+        AktivitetModel currentAktivitet = _aktivitetsData.get(position);
         //Populate the textviews with data
         holder.bindTo(currentAktivitet);
     }
@@ -70,7 +73,7 @@ public class KommendeAdapter extends RecyclerView.Adapter<KommendeAdapter.ViewHo
      */
     @Override
     public int getItemCount() {
-        return aktivitetsData.size();
+        return _aktivitetsData.size();
     }
 
     /**
@@ -105,8 +108,8 @@ public class KommendeAdapter extends RecyclerView.Adapter<KommendeAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
-                    if (listener != null & position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(aktivitetsData.get(position));
+                    if (_listener != null & position != RecyclerView.NO_POSITION) {
+                        _listener.onItemClick(_aktivitetsData.get(position));
                     }
                 }
             });
@@ -128,6 +131,6 @@ public class KommendeAdapter extends RecyclerView.Adapter<KommendeAdapter.ViewHo
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
+        this._listener = listener;
     }
 }
