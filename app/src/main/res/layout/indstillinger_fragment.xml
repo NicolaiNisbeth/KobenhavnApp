@@ -1,23 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.indstillinger.IndstillingerFragment">
 
-    <TextView
-        android:id="@+id/text_indstillinger"
-        android:layout_width="match_parent"
+    <include
+        android:id="@+id/indstillinger_toolbar"
+        layout="@layout/toolbar"
+         />
+
+    <ImageView
+        android:id="@+id/indstillinger_profil_billede"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_gravity="center"
+        android:src="@mipmap/ic_launcher"
+        />
+
+    <TextView
+        android:id="@+id/indstillinger_profil_navn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="top|center"
+        android:text="Nicolai Nisbeth"
+        style="@style/TextAppearance.AppCompat.Headline"
+
+        />
+
+    <TextView
+        android:id="@+id/indstillinger_profil_nummer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="top|center"
+        android:text="+45 28 77 19 95"
+        />
+
+    <TextView
+        android:id="@+id/indstillinger_profil_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Profil"
         app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center_horizontal" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/TextAppearance.AppCompat.Headline"
+        />
+
+    <include
+        android:id="@+id/indstillinger_navn_og_adresse"
+        layout="@layout/indstillinger_row" />
+    <include
+        android:id="@+id/indstillinger_email"
+        layout="@layout/indstillinger_row" />
+    <include
+        android:id="@+id/indstillinger_mobilnummer"
+        layout="@layout/indstillinger_row" />
+    <include
+        android:id="@+id/indstillinger_skift_kode"
+        layout="@layout/indstillinger_row" />
+
+    <TextView
+        android:id="@+id/indstillinger_log_ud"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log ud"
+        android:textColor="@color/colorPrimary"
+
+        />
+
+
+
+
+
+</LinearLayout>

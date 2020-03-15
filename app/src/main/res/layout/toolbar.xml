@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:text="Toolbar Title"
         android:layout_gravity="center"
-        android:id="@+id/toolbar_title" />
+        android:id="@+id/toolbar_title"
+        android:textAllCaps="false"/>
 
 </com.google.android.material.appbar.MaterialToolbar>
