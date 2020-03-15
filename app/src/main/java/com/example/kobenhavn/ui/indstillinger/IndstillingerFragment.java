@@ -12,7 +12,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.ui.login.data.LoginRepository;
 
 public class IndstillingerFragment extends Fragment {
 
