@@ -74,12 +74,15 @@ public class LoginViewModel extends ViewModel {
 
     public void signupDataChanged(String name, String username, String password) {
         if (!isNameValid(name)){
+            System.out.println("name fejl");
             formStateLive.setValue(new FormState(R.string.invalid_name, null, null));
         }
         else if (!isUserNameValid(username)) {
+            System.out.println("username fejl");
             formStateLive.setValue(new FormState(null, R.string.invalid_username, null));
         }
         else if (!isPasswordValid(password)) {
+            System.out.println("pw fejl");
             formStateLive.setValue(new FormState(null, null, R.string.invalid_password));
         }
         else {
@@ -92,7 +95,7 @@ public class LoginViewModel extends ViewModel {
         if (name == null)
             return false;
 
-        return !name.isEmpty();
+        return !name.trim().isEmpty();
     }
 
     // A placeholder username validation check
@@ -102,8 +105,8 @@ public class LoginViewModel extends ViewModel {
 
         if (username.contains("@"))
             return Patterns.EMAIL_ADDRESS.matcher(username).matches();
-        else
-            return !username.trim().isEmpty();
+
+        return false;
     }
 
     // A placeholder password validation check

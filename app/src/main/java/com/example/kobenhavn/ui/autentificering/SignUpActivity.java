@@ -65,6 +65,7 @@ public class SignUpActivity extends AppCompatActivity {
             if (formState == null)
                 return;
 
+            _signupButton.setEnabled(formState.isDataValid());
             if (formState.getNameError() != null)
                 _nameText.setError(getString(formState.getNameError()));
 
@@ -74,7 +75,6 @@ public class SignUpActivity extends AppCompatActivity {
             if (formState.getPasswordError() != null)
                 _passwordText.setError(getString(formState.getPasswordError()));
 
-            _signupButton.setEnabled(formState.isDataValid());
         });
 
         // Observer loginResult and show errors or
