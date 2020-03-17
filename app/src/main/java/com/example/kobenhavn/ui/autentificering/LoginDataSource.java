@@ -17,8 +17,7 @@ public class LoginDataSource {
             // TODO: handle loggedInUser authentication - make call to remote authentication server
             //   make every student able to login
             LoggedInUser fakeUser = new LoggedInUser(java.util.UUID.randomUUID().toString(), username);
-            //return new Result.Success<>(fakeUser);
-            return new Result.Error(new IOException("Error logging in", new Exception()));
+            return new Result.Success<>(fakeUser);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));
         }
@@ -27,7 +26,8 @@ public class LoginDataSource {
     public Result signup(String name, String username, String password){
         try {
             // TODO: make singup call with param1, param2, param3
-            return new Result.Success<>(null);
+            //return new Result.Success<>(null);
+            return new Result.Error((new IOException("Error")));
         } catch (Exception e){
             return new Result.Error(new IOException("Error creating account", e));
         }

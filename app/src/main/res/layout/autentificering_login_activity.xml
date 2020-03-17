@@ -9,6 +9,17 @@
     android:paddingLeft="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_vertical_margin">
 
+    <TextView android:id="@+id/login_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:text="Login på App"
+        style="@style/TextAppearance.AppCompat.Headline"/>
+
     <ImageView android:src="@mipmap/ic_launcher"
         android:layout_width="wrap_content"
         android:layout_height="72dp"
@@ -25,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:hint="Email" />
+            android:hint="Email eller brugernavn" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Password Label -->
@@ -48,7 +59,8 @@
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:padding="12dp"
-        android:text="Login"/>
+        android:textAllCaps="false"
+        android:text="Log ind"/>
 
     <TextView android:id="@+id/link_signup"
         android:layout_width="wrap_content"
@@ -58,7 +70,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textAlignment="center"
-        android:text="No account yet? Create one"
+        android:text="Ingen account endnu? Lav en."
         android:textSize="16dp"/>
 
 </LinearLayout>

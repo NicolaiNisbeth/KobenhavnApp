@@ -33,12 +33,13 @@ public class LoginViewModel extends ViewModel {
         return loginResultLive;
     }
 
-    public LiveData<SignupResult> getSignupResultLive(){
+    public LiveData<SignupResult> getSignupResultLive() {
         return signupResultLive;
     }
 
     /**
      * Login and set result so observers can be notified and update UI
+     *
      * @param username
      * @param password
      */
@@ -53,17 +54,23 @@ public class LoginViewModel extends ViewModel {
         }
     }
 
+    /**
+     * Singup and set result so observers can be notified and update UI
+     *
+     * @param username
+     * @param password
+     */
     public void signup(String name, String username, String password) {
         Result result = loginRepository.signup(name, username, password);
         if (result instanceof Result.Success)
             signupResultLive.setValue(new SignupResult(true));
         else
             signupResultLive.setValue(new SignupResult(R.string.signup_failed));
-
     }
 
     /**
      * Set loginFormState so observers can be notified and update UI
+     *
      * @param username
      * @param password
      */
@@ -73,19 +80,13 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void signupDataChanged(String name, String username, String password) {
-        if (!isNameValid(name)){
-            System.out.println("name fejl");
+        if (!isNameValid(name)) {
             formStateLive.setValue(new FormState(R.string.invalid_name, null, null));
-        }
-        else if (!isUserNameValid(username)) {
-            System.out.println("username fejl");
+        } else if (!isUserNameValid(username)) {
             formStateLive.setValue(new FormState(null, R.string.invalid_username, null));
-        }
-        else if (!isPasswordValid(password)) {
-            System.out.println("pw fejl");
+        } else if (!isPasswordValid(password)) {
             formStateLive.setValue(new FormState(null, null, R.string.invalid_password));
-        }
-        else {
+        } else {
             formStateLive.setValue(new FormState(true));
         }
     }

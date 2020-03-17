@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -92,9 +93,6 @@ public class SignUpActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
-
     }
 
     private void signup() {
@@ -115,14 +113,16 @@ public class SignUpActivity extends AppCompatActivity {
         // TODO: maybe show user a dialog before sending him to login!
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+        Toast.makeText(this, "Du er hermed oprettet. Vær venlig at logge ind.", Toast.LENGTH_SHORT).show();
     }
 
     public void showSignupFailed(Integer errorID) {
-        _nameText.setText("");
-        _nameText.requestFocus();
+        //_nameText.setText("");
+        //_nameText.requestFocus();
         _usernameText.setText("");
+        _usernameText.requestFocus();
         _usernameText.setError(getString(errorID));
-        _passwordText.setText("");
+        //_passwordText.setText("");
         _signupButton.setEnabled(false);
     }
 }
