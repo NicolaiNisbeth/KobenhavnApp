@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
     private static final int REQUEST_SIGNUP = 0;
-    private static LoginViewModel loginViewModel;
+    private AuthViewModel authViewModel;
     private ProgressDialog progressDialog;
 
     @BindView(R.id.input_username) EditText _usernameText;
@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         progressDialog = new ProgressDialog(this);
-        loginViewModel = new LoginViewModel(LoginRepository.getInstance(new LoginDataSource()));
+        authViewModel = new AuthViewModel(AuthRepository.getInstance(new DataSource()));
         _signupLink.setOnClickListener(v -> startSignUp());
         _loginButton.setOnClickListener(v -> login());
         _loginButton.setEnabled(false);
@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(
+                authViewModel.loginDataChanged(
                         _usernameText.getText().toString(),
                         _passwordText.getText().toString()
                 );
@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         _passwordText.addTextChangedListener(_afterTextChangedListener);
 
         // Observe loginFormState and show errors or enable login button
-        loginViewModel.getFormStateLive().observe(this, formState -> {
+        authViewModel.getFormStateLive().observe(this, formState -> {
             if (formState == null)
                 return;
 
@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // Observer loginResult and show errors or
-        loginViewModel.getLoginResultLive().observe(this, loginResult -> {
+        authViewModel.getLoginResultLive().observe(this, loginResult -> {
             if (loginResult == null)
                 return;
 
@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // call login after 2s to simulate handling of authentication
         new android.os.Handler().postDelayed(() ->
-                        loginViewModel.login(
+                        authViewModel.login(
                                 _usernameText.getText().toString(),
                                 _passwordText.getText().toString()),
                 2000);

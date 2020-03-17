@@ -7,22 +7,22 @@ import com.example.kobenhavn.ui.autentificering.data.Result;
  * Class that requests authentication and user information from the remote data source and
  * maintains an in-memory cache of login status and user credentials information.
  */
-public class LoginRepository {
-    private static volatile LoginRepository instance;
-    public static LoginDataSource dataSource;
+public class AuthRepository {
+    private static volatile AuthRepository instance;
+    public static DataSource dataSource;
 
     // If user credentials will be cached in local storage, it is recommended it be encrypted
     // @see https://developer.android.com/training/articles/keystore
     private LoggedInUser user = null;
 
     // private constructor : singleton access
-    private LoginRepository(LoginDataSource dataSource) {
-        LoginRepository.dataSource = dataSource;
+    private AuthRepository(DataSource dataSource) {
+        AuthRepository.dataSource = dataSource;
     }
 
-    public static LoginRepository getInstance(LoginDataSource dataSource) {
+    public static AuthRepository getInstance(DataSource dataSource) {
         if (instance == null) {
-            instance = new LoginRepository(dataSource);
+            instance = new AuthRepository(dataSource);
         }
         return instance;
     }

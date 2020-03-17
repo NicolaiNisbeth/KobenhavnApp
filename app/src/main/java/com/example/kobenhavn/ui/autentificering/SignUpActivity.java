@@ -14,13 +14,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.ui.autentificering.data.model.LoggedInUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SignUpActivity extends AppCompatActivity {
-    private LoginViewModel loginViewModel;
+    private AuthViewModel authViewModel;
     private ProgressDialog progressDialog;
 
     @BindView(R.id.input_name) EditText _nameText;
@@ -36,7 +35,7 @@ public class SignUpActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         progressDialog = new ProgressDialog(SignUpActivity.this);
-        loginViewModel = new LoginViewModel(LoginRepository.getInstance(new LoginDataSource()));
+        authViewModel = new AuthViewModel(AuthRepository.getInstance(new DataSource()));
         _loginLink.setOnClickListener(v -> finish());
         _signupButton.setOnClickListener(v -> signup());
         _signupButton.setEnabled(false);
@@ -50,7 +49,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable s) {
-                loginViewModel.signupDataChanged(
+                authViewModel.signupDataChanged(
                         _nameText.getText().toString(),
                         _usernameText.getText().toString(),
                         _passwordText.getText().toString()
@@ -62,7 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
         _passwordText.addTextChangedListener(textChangedListener);
 
         // Observe loginFormState and show errors or enable login button
-        loginViewModel.getFormStateLive().observe(this, formState -> {
+        authViewModel.getFormStateLive().observe(this, formState -> {
             if (formState == null)
                 return;
 
@@ -79,7 +78,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         // Observer loginResult and show errors or
-        loginViewModel.getSignupResultLive().observe(this, signupResult -> {
+        authViewModel.getSignupResultLive().observe(this, signupResult -> {
             if (signupResult == null)
                 return;
 
@@ -101,7 +100,7 @@ public class SignUpActivity extends AppCompatActivity {
         progressDialog.show();
 
         new android.os.Handler().postDelayed(() ->
-                        loginViewModel.signup(
+                        authViewModel.signup(
                                 _nameText.getText().toString(),
                                 _usernameText.getText().toString(),
                                 _passwordText.getText().toString()),

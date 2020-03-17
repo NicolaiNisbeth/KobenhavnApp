@@ -14,14 +14,14 @@ import com.example.kobenhavn.ui.autentificering.data.LoginResult;
 import com.example.kobenhavn.ui.autentificering.data.Result;
 
 
-public class LoginViewModel extends ViewModel {
+public class AuthViewModel extends ViewModel {
     private MutableLiveData<FormState> formStateLive = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResultLive = new MutableLiveData<>();
     private MutableLiveData<SignupResult> signupResultLive = new MutableLiveData<>();
-    private LoginRepository loginRepository;
+    private AuthRepository authRepository;
 
-    public LoginViewModel(LoginRepository loginRepository) {
-        this.loginRepository = loginRepository;
+    public AuthViewModel(AuthRepository authRepository) {
+        this.authRepository = authRepository;
     }
 
     /**
@@ -31,7 +31,7 @@ public class LoginViewModel extends ViewModel {
      * @param password
      */
     public void login(String username, String password) {
-        Result<LoggedInUser> result = loginRepository.login(username, password);
+        Result<LoggedInUser> result = authRepository.login(username, password);
 
         if (result instanceof Result.Success) {
             LoggedInUser user = ((Result.Success<LoggedInUser>) result).getData();
@@ -48,7 +48,7 @@ public class LoginViewModel extends ViewModel {
      * @param password
      */
     public void signup(String name, String username, String password) {
-        Result result = loginRepository.signup(name, username, password);
+        Result result = authRepository.signup(name, username, password);
         if (result instanceof Result.Success)
             signupResultLive.setValue(new SignupResult(true));
         else

@@ -14,15 +14,14 @@ import androidx.fragment.app.Fragment;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.ui.autentificering.LoginActivity;
-import com.example.kobenhavn.ui.autentificering.LoginDataSource;
-import com.example.kobenhavn.ui.autentificering.LoginRepository;
-import com.example.kobenhavn.ui.autentificering.LoginViewModel;
+import com.example.kobenhavn.ui.autentificering.AuthRepository;
+import com.example.kobenhavn.ui.autentificering.AuthViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class IndstillingerFragment extends Fragment {
-    private LoginViewModel loginViewModel;
+    private AuthViewModel authViewModel;
 
     @BindView(R.id.indstillinger_profil_navn) TextView _profilNavnText;
     @BindView(R.id.indstillinger_profil_nummer) TextView _profilNummerText;
@@ -69,8 +68,8 @@ public class IndstillingerFragment extends Fragment {
 
     private void logUd(){
         // TODO: not sure how to access dataSource otherwise
-        LoginRepository loginRepository = LoginRepository.getInstance(LoginRepository.dataSource);
-        loginRepository.logout();
+        AuthRepository authRepository = AuthRepository.getInstance(AuthRepository.dataSource);
+        authRepository.logout();
         Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
     }
