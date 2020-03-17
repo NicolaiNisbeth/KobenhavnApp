@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
     private static final int REQUEST_SIGNUP = 0;
-    private LoginViewModel loginViewModel;
+    private static LoginViewModel loginViewModel;
     private ProgressDialog progressDialog;
 
     @BindView(R.id.input_username) EditText _usernameText;

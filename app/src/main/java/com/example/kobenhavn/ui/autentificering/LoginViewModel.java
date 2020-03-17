@@ -15,26 +15,13 @@ import com.example.kobenhavn.ui.autentificering.data.Result;
 
 
 public class LoginViewModel extends ViewModel {
-
     private MutableLiveData<FormState> formStateLive = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResultLive = new MutableLiveData<>();
     private MutableLiveData<SignupResult> signupResultLive = new MutableLiveData<>();
     private LoginRepository loginRepository;
 
-    LoginViewModel(LoginRepository loginRepository) {
+    public LoginViewModel(LoginRepository loginRepository) {
         this.loginRepository = loginRepository;
-    }
-
-    public LiveData<FormState> getFormStateLive() {
-        return formStateLive;
-    }
-
-    public LiveData<LoginResult> getLoginResultLive() {
-        return loginResultLive;
-    }
-
-    public LiveData<SignupResult> getSignupResultLive() {
-        return signupResultLive;
     }
 
     /**
@@ -69,7 +56,7 @@ public class LoginViewModel extends ViewModel {
     }
 
     /**
-     * Set loginFormState so observers can be notified and update UI
+     * Set FormState so observers can be notified and update UI
      *
      * @param username
      * @param password
@@ -79,6 +66,12 @@ public class LoginViewModel extends ViewModel {
             formStateLive.setValue(new FormState(true));
     }
 
+    /**
+     * Set FormState so observers can be notified and update UI
+     * @param name
+     * @param username
+     * @param password
+     */
     public void signupDataChanged(String name, String username, String password) {
         if (!isNameValid(name)) {
             formStateLive.setValue(new FormState(R.string.invalid_name, null, null));
@@ -91,7 +84,12 @@ public class LoginViewModel extends ViewModel {
         }
     }
 
-    // A placeholder name validation check
+    /**
+     * A placeholder name validation check
+     *
+     * @param name
+     * @return
+     */
     private boolean isNameValid(String name) {
         if (name == null)
             return false;
@@ -99,7 +97,13 @@ public class LoginViewModel extends ViewModel {
         return !name.trim().isEmpty();
     }
 
-    // A placeholder username validation check
+
+    /**
+     * A placeholder username validation check
+     *
+     * @param username
+     * @return
+     */
     private boolean isUserNameValid(String username) {
         if (username == null)
             return false;
@@ -110,8 +114,23 @@ public class LoginViewModel extends ViewModel {
         return false;
     }
 
-    // A placeholder password validation check
+    /**
+     * A placeholder password validation check
+     *
+     * @param password
+     * @return
+     */
     private boolean isPasswordValid(String password) {
         return password != null && password.trim().length() > 5;
+    }
+
+    public LiveData<FormState> getFormStateLive() {
+        return formStateLive;
+    }
+    public LiveData<LoginResult> getLoginResultLive() {
+        return loginResultLive;
+    }
+    public LiveData<SignupResult> getSignupResultLive() {
+        return signupResultLive;
     }
 }

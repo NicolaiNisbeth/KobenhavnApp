@@ -108,7 +108,6 @@ public class SignUpActivity extends AppCompatActivity {
                 2000);
     }
 
-
     public void showSignupSuccess() {
         // TODO: maybe show user a dialog before sending him to login!
         Intent intent = new Intent(this, LoginActivity.class);
