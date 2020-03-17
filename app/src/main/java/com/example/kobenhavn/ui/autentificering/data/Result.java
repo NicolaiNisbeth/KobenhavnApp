@@ -1,4 +1,4 @@
-package com.example.kobenhavn.ui.autentificering;
+package com.example.kobenhavn.ui.autentificering.data;
 
 import org.jetbrains.annotations.NotNull;
 

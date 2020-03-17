@@ -1,31 +1,31 @@
-package com.example.kobenhavn.ui.autentificering;
+package com.example.kobenhavn.ui.autentificering.data;
 
 import androidx.annotation.Nullable;
 
 /**
  * Authentication result : success (user details) or error message.
  */
-class LoginResult {
+public class SignupResult {
     @Nullable
-    private LoggedInUserView success;
+    private boolean success;
     @Nullable
     private Integer error;
 
-    LoginResult(@Nullable Integer error) {
+    public SignupResult(@Nullable Integer error) {
         this.error = error;
     }
 
-    LoginResult(@Nullable LoggedInUserView success) {
+    public SignupResult(@Nullable boolean success) {
         this.success = success;
     }
 
     @Nullable
-    LoggedInUserView getSuccess() {
+    public boolean getSuccess() {
         return success;
     }
 
     @Nullable
-    Integer getError() {
+    public Integer getError() {
         return error;
     }
 }

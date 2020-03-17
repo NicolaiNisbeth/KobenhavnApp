@@ -1,6 +1,9 @@
 package com.example.kobenhavn.ui.autentificering;
 
 
+import com.example.kobenhavn.ui.autentificering.data.model.LoggedInUser;
+import com.example.kobenhavn.ui.autentificering.data.Result;
+
 import java.io.IOException;
 
 /**
@@ -12,10 +15,21 @@ public class LoginDataSource {
 
         try {
             // TODO: handle loggedInUser authentication - make call to remote authentication server
+            //   make every student able to login
             LoggedInUser fakeUser = new LoggedInUser(java.util.UUID.randomUUID().toString(), username);
-            return new Result.Success<>(fakeUser);
+            //return new Result.Success<>(fakeUser);
+            return new Result.Error(new IOException("Error logging in", new Exception()));
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));
+        }
+    }
+
+    public Result signup(String name, String username, String password){
+        try {
+            // TODO: make singup call with param1, param2, param3
+            return new Result.Success<>(null);
+        } catch (Exception e){
+            return new Result.Error(new IOException("Error creating account", e));
         }
     }
 
