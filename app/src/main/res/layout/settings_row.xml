@@ -9,25 +9,30 @@
         android:id="@+id/settings_item_left"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="E-mail"
+        android:text="Navn og adresse"
+        style="@style/TextAppearance.AppCompat.Small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
-    <TextView
+    <EditText
         android:id="@+id/settings_item_middle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="nicolai.nisbeth@hotmail.com"
+        android:text="s175565@student.dtu.dkddddddddddddddddddddddddddddddd"
+        android:maxLength="33"
         android:textColor="@color/colorPrimary"
-        app:layout_constraintEnd_toStartOf="@id/indstillinger_item_right"
+        android:background="@android:color/transparent"
+        android:textAllCaps="false"
+        style="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintEnd_toStartOf="@id/settings_item_right"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
     <ImageButton
-        android:id="@+id/indstillinger_item_right"
+        android:id="@+id/settings_item_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

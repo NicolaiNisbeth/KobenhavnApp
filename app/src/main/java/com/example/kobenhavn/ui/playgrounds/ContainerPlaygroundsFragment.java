@@ -36,9 +36,9 @@ public class ContainerPlaygroundsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.playgrounds_container_fragment, container, false);
-        setHasOptionsMenu(true);
 
         // setup toolbar
+        setHasOptionsMenu(true);
         toolbar = root.findViewById(R.id.legeplads_toolbar);
         AppCompatActivity activity = ((AppCompatActivity)getActivity());
         activity.setSupportActionBar(toolbar);
