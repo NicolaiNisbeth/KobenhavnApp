@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.settings.SettingsFragment">
+
+    <include
+        android:id="@+id/indstillinger_toolbar"
+        layout="@layout/toolbar"
+         />
+
+    <ImageView
+        android:id="@+id/indstillinger_profil_billede"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@mipmap/ic_launcher"
+        />
+
+    <TextView
+        android:id="@+id/settings_profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="top|center"
+        android:text="Nicolai Nisbeth"
+        style="@style/TextAppearance.AppCompat.Headline"
+
+        />
+
+    <TextView
+        android:id="@+id/settings_profile_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="top|center"
+        android:text="+45 28 77 19 95"
+        />
+
+    <TextView
+        android:id="@+id/indstillinger_profil_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Profil"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/TextAppearance.AppCompat.Headline"
+        />
+
+    <include
+        android:id="@+id/settings_name_and_address"
+        layout="@layout/settings_row" />
+    <include
+        android:id="@+id/settings_email"
+        layout="@layout/settings_row" />
+    <include
+        android:id="@+id/settings_mobile_number"
+        layout="@layout/settings_row" />
+    <include
+        android:id="@+id/settings_change_password"
+        layout="@layout/settings_row" />
+
+    <TextView
+        android:id="@+id/settings_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log ud"
+        android:textColor="@color/colorPrimary"
+
+        />
+
+
+
+
+
+</LinearLayout>

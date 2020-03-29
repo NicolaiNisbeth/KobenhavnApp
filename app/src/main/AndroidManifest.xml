@@ -15,7 +15,7 @@
         android:fullBackupContent="@xml/backup_descriptor">
 
         <activity
-            android:name=".ui.legepladser.tilfoj.TilfojLegepladsActivity"
+            android:name=".ui.playgrounds.add.AddPlaygroundActivity"
             android:parentActivityName=".MainActivity">
 
         </activity>
@@ -25,19 +25,19 @@
 
         </activity>
         <activity
-            android:name=".ui.aktiviteter.CardActivity"
+            android:name=".ui.events.CardActivity"
             android:parentActivityName=".MainActivity">
 
         </activity>
 
-        <activity android:name=".ui.autentificering.LoginActivity">
+        <activity android:name=".ui.authentication.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.autentificering.SignUpActivity"/>
+        <activity android:name=".ui.authentication.SignUpActivity"/>
 
         <meta-data
             android:name="preloaded_fonts"
