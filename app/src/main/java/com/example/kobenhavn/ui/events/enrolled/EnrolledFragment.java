@@ -38,21 +38,6 @@ public class EnrolledFragment extends Fragment {
         adapter = new EnrolledAdapter(root.getContext(), eventData);
         recyclerView.setAdapter(adapter);
 
-        //Allows swipe left and right for delete
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                adapter.deleteItem(viewHolder.getAdapterPosition());
-            }
-
-        }).attachToRecyclerView(recyclerView);
 
         adapter.setOnItemClickListener(playgroundModel -> {
             Intent intent = new Intent(getContext(), CardActivity.class);
