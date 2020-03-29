@@ -32,6 +32,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.settings_profile_name) TextView _nameText;
     @BindView(R.id.settings_profile_number) TextView _numberText;
     @BindView(R.id.settings_logout) TextView _logoutText;
+
     @BindView(R.id.settings_name_and_address) View _nameAndAddressView;
     @BindView(R.id.settings_email) View _emailView;
     @BindView(R.id.settings_mobile_number) View _mobileNumberView;
@@ -143,13 +144,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         editText.setPressed(activated);
 
         if (activated){
-            editText.setKeyListener((KeyListener) editText.getTag());
             editText.requestFocus();
             editText.setSelection(editText.getText().length());
             viewById.setImageResource(R.drawable.ic_arrow_left);
         } else {
-            editText.setTag(editText.getKeyListener());
-            editText.setKeyListener(null);
             viewById.setImageResource(R.drawable.ic_arrow_right);
         }
     }
