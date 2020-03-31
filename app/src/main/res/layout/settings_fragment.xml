@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.settings.SettingsFragment">
+    tools:context=".view.settings.SettingsFragment">
 
     <include
         android:id="@+id/indstillinger_toolbar"

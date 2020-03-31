@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_aktiviteter"
-        android:name="com.example.kobenhavn.ui.events.ContainerEventsFragment"
+        android:name="com.example.kobenhavn.view.events.ContainerEventsFragment"
         android:label="@string/title_aktiviteter"
         tools:layout="@layout/events_future_fragment" />
 
     <fragment
         android:id="@+id/navigation_legepladser"
-        android:name="com.example.kobenhavn.ui.playgrounds.ContainerPlaygroundsFragment"
+        android:name="com.example.kobenhavn.view.playgrounds.ContainerPlaygroundsFragment"
         android:label="@string/title_legepladser"
         tools:layout="@layout/playgrounds_container_fragment" />
 
     <fragment
         android:id="@+id/navigation_indstillinger"
-        android:name="com.example.kobenhavn.ui.settings.SettingsFragment"
+        android:name="com.example.kobenhavn.view.settings.SettingsFragment"
         android:label="@string/title_indstillinger"
         tools:layout="@layout/settings_fragment" />
 </navigation>

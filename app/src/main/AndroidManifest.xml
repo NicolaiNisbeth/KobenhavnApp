@@ -3,6 +3,7 @@
     package="com.example.kobenhavn">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
 
     <application
@@ -15,7 +16,7 @@
         android:fullBackupContent="@xml/backup_descriptor">
 
         <activity
-            android:name=".ui.playgrounds.add.AddPlaygroundActivity"
+            android:name=".view.playgrounds.add.AddPlaygroundActivity"
             android:parentActivityName=".MainActivity">
 
         </activity>
@@ -25,19 +26,31 @@
 
         </activity>
         <activity
-            android:name=".ui.events.CardActivity"
+            android:name=".view.events.CardActivity"
             android:parentActivityName=".MainActivity">
 
         </activity>
 
-        <activity android:name=".ui.authentication.LoginActivity">
+        <activity android:name=".view.authentication.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.authentication.SignUpActivity"/>
+        <activity android:name=".view.authentication.SignUpActivity"/>
+
+        <service android:name=".dal.sync.jobs.setup.SchedulerJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name=".dal.sync.jobs.setup.GCMJobService"
+            android:exported="true"
+            android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
+            <intent-filter>
+                <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY" />
+            </intent-filter>
+        </service>
 
         <meta-data
             android:name="preloaded_fonts"

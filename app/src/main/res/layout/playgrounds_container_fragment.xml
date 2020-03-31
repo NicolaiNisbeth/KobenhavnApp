@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    tools:context=".ui.playgrounds.ContainerPlaygroundsFragment">
+    tools:context=".view.playgrounds.ContainerPlaygroundsFragment">
 
     <include
         android:id="@+id/legeplads_toolbar"

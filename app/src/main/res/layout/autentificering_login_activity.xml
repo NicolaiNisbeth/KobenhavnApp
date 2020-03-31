@@ -17,7 +17,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textAlignment="center"
-        android:text="Login på App"
+        android:text="Login på com.example.kobenhavn.App"
         style="@style/TextAppearance.AppCompat.Headline"/>
 
     <ImageView android:src="@mipmap/ic_launcher"

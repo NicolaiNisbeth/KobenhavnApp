@@ -1,5 +1,21 @@
 apply plugin: 'com.android.application'
 
+project.ext {
+    supportLibraryVersion = "26.1.0"
+    androidArchVersion = "1.0.0-rc1"
+    daggerVersion = "2.15"
+    butterKnifeVersion = "10.0.0"
+    rxJavaVersion = "2.1.0"
+    rxAndroidVersion = "2.0.1"
+    timberVersion = "4.7.1"
+    priorityJobQueueVersion = "2.0.1"
+    playServicesVersion = "11.4.2"
+    retrofitVersion = "2.1.0"
+    okHttpVersion = "3.4.1"
+    rxRelayVersion = "2.0.0"
+    rxLintVersion = "1.6"
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -10,7 +26,6 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -19,6 +34,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    lintOptions {
+        abortOnError false
     }
     compileOptions {
         sourceCompatibility = 1.8
@@ -31,24 +49,12 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
     implementation 'androidx.navigation:navigation-fragment:2.2.1'
     implementation 'androidx.navigation:navigation-ui:2.2.1'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.annotation:annotation:1.1.0'
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
-
-    implementation 'com.jakewharton:butterknife:10.2.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
-
     implementation 'androidx.cardview:cardview:1.0.0'
-
-    implementation "com.google.android.material:material:1.2.0-alpha05"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.google.code.gson:gson:2.8.6'
@@ -56,4 +62,67 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test:core:1.2.0'
     androidTestImplementation 'androidx.test:runner:1.3.0-alpha04'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    // Material
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation "com.google.android.material:material:1.2.0-alpha05"
+
+    // ButterKnife
+    implementation "com.jakewharton:butterknife:$project.butterKnifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$project.butterKnifeVersion"
+
+    // Dagger core
+    annotationProcessor "com.google.dagger:dagger-compiler:$project.daggerVersion"
+    implementation "com.google.dagger:dagger:$project.daggerVersion"
+
+    // Dagger Android
+    annotationProcessor "com.google.dagger:dagger-android-processor:$project.daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$project.daggerVersion"
+    implementation "com.google.dagger:dagger-android:$project.daggerVersion"
+
+    // ReactiveX
+    implementation "io.reactivex.rxjava2:rxjava:$project.rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$project.rxAndroidVersion"
+
+    // Timber
+    implementation "com.jakewharton.timber:timber:$project.timberVersion"
+
+    // Priority Job Queue
+    implementation "com.birbit:android-priority-jobqueue:$project.priorityJobQueueVersion"
+
+    //GCM Network Manager
+    implementation "com.google.android.gms:play-services-gcm:$project.playServicesVersion"
+
+    // RecyclerView
+    implementation "androidx.recyclerview:recyclerview:1.0.0"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$project.retrofitVersion"
+
+    // GSON Converter
+    implementation "com.squareup.retrofit2:converter-gson:$project.retrofitVersion"
+
+    // OkHttp Logging Interceptor
+    implementation "com.squareup.okhttp3:okhttp:$project.okHttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$project.okHttpVersion"
+
+    // Room Database
+    implementation "androidx.room:room-runtime:2.0.0"
+    implementation "androidx.room:room-rxjava2:2.0.0"
+    annotationProcessor "androidx.room:room-compiler:2.0.0"
+
+    // Lifecycle
+    implementation "androidx.lifecycle:lifecycle-runtime:2.0.0"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.0.0"
+
+
+    // RxRelay
+    implementation "com.jakewharton.rxrelay2:rxrelay:$project.rxRelayVersion"
+
+    // RxLint
+    implementation "nl.littlerobots.rxlint:rxlint:$project.rxLintVersion"
+
 }
