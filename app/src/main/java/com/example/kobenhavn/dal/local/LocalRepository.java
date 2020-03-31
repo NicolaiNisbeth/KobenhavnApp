@@ -1,0 +1,46 @@
+package com.example.kobenhavn.dal.local;
+
+
+import com.example.kobenhavn.dal.local.model.Playground;
+
+import java.util.List;
+
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.Single;
+import timber.log.Timber;
+
+public class LocalRepository implements ILocalRepository {
+
+    private final PlaygroundDAO playgroundDAO;
+
+    public LocalRepository(PlaygroundDAO playgroundDAO){
+        this.playgroundDAO = playgroundDAO;
+    }
+
+    @Override
+    public Single<Playground> add(String text) {
+        Playground p = new Playground(text);
+
+        return Single.fromCallable(() -> {
+            long rowID = playgroundDAO.add(p);
+            Timber.e("Saved playground locally with id: %s", rowID);
+            return LocalePlaygroundUtils.clone(p, rowID);
+        });
+    }
+
+    @Override
+    public Completable update(Playground playground) {
+        return Completable.fromAction(() -> playgroundDAO.update(playground));
+    }
+
+    @Override
+    public Completable delete(Playground playground) {
+        return Completable.fromAction(() -> playgroundDAO.delete(playground));
+    }
+
+    @Override
+    public Flowable<List<Playground>> getPlaygrounds() {
+        return playgroundDAO.getPlaygrounds();
+    }
+}
