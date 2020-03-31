@@ -1,7 +1,6 @@
-package com.example.kobenhavn.view.authentication;
+package com.example.kobenhavn.view.authentication.data;
 
 import com.example.kobenhavn.dal.local.model.LoggedInUser;
-import com.example.kobenhavn.view.authentication.data.Result;
 
 /**
  * Class that requests authentication and user information from the remote data source and

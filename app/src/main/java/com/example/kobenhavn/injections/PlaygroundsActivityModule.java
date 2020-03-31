@@ -1,13 +1,13 @@
 package com.example.kobenhavn.injections;
 
-import com.example.offline.dal.local.ILocalRepository;
-import com.example.offline.dal.remote.IRemoteRepository;
-import com.example.offline.dal.sync.SyncPlaygroundLifecycleObserver;
-import com.example.offline.usecases.playground.AddPlaygroundUseCase;
-import com.example.offline.usecases.playground.DeletePlaygroundUseCase;
-import com.example.offline.usecases.playground.GetPlaygroundsUseCase;
-import com.example.offline.usecases.playground.UpdatePlaygroundUseCase;
-import com.example.offline.viewmodel.PlaygroundsViewModelFactory;
+import com.example.kobenhavn.dal.local.ILocalRepository;
+import com.example.kobenhavn.dal.remote.IRemoteRepository;
+import com.example.kobenhavn.dal.sync.SyncPlaygroundLifecycleObserver;
+import com.example.kobenhavn.usecases.playground.AddPlaygroundUseCase;
+import com.example.kobenhavn.usecases.playground.DeletePlaygroundUseCase;
+import com.example.kobenhavn.usecases.playground.GetPlaygroundsUseCase;
+import com.example.kobenhavn.usecases.playground.UpdatePlaygroundUseCase;
+import com.example.kobenhavn.viewmodel.ViewModelFactory;
 
 import dagger.Module;
 import dagger.Provides;
@@ -18,15 +18,15 @@ import dagger.Provides;
 @Module
 public class PlaygroundsActivityModule {
     @Provides
-    PlaygroundsViewModelFactory provideCommentsViewModelFactory(GetPlaygroundsUseCase getCommentsUseCase,
-                                                                AddPlaygroundUseCase addCommentUseCase,
-                                                                DeletePlaygroundUseCase deletePlaygroundUseCase) {
-        return new PlaygroundsViewModelFactory(getCommentsUseCase, addCommentUseCase, deletePlaygroundUseCase);
+    ViewModelFactory provideViewModelFactory(GetPlaygroundsUseCase getCommentsUseCase,
+                                             AddPlaygroundUseCase addCommentUseCase,
+                                             DeletePlaygroundUseCase deletePlaygroundUseCase) {
+        return new ViewModelFactory(getCommentsUseCase, addCommentUseCase, deletePlaygroundUseCase);
     }
 
     @Provides
     SyncPlaygroundLifecycleObserver provideSyncCommentLifecycleObserver(UpdatePlaygroundUseCase updatePlaygroundUseCase,
-                                                                     DeletePlaygroundUseCase deletePlaygroundUseCase) {
+                                                                        DeletePlaygroundUseCase deletePlaygroundUseCase) {
         return new SyncPlaygroundLifecycleObserver(updatePlaygroundUseCase, deletePlaygroundUseCase);
     }
 

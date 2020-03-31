@@ -1,4 +1,4 @@
-package com.example.kobenhavn.view.authentication;
+package com.example.kobenhavn.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import android.util.Patterns;
 
 import com.example.kobenhavn.R;
+import com.example.kobenhavn.view.authentication.data.AuthRepository;
 import com.example.kobenhavn.view.authentication.data.SignupResult;
 import com.example.kobenhavn.dal.local.model.LoggedInUser;
 import com.example.kobenhavn.view.authentication.data.FormState;
@@ -14,14 +15,14 @@ import com.example.kobenhavn.view.authentication.data.LoginResult;
 import com.example.kobenhavn.view.authentication.data.Result;
 
 
-public class AuthViewModel extends ViewModel {
+public class AuthenticationViewModel extends ViewModel {
 
     private MutableLiveData<FormState> formStateLive = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResultLive = new MutableLiveData<>();
     private MutableLiveData<SignupResult> signupResultLive = new MutableLiveData<>();
     private AuthRepository authRepository;
 
-    public AuthViewModel(AuthRepository authRepository) {
+    public AuthenticationViewModel(AuthRepository authRepository) {
         this.authRepository = authRepository;
     }
 

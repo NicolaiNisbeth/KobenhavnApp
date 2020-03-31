@@ -2,15 +2,15 @@ package com.example.kobenhavn.injections;
 
 import android.content.Context;
 
-import com.example.offline.App;
-import com.example.offline.dal.local.Database;
-import com.example.offline.dal.local.ILocalRepository;
-import com.example.offline.dal.local.LocalRepository;
-import com.example.offline.dal.local.PlaygroundDAO;
-import com.example.offline.dal.remote.IRemoteRepository;
-import com.example.offline.dal.remote.RemoteRepository;
-import com.example.offline.dal.sync.jobs.setup.GCMJobService;
-import com.example.offline.dal.sync.jobs.setup.SchedulerJobService;
+import com.example.kobenhavn.App;
+import com.example.kobenhavn.dal.local.Database;
+import com.example.kobenhavn.dal.local.ILocalRepository;
+import com.example.kobenhavn.dal.local.LocalRepository;
+import com.example.kobenhavn.dal.local.PlaygroundDAO;
+import com.example.kobenhavn.dal.remote.IRemoteRepository;
+import com.example.kobenhavn.dal.remote.RemoteRepository;
+import com.example.kobenhavn.dal.sync.jobs.setup.GCMJobService;
+import com.example.kobenhavn.dal.sync.jobs.setup.SchedulerJobService;
 
 import javax.inject.Singleton;
 

@@ -7,13 +7,13 @@ import androidx.annotation.Nullable;
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
-import com.example.offline.dal.local.LocalePlaygroundUtils;
-import com.example.offline.dal.local.model.Playground;
-import com.example.offline.dal.remote.RemoteDataSource;
-import com.example.offline.dal.remote.RemoteException;
-import com.example.offline.dal.sync.SyncPlaygroundRxBus;
-import com.example.offline.dal.sync.SyncResponseType;
-import com.example.offline.dal.sync.jobs.setup.JobPriority;
+import com.example.kobenhavn.dal.local.LocalePlaygroundUtils;
+import com.example.kobenhavn.dal.local.model.Playground;
+import com.example.kobenhavn.dal.remote.RemoteDataSource;
+import com.example.kobenhavn.dal.remote.RemoteException;
+import com.example.kobenhavn.dal.sync.SyncPlaygroundRxBus;
+import com.example.kobenhavn.dal.sync.SyncResponseType;
+import com.example.kobenhavn.dal.sync.jobs.setup.JobPriority;
 
 import timber.log.Timber;
 

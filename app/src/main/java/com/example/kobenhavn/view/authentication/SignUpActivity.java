@@ -14,12 +14,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kobenhavn.R;
+import com.example.kobenhavn.view.authentication.data.AuthRepository;
+import com.example.kobenhavn.view.authentication.data.DataSource;
+import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SignUpActivity extends AppCompatActivity {
-    private AuthViewModel authViewModel;
+    private AuthenticationViewModel authViewModel;
     private ProgressDialog progressDialog;
 
     @BindView(R.id.input_name) EditText _nameText;
@@ -35,7 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         progressDialog = new ProgressDialog(SignUpActivity.this);
-        authViewModel = new AuthViewModel(AuthRepository.getInstance(new DataSource()));
+        authViewModel = new AuthenticationViewModel(AuthRepository.getInstance(new DataSource()));
         _loginLink.setOnClickListener(v -> finish());
         _signupButton.setOnClickListener(v -> signup());
         _signupButton.setEnabled(false);

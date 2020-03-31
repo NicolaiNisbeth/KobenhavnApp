@@ -1,7 +1,7 @@
 package com.example.kobenhavn.usecases.playground;
 
-import com.example.offline.dal.local.ILocalRepository;
-import com.example.offline.dal.local.model.Playground;
+import com.example.kobenhavn.dal.local.ILocalRepository;
+import com.example.kobenhavn.dal.local.model.Playground;
 
 import io.reactivex.Completable;
 

@@ -1,6 +1,6 @@
 package com.example.kobenhavn.injections;
 
-import com.example.offline.App;
+import com.example.kobenhavn.App;
 
 import javax.inject.Singleton;
 

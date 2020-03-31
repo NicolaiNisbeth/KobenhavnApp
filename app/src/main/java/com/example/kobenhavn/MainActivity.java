@@ -1,15 +1,12 @@
 package com.example.kobenhavn;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 
 import com.example.kobenhavn.dal.sync.SyncPlaygroundLifecycleObserver;
-import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
+import com.example.kobenhavn.viewmodel.ViewModelFactory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.LifecycleRegistry;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -23,10 +20,10 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity {
 
     @Inject
-    PlaygroundsViewModelFactory viewModelFactory;
+    ViewModelFactory viewModelFactory;
 
     @Inject
-    SyncPlaygroundLifecycleObserver syncCommentLifecycleObserver;
+    SyncPlaygroundLifecycleObserver syncPlaygroundLifecycleObserver;
 
     private LifecycleRegistry registry;
 
@@ -40,11 +37,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        AndroidInjection.inject(this);
+
+
         Timber.plant(new Timber.DebugTree());
-        getLifecycle().addObserver(syncCommentLifecycleObserver);
+        getLifecycle().addObserver(syncPlaygroundLifecycleObserver);
+
 
 
         // Bottom Navigation

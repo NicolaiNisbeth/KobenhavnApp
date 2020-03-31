@@ -1,4 +1,4 @@
-package com.example.kobenhavn.view.settings;
+package com.example.kobenhavn.dal.local.model;
 
 public class SettingsModel {
     private String name;

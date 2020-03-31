@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
  * Data validation state of the login form.
  */
 public class FormState {
-    //TODO: builder pattern
 
     @Nullable
     private Integer nameError;

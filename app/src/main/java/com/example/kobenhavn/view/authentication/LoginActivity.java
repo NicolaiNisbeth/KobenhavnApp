@@ -18,6 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.kobenhavn.MainActivity;
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.LoggedInUser;
+import com.example.kobenhavn.view.authentication.data.AuthRepository;
+import com.example.kobenhavn.view.authentication.data.DataSource;
+import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +28,7 @@ import butterknife.ButterKnife;
 public class LoginActivity extends AppCompatActivity {
 
     private static final int REQUEST_SIGNUP = 0;
-    private AuthViewModel authViewModel;
+    private AuthenticationViewModel authViewModel;
     private ProgressDialog progressDialog;
 
     @BindView(R.id.input_username) EditText _usernameText;
@@ -40,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         progressDialog = new ProgressDialog(this);
-        authViewModel = new AuthViewModel(AuthRepository.getInstance(new DataSource()));
+        authViewModel = new AuthenticationViewModel(AuthRepository.getInstance(new DataSource()));
         _signupLink.setOnClickListener(v -> startSignUp());
         _loginButton.setOnClickListener(v -> login());
         _loginButton.setEnabled(false);

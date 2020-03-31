@@ -1,6 +1,7 @@
 package com.example.kobenhavn.injections;
 
-import com.example.offline.view.PLaygroundsActivity;
+import com.example.kobenhavn.MainActivity;
+import com.example.kobenhavn.view.authentication.LoginActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -12,7 +13,7 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class BuildersModule {
 
     @ContributesAndroidInjector(modules = PlaygroundsActivityModule.class)
-    abstract PLaygroundsActivity bindCommentsActivity();
+    abstract MainActivity bindCommentsActivity();
 
     // Add bindings for other sub-components here
 }

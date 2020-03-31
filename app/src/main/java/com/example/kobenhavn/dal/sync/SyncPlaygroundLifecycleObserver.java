@@ -4,9 +4,9 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
-import com.example.offline.dal.local.model.Playground;
-import com.example.offline.usecases.playground.DeletePlaygroundUseCase;
-import com.example.offline.usecases.playground.UpdatePlaygroundUseCase;
+import com.example.kobenhavn.dal.local.model.Playground;
+import com.example.kobenhavn.usecases.playground.DeletePlaygroundUseCase;
+import com.example.kobenhavn.usecases.playground.UpdatePlaygroundUseCase;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

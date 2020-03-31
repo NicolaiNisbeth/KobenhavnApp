@@ -19,8 +19,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.kobenhavn.R;
+import com.example.kobenhavn.dal.local.model.SettingsModel;
 import com.example.kobenhavn.view.authentication.LoginActivity;
-import com.example.kobenhavn.view.authentication.AuthRepository;
+import com.example.kobenhavn.view.authentication.data.AuthRepository;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
