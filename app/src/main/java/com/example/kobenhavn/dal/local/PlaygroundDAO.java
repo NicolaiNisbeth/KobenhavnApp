@@ -25,7 +25,7 @@ public interface PlaygroundDAO {
     @Delete
     void delete(Playground playground);
 
-    @Query("SELECT * FROM playground")
+    @Query("SELECT * FROM playground_table")
     Flowable<List<Playground>> getPlaygrounds();
 
 }

@@ -103,7 +103,7 @@ public class SignUpActivity extends AppCompatActivity {
         progressDialog.show();
 
         new android.os.Handler().postDelayed(() ->
-                        authViewModel.signup(
+                        authViewModel.signupUser(
                                 _nameText.getText().toString(),
                                 _usernameText.getText().toString(),
                                 _passwordText.getText().toString()),

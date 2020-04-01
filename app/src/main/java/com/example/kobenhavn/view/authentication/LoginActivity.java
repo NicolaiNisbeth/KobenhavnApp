@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kobenhavn.MainActivity;
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.dal.local.model.LoggedInUser;
+import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.view.authentication.data.AuthRepository;
 import com.example.kobenhavn.view.authentication.data.DataSource;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.input_username) EditText _usernameText;
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.btn_login) Button _loginButton;
-    @BindView(R.id.link_signup) TextView _signupLink;
+    @BindView(R.id.link_signup) TextView _signupText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,13 +44,13 @@ public class LoginActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
         authViewModel = new AuthenticationViewModel(AuthRepository.getInstance(new DataSource()));
-        _signupLink.setOnClickListener(v -> startSignUp());
+        _signupText.setOnClickListener(v -> startSignUp());
         _loginButton.setOnClickListener(v -> login());
         _loginButton.setEnabled(false);
 
         // On every key press will username and password be reported to loginViewModel and the
         // loginFormState will be changed accordingly
-        TextWatcher _afterTextChangedListener = new TextWatcher() {
+        TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
@@ -63,8 +63,8 @@ public class LoginActivity extends AppCompatActivity {
                 );
             }
         };
-        _usernameText.addTextChangedListener(_afterTextChangedListener);
-        _passwordText.addTextChangedListener(_afterTextChangedListener);
+        _usernameText.addTextChangedListener(afterTextChangedListener);
+        _passwordText.addTextChangedListener(afterTextChangedListener);
 
         // Observe loginFormState and show errors or enable login button
         authViewModel.getFormStateLive().observe(this, formState -> {
@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // call login after 2s to simulate handling of authentication
         new android.os.Handler().postDelayed(() ->
-                        authViewModel.login(
+                        authViewModel.loginUser(
                                 _usernameText.getText().toString(),
                                 _passwordText.getText().toString()),
                 2000);
@@ -114,8 +114,8 @@ public class LoginActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-    public void showLoginSuccess(LoggedInUser user) {
-        String welcome = getString(R.string.welcome) + user.getDisplayName();
+    public void showLoginSuccess(User user) {
+        String welcome = getString(R.string.welcome) + user.getUsername();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

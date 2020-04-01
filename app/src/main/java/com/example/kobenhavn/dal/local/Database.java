@@ -5,9 +5,10 @@ import android.content.Context;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.local.model.Playground;
 
-@androidx.room.Database(entities = {Playground.class}, version = 1, exportSchema = false)
+@androidx.room.Database(entities = {Playground.class, User.class}, version = 1, exportSchema = false)
 public abstract class Database extends RoomDatabase {
     private static Database instance;
     private static String DB_NAME = "offlinedb";

@@ -1,7 +1,7 @@
 package com.example.kobenhavn.dal.remote;
 
 import com.example.kobenhavn.dal.local.model.Event;
-import com.example.kobenhavn.dal.local.model.LoggedInUser;
+import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -80,17 +80,17 @@ public class RemoteDataSource {
         return new ArrayList<>(response.body());
     }
 
-    public void loginUser(LoggedInUser user) throws IOException, RemoteException {
+    public void loginUser(String username, String password) throws IOException, RemoteException {
         RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
-        Response<LoggedInUser> response = endpoint.loginUser(user).execute();
+        Response<User> response = endpoint.loginUser(username, password).execute();
 
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
     }
 
-    public void signupUser(LoggedInUser user) throws IOException, RemoteException {
+    public void signupUser(User user) throws IOException, RemoteException {
         RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
-        Response<LoggedInUser> response = endpoint.signupUser(user).execute();
+        Response<User> response = endpoint.signupUser(user).execute();
 
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
@@ -112,9 +112,9 @@ public class RemoteDataSource {
             throw new RemoteException(response);
     }
 
-    public void updateUser(LoggedInUser user) throws RemoteException, IOException {
+    public void updateUser(User user) throws RemoteException, IOException {
         RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
-        Response<LoggedInUser> response = endpoint.updateUser(user).execute();
+        Response<User> response = endpoint.updateUser(user).execute();
 
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);

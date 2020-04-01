@@ -1,6 +1,7 @@
 package com.example.kobenhavn.view.authentication.data;
 
-import com.example.kobenhavn.dal.local.model.LoggedInUser;
+import com.example.kobenhavn.dal.local.model.User;
+import com.example.kobenhavn.dal.remote.RemoteDataSource;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -9,12 +10,8 @@ import com.example.kobenhavn.dal.local.model.LoggedInUser;
 public class AuthRepository {
     private static volatile AuthRepository instance;
     public static DataSource dataSource;
+    private User user = null;
 
-    // If user credentials will be cached in local storage, it is recommended it be encrypted
-    // @see https://developer.android.com/training/articles/keystore
-    private LoggedInUser user = null;
-
-    // private constructor : singleton access
     private AuthRepository(DataSource dataSource) {
         AuthRepository.dataSource = dataSource;
     }
@@ -35,10 +32,12 @@ public class AuthRepository {
         dataSource.logout();
     }
 
-    public Result<LoggedInUser> login(String username, String password) {
-        Result<LoggedInUser> result = dataSource.login(username, password);
+    public Result<User> login(String username, String password) {
+        //Result<User> result = dataSource.login(username, password);
+        RemoteDataSource.getInstance().loginUser(username, password);
+
         if (result instanceof Result.Success) {
-            setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
+            setLoggedInUser(((Result.Success<User>) result).getData());
         }
         return result;
     }
@@ -48,9 +47,7 @@ public class AuthRepository {
 
     }
 
-    private void setLoggedInUser(LoggedInUser user) {
+    private void setLoggedInUser(User user) {
         this.user = user;
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
     }
 }

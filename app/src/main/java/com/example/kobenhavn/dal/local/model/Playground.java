@@ -12,7 +12,7 @@ import java.io.Serializable;
 /**
  * Immutable POJO that represents a playground
  */
-@Entity
+@Entity(tableName = "playground_table")
 public class Playground implements Serializable {
 
     @PrimaryKey(autoGenerate = true)

@@ -1,8 +1,7 @@
 package com.example.kobenhavn.view.authentication.data;
 
 
-import com.example.kobenhavn.dal.local.model.LoggedInUser;
-import com.example.kobenhavn.view.authentication.data.Result;
+import com.example.kobenhavn.dal.local.model.User;
 
 import java.io.IOException;
 
@@ -11,12 +10,12 @@ import java.io.IOException;
  */
 public class DataSource {
 
-    public Result<LoggedInUser> login(String username, String password) {
+    public Result<User> login(String username, String password) {
 
         try {
             // TODO: handle loggedInUser authentication - make call to remote authentication server
             //   make every student able to login
-            LoggedInUser fakeUser = new LoggedInUser(java.util.UUID.randomUUID().toString(), username);
+            User fakeUser = new User(java.util.UUID.randomUUID().toString(), username);
             return new Result.Success<>(fakeUser);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));

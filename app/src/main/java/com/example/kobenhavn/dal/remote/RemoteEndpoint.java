@@ -1,7 +1,7 @@
 package com.example.kobenhavn.dal.remote;
 
 import com.example.kobenhavn.dal.local.model.Event;
-import com.example.kobenhavn.dal.local.model.LoggedInUser;
+import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.local.model.Playground;
 
 import java.util.List;
@@ -45,26 +45,26 @@ public interface RemoteEndpoint {
 
     // if user is not fetched then call get user
     @POST("posts")
-    Call<LoggedInUser> loginUser(@Body LoggedInUser user);
+    Call<User> loginUser(@Body User user);
 
     @POST("posts")
-    Call<LoggedInUser> signupUser(@Body LoggedInUser user);
+    Call<User> loginUser(String username, String password);
+
+    @POST("posts")
+    Call<User> signupUser(@Body User user);
 
 
 
 
 
     @PUT("posts")
-    Call<LoggedInUser> updateUser(@Body LoggedInUser user);
+    Call<User> updateUser(@Body User user);
 
     @PUT("posts")  //eventID, username
     Call<Event> addUserToPlaygroundEvent(int eventID, String usenname);
 
     @PUT("posts") // eventID, username
     Call<Event> removeUserFromPlaygroundEvent(int eventID, String username);
-
-
-
 
 
 

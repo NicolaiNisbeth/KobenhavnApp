@@ -1,6 +1,7 @@
 package com.example.kobenhavn.dal.remote;
 
 import com.example.kobenhavn.dal.local.model.Playground;
+import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.sync.jobs.SyncPlaygroundJob;
 import com.example.kobenhavn.dal.sync.jobs.setup.JobManagerFactory;
 
@@ -12,5 +13,10 @@ public class RemoteRepository implements IRemoteRepository {
     public Completable sync(Playground playground) {
         // adds a new job in the background
         return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new SyncPlaygroundJob(playground)));
+    }
+
+    @Override
+    public Completable sync(User user) {
+        return null;
     }
 }
