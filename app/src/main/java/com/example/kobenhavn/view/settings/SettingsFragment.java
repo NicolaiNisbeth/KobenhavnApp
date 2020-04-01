@@ -23,12 +23,18 @@ import com.example.kobenhavn.dal.local.model.SettingsModel;
 import com.example.kobenhavn.view.authentication.LoginActivity;
 import com.example.kobenhavn.view.authentication.data.AuthRepository;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
+import com.example.kobenhavn.viewmodel.ViewModelFactory;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
     private Toolbar toolbar;
+
+    @Inject
+    ViewModelFactory viewModelFactory;
 
     @BindView(R.id.settings_profile_name) TextView _nameText;
     @BindView(R.id.settings_profile_number) TextView _numberText;
@@ -123,8 +129,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void logUd() {
-        AuthenticationViewModel a = new AuthenticationViewModel(AuthRepository.getInstance());
-        a.logoutUser();
+        viewModelFactory.create(AuthenticationViewModel.class).logoutUser();
         Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
     }

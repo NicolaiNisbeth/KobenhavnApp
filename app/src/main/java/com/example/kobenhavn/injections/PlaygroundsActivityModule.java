@@ -7,6 +7,10 @@ import com.example.kobenhavn.usecases.playground.AddPlaygroundUseCase;
 import com.example.kobenhavn.usecases.playground.DeletePlaygroundUseCase;
 import com.example.kobenhavn.usecases.playground.GetPlaygroundsUseCase;
 import com.example.kobenhavn.usecases.playground.UpdatePlaygroundUseCase;
+import com.example.kobenhavn.usecases.user.LoginUserUseCase;
+import com.example.kobenhavn.usecases.user.LogoutUserUseCase;
+import com.example.kobenhavn.usecases.user.SignupUserUseCase;
+import com.example.kobenhavn.view.authentication.data.AuthRepository;
 import com.example.kobenhavn.viewmodel.ViewModelFactory;
 
 import dagger.Module;
@@ -22,6 +26,13 @@ public class PlaygroundsActivityModule {
                                              AddPlaygroundUseCase addCommentUseCase,
                                              DeletePlaygroundUseCase deletePlaygroundUseCase) {
         return new ViewModelFactory(getCommentsUseCase, addCommentUseCase, deletePlaygroundUseCase);
+    }
+
+    @Provides
+    ViewModelFactory provideViewModelFactoryy(LoginUserUseCase loginUserUseCase,
+                                             LogoutUserUseCase logoutUserUseCase,
+                                             SignupUserUseCase signupUserUseCase) {
+        return new ViewModelFactory(loginUserUseCase, signupUserUseCase, logoutUserUseCase);
     }
 
     @Provides
@@ -48,6 +59,21 @@ public class PlaygroundsActivityModule {
     @Provides
     DeletePlaygroundUseCase provideDeletePlaygroundUseCase(ILocalRepository localRepository) {
         return new DeletePlaygroundUseCase(localRepository);
+    }
+
+    @Provides
+    LoginUserUseCase provideLoginUserUseCase(AuthRepository authRepository){
+        return new LoginUserUseCase(authRepository);
+    }
+
+    @Provides
+    SignupUserUseCase provideSignupUserUseCase(AuthRepository authRepository){
+        return new SignupUserUseCase(authRepository);
+    }
+
+    @Provides
+    LogoutUserUseCase provideLogoutUserUseCase(AuthRepository authRepository){
+        return new LogoutUserUseCase(authRepository);
     }
 
 }

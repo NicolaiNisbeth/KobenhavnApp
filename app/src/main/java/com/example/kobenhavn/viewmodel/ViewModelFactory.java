@@ -6,30 +6,48 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.kobenhavn.usecases.playground.AddPlaygroundUseCase;
 import com.example.kobenhavn.usecases.playground.DeletePlaygroundUseCase;
 import com.example.kobenhavn.usecases.playground.GetPlaygroundsUseCase;
+import com.example.kobenhavn.usecases.user.LoginUserUseCase;
+import com.example.kobenhavn.usecases.user.LogoutUserUseCase;
+import com.example.kobenhavn.usecases.user.SignupUserUseCase;
 
 import org.jetbrains.annotations.NotNull;
 
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
-    private GetPlaygroundsUseCase getPlaygroundsUseCase;
-    private AddPlaygroundUseCase addPlaygroundsUseCase;
-    private DeletePlaygroundUseCase removePlaygroundsUseCase;
+    private LoginUserUseCase loginUser;
+    private SignupUserUseCase signupUser;
+    private LogoutUserUseCase logoutUser;
+    private GetPlaygroundsUseCase getPlayground;
+    private AddPlaygroundUseCase addPlayground;
+    private DeletePlaygroundUseCase removePlayground;
 
 
-    public ViewModelFactory(GetPlaygroundsUseCase getPlaygroundsUseCase,
-                             AddPlaygroundUseCase addPlaygroundsUseCase,
-                             DeletePlaygroundUseCase removePlaygroundsUseCase){
+    public ViewModelFactory(GetPlaygroundsUseCase getPlayground,
+                             AddPlaygroundUseCase addPlayground,
+                             DeletePlaygroundUseCase removePlayground){
 
-        this.getPlaygroundsUseCase = getPlaygroundsUseCase;
-        this.addPlaygroundsUseCase = addPlaygroundsUseCase;
-        this.removePlaygroundsUseCase = removePlaygroundsUseCase;
+        this.getPlayground = getPlayground;
+        this.addPlayground = addPlayground;
+        this.removePlayground = removePlayground;
+    }
+
+    public ViewModelFactory(LoginUserUseCase loginUser,
+                            SignupUserUseCase signupUser,
+                            LogoutUserUseCase logoutUser){
+
+        this.loginUser = loginUser;
+        this.signupUser = signupUser;
+        this.logoutUser = logoutUser;
     }
 
     @NotNull
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(PlaygroundsViewModel.class)){
-            return (T) new PlaygroundsViewModel(getPlaygroundsUseCase, addPlaygroundsUseCase, removePlaygroundsUseCase);
+            return (T) new PlaygroundsViewModel(getPlayground, addPlayground, removePlayground);
+        }
+        else if (modelClass.isAssignableFrom(AuthenticationViewModel.class)){
+            return (T) new AuthenticationViewModel(loginUser, signupUser, logoutUser);
         }
 
         throw new IllegalArgumentException("Unknown ViewModel class");

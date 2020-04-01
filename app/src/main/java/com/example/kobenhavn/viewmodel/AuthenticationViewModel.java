@@ -19,22 +19,23 @@ import com.example.kobenhavn.view.authentication.data.SignupResult;
 
 
 public class AuthenticationViewModel extends ViewModel {
-    private final LoginUserUseCase loginUserUseCase;
-    private final SignupUserUseCase signupUserUseCase;
-    private final LogoutUserUseCase logoutUserUseCase;
+    private final LoginUserUseCase loginUser;
+    private final SignupUserUseCase signupUser;
+    private final LogoutUserUseCase logoutUser;
 
     private MutableLiveData<FormState> formStateLive = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResultLive = new MutableLiveData<>();
     private MutableLiveData<SignupResult> signupResultLive = new MutableLiveData<>();
 
-    public AuthenticationViewModel(AuthRepository authRepository) {
-        this.loginUserUseCase = new LoginUserUseCase(authRepository);
-        this.signupUserUseCase = new SignupUserUseCase(authRepository);
-        this.logoutUserUseCase = new LogoutUserUseCase(authRepository);
+
+    public AuthenticationViewModel(LoginUserUseCase loginUser, SignupUserUseCase signupUser, LogoutUserUseCase logoutUser) {
+        this.loginUser = loginUser;
+        this.signupUser = signupUser;
+        this.logoutUser = logoutUser;
     }
 
     public void loginUser(String username, String password){
-        Result<User> result = loginUserUseCase.loginUser(username, password);
+        Result<User> result = loginUser.loginUser(username, password);
         if (result instanceof Result.Success) {
             User user = ((Result.Success<User>) result).getData();
             loginResultLive.setValue(new LoginResult(user));
@@ -44,7 +45,7 @@ public class AuthenticationViewModel extends ViewModel {
     }
 
     public void signupUser(String name, String username, String password){
-        Result result = signupUserUseCase.signupUser(name, username, password);
+        Result result = signupUser.signupUser(name, username, password);
         if (result instanceof Result.Success)
             signupResultLive.setValue(new SignupResult(true));
         else
@@ -52,7 +53,7 @@ public class AuthenticationViewModel extends ViewModel {
     }
 
     public void logoutUser(){
-        logoutUserUseCase.logoutUser();
+        logoutUser.logoutUser();
     }
 
 

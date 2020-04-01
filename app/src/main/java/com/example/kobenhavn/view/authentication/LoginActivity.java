@@ -20,6 +20,9 @@ import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.view.authentication.data.AuthRepository;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
+import com.example.kobenhavn.viewmodel.ViewModelFactory;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +32,9 @@ public class LoginActivity extends AppCompatActivity {
     private static final int REQUEST_SIGNUP = 0;
     private AuthenticationViewModel authViewModel;
     private ProgressDialog progressDialog;
+
+    @Inject
+    ViewModelFactory viewModelFactory;
 
     @BindView(R.id.input_username) EditText _usernameText;
     @BindView(R.id.input_password) EditText _passwordText;
@@ -42,7 +48,8 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         progressDialog = new ProgressDialog(this);
-        authViewModel = new AuthenticationViewModel(AuthRepository.getInstance());
+
+        authViewModel = viewModelFactory.create(AuthenticationViewModel.class);
         _signupText.setOnClickListener(v -> startSignUp());
         _loginButton.setOnClickListener(v -> login());
         _loginButton.setEnabled(false);
