@@ -1,6 +1,5 @@
 package com.example.kobenhavn.injections;
 
-import com.example.kobenhavn.MainActivity;
 import com.example.kobenhavn.view.authentication.LoginActivity;
 
 import dagger.Module;

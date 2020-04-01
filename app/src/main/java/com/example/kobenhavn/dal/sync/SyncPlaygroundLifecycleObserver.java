@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
 import com.example.kobenhavn.dal.local.model.Playground;
-import com.example.kobenhavn.usecases.playground.DeletePlaygroundUseCase;
+import com.example.kobenhavn.usecases.playground.UnsubscribeToPlaygroundUseCase;
 import com.example.kobenhavn.usecases.playground.UpdatePlaygroundUseCase;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -18,12 +18,12 @@ import timber.log.Timber;
  */
 public class SyncPlaygroundLifecycleObserver implements LifecycleObserver {
     private final UpdatePlaygroundUseCase updatePlaygroundUseCase;
-    private final DeletePlaygroundUseCase deletePlaygroundUseCase;
+    private final UnsubscribeToPlaygroundUseCase unsubscribeToPlaygroundUseCase;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
-    public SyncPlaygroundLifecycleObserver(UpdatePlaygroundUseCase updatePlaygroundUseCase, DeletePlaygroundUseCase deletePlaygroundUseCase) {
+    public SyncPlaygroundLifecycleObserver(UpdatePlaygroundUseCase updatePlaygroundUseCase, UnsubscribeToPlaygroundUseCase unsubscribeToPlaygroundUseCase) {
         this.updatePlaygroundUseCase = updatePlaygroundUseCase;
-        this.deletePlaygroundUseCase = deletePlaygroundUseCase;
+        this.unsubscribeToPlaygroundUseCase = unsubscribeToPlaygroundUseCase;
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
@@ -59,7 +59,7 @@ public class SyncPlaygroundLifecycleObserver implements LifecycleObserver {
 
     private void onSyncCommentFailed(Playground playground) {
         Timber.d("received sync playground failed event for playground %s", playground);
-        disposables.add(deletePlaygroundUseCase.deletePlayground(playground)
+        disposables.add(unsubscribeToPlaygroundUseCase.deletePlayground(playground)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> Timber.e("delete playground success"),

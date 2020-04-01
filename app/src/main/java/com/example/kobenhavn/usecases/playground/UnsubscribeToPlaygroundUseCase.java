@@ -6,10 +6,10 @@ import com.example.kobenhavn.dal.local.model.Playground;
 
 import io.reactivex.Completable;
 
-public class DeletePlaygroundUseCase {
+public class UnsubscribeToPlaygroundUseCase {
     private final ILocalRepository localRepository;
 
-    public DeletePlaygroundUseCase(ILocalRepository localRepository) {
+    public UnsubscribeToPlaygroundUseCase(ILocalRepository localRepository) {
         this.localRepository = localRepository;
     }
 

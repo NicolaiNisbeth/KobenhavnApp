@@ -1,21 +1,17 @@
 package com.example.kobenhavn.injections;
 
-import android.util.Log;
-
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import com.example.kobenhavn.dal.sync.SyncPlaygroundLifecycleObserver;
-import com.example.kobenhavn.usecases.playground.AddPlaygroundUseCase;
-import com.example.kobenhavn.usecases.playground.DeletePlaygroundUseCase;
+import com.example.kobenhavn.usecases.playground.SubscribeToPlaygroundUseCase;
+import com.example.kobenhavn.usecases.playground.UnsubscribeToPlaygroundUseCase;
 import com.example.kobenhavn.usecases.playground.GetPlaygroundsUseCase;
 import com.example.kobenhavn.usecases.playground.UpdatePlaygroundUseCase;
 import com.example.kobenhavn.usecases.user.LoginUserUseCase;
 import com.example.kobenhavn.usecases.user.LogoutUserUseCase;
 import com.example.kobenhavn.usecases.user.SignupUserUseCase;
 import com.example.kobenhavn.view.authentication.data.AuthRepository;
-import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModelFactory;
-import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 
 import dagger.Module;
@@ -36,20 +32,20 @@ public class PlaygroundsActivityModule {
 
     @Provides
     PlaygroundsViewModelFactory providePlaygroundViewModelFactory(GetPlaygroundsUseCase getPlayground,
-                                                                  AddPlaygroundUseCase addPlayground,
-                                                                  DeletePlaygroundUseCase deletePlayground){
+                                                                  SubscribeToPlaygroundUseCase addPlayground,
+                                                                  UnsubscribeToPlaygroundUseCase deletePlayground){
         return new PlaygroundsViewModelFactory(getPlayground, addPlayground, deletePlayground);
     }
 
     @Provides
     SyncPlaygroundLifecycleObserver provideSyncCommentLifecycleObserver(UpdatePlaygroundUseCase updatePlaygroundUseCase,
-                                                                        DeletePlaygroundUseCase deletePlaygroundUseCase) {
-        return new SyncPlaygroundLifecycleObserver(updatePlaygroundUseCase, deletePlaygroundUseCase);
+                                                                        UnsubscribeToPlaygroundUseCase unsubscribeToPlaygroundUseCase) {
+        return new SyncPlaygroundLifecycleObserver(updatePlaygroundUseCase, unsubscribeToPlaygroundUseCase);
     }
 
     @Provides
-    AddPlaygroundUseCase provideAddPlaygroundUseCase(ILocalRepository localRepository, IRemoteRepository remoteRepository) {
-        return new AddPlaygroundUseCase(localRepository, remoteRepository);
+    SubscribeToPlaygroundUseCase provideAddPlaygroundUseCase(ILocalRepository localRepository, IRemoteRepository remoteRepository) {
+        return new SubscribeToPlaygroundUseCase(localRepository, remoteRepository);
     }
 
     @Provides
@@ -63,8 +59,8 @@ public class PlaygroundsActivityModule {
     }
 
     @Provides
-    DeletePlaygroundUseCase provideDeletePlaygroundUseCase(ILocalRepository localRepository) {
-        return new DeletePlaygroundUseCase(localRepository);
+    UnsubscribeToPlaygroundUseCase provideDeletePlaygroundUseCase(ILocalRepository localRepository) {
+        return new UnsubscribeToPlaygroundUseCase(localRepository);
     }
 
     @Provides

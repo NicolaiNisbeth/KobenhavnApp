@@ -14,11 +14,9 @@ import android.widget.Toast;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.kobenhavn.MainActivity;
+import com.example.kobenhavn.view.MenuActivity;
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
@@ -126,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
     public void showLoginSuccess(User user) {
         String welcome = getString(R.string.welcome) + user.getUsername();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
     }
 

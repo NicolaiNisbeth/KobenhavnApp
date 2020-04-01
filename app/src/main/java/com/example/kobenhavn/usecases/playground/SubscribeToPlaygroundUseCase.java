@@ -9,11 +9,11 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 import timber.log.Timber;
 
-public class AddPlaygroundUseCase {
+public class SubscribeToPlaygroundUseCase {
     private final ILocalRepository localRepository;
     private final IRemoteRepository remoteRepository;
 
-    public AddPlaygroundUseCase(ILocalRepository localRepository, IRemoteRepository remoteRepository) {
+    public SubscribeToPlaygroundUseCase(ILocalRepository localRepository, IRemoteRepository remoteRepository) {
         this.localRepository = localRepository;
         this.remoteRepository = remoteRepository;
     }

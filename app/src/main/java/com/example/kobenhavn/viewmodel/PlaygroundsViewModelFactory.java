@@ -3,18 +3,18 @@ package com.example.kobenhavn.viewmodel;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.kobenhavn.usecases.playground.AddPlaygroundUseCase;
-import com.example.kobenhavn.usecases.playground.DeletePlaygroundUseCase;
+import com.example.kobenhavn.usecases.playground.SubscribeToPlaygroundUseCase;
+import com.example.kobenhavn.usecases.playground.UnsubscribeToPlaygroundUseCase;
 import com.example.kobenhavn.usecases.playground.GetPlaygroundsUseCase;
 
 public class PlaygroundsViewModelFactory implements ViewModelProvider.Factory {
     private final GetPlaygroundsUseCase getPlaygroundsUseCase;
-    private final AddPlaygroundUseCase addPlaygroundsUseCase;
-    private final DeletePlaygroundUseCase removePlaygroundsUseCase;
+    private final SubscribeToPlaygroundUseCase addPlaygroundsUseCase;
+    private final UnsubscribeToPlaygroundUseCase removePlaygroundsUseCase;
 
     public PlaygroundsViewModelFactory(GetPlaygroundsUseCase getPlaygroundsUseCase,
-                                       AddPlaygroundUseCase addPlaygroundsUseCase,
-                                       DeletePlaygroundUseCase removePlaygroundsUseCase){
+                                       SubscribeToPlaygroundUseCase addPlaygroundsUseCase,
+                                       UnsubscribeToPlaygroundUseCase removePlaygroundsUseCase){
 
         this.getPlaygroundsUseCase = getPlaygroundsUseCase;
         this.addPlaygroundsUseCase = addPlaygroundsUseCase;
