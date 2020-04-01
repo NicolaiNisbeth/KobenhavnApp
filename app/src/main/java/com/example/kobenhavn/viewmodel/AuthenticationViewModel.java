@@ -1,49 +1,54 @@
 package com.example.kobenhavn.viewmodel;
 
+import android.util.Patterns;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import android.util.Patterns;
-
 import com.example.kobenhavn.R;
+import com.example.kobenhavn.dal.local.model.User;
+import com.example.kobenhavn.usecases.user.LoginUserUseCase;
+import com.example.kobenhavn.usecases.user.SignupUserUseCase;
 import com.example.kobenhavn.view.authentication.data.AuthRepository;
-import com.example.kobenhavn.view.authentication.data.SignupResult;
-import com.example.kobenhavn.dal.local.model.LoggedInUser;
 import com.example.kobenhavn.view.authentication.data.FormState;
 import com.example.kobenhavn.view.authentication.data.LoginResult;
 import com.example.kobenhavn.view.authentication.data.Result;
+import com.example.kobenhavn.view.authentication.data.SignupResult;
 
 
 public class AuthenticationViewModel extends ViewModel {
+    private final LoginUserUseCase loginUserUseCase;
+    private final SignupUserUseCase signupUserUseCase;
 
     private MutableLiveData<FormState> formStateLive = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResultLive = new MutableLiveData<>();
     private MutableLiveData<SignupResult> signupResultLive = new MutableLiveData<>();
-    private AuthRepository authRepository;
 
     public AuthenticationViewModel(AuthRepository authRepository) {
-        this.authRepository = authRepository;
+        this.loginUserUseCase = new LoginUserUseCase(authRepository);
+        this.signupUserUseCase = new SignupUserUseCase(authRepository);
     }
 
-    public void login(String username, String password) {
-        Result<LoggedInUser> result = authRepository.login(username, password);
-
+    // new commit
+    public void loginUser(String username, String password){
+        Result<User> result = loginUserUseCase.loginUser(username, password);
         if (result instanceof Result.Success) {
-            LoggedInUser user = ((Result.Success<LoggedInUser>) result).getData();
+            User user = ((Result.Success<User>) result).getData();
             loginResultLive.setValue(new LoginResult(user));
         } else {
             loginResultLive.setValue(new LoginResult(R.string.login_failed));
         }
     }
 
-    public void signup(String name, String username, String password) {
-        Result result = authRepository.signup(name, username, password);
+    public void signupUser(String name, String username, String password){
+        Result result = signupUserUseCase.signupUser(name, username, password);
         if (result instanceof Result.Success)
             signupResultLive.setValue(new SignupResult(true));
         else
             signupResultLive.setValue(new SignupResult(R.string.signup_failed));
     }
+
 
     public void loginDataChanged(String username, String password) {
         if (!username.isEmpty() && !password.isEmpty())
@@ -63,19 +68,13 @@ public class AuthenticationViewModel extends ViewModel {
     }
 
     private boolean isNameValid(String name) {
-        if (name == null)
-            return false;
-
+        if (name == null) return false;
         return !name.trim().isEmpty();
     }
 
     private boolean isUserNameValid(String username) {
-        if (username == null)
-            return false;
-
-        if (username.contains("@"))
-            return Patterns.EMAIL_ADDRESS.matcher(username).matches();
-
+        if (username == null) return false;
+        if (username.contains("@")) return Patterns.EMAIL_ADDRESS.matcher(username).matches();
         return false;
     }
 
@@ -92,4 +91,5 @@ public class AuthenticationViewModel extends ViewModel {
     public LiveData<SignupResult> getSignupResultLive() {
         return signupResultLive;
     }
+
 }
