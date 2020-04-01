@@ -51,7 +51,7 @@ public interface RemoteEndpoint {
     Call<User> loginUser(String username, String password);
 
     @POST("posts")
-    Call<User> signupUser(@Body User user);
+    Call<User> signupUser(String name, String username, String password);
 
 
 

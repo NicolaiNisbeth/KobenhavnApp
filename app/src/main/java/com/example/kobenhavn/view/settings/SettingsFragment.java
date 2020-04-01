@@ -22,6 +22,7 @@ import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.SettingsModel;
 import com.example.kobenhavn.view.authentication.LoginActivity;
 import com.example.kobenhavn.view.authentication.data.AuthRepository;
+import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -122,9 +123,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void logUd() {
-        // TODO: not sure how to access dataSource otherwise
-        AuthRepository authRepository = AuthRepository.getInstance(AuthRepository.dataSource);
-        authRepository.logout();
+        AuthenticationViewModel a = new AuthenticationViewModel(AuthRepository.getInstance());
+        a.logoutUser();
         Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
     }

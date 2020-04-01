@@ -15,10 +15,4 @@ public interface ILocalRepository {
     Completable delete(Playground playground);
     Flowable<List<Playground>> getPlaygrounds();
 
-    Single<User> signupUser(User user);
-    Single<User> loginUser(String username, String password);
-    Completable update(User user);
-    Completable delete(User user);
-
-    Single<User> getUser(long id);
 }

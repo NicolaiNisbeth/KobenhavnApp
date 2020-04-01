@@ -14,11 +14,9 @@ import timber.log.Timber;
 public class LocalRepository implements ILocalRepository {
 
     private final PlaygroundDAO playgroundDAO;
-    private final UserDAO userDAO;
 
-    public LocalRepository(PlaygroundDAO playgroundDAO, UserDAO userDAO){
+    public LocalRepository(PlaygroundDAO playgroundDAO){
         this.playgroundDAO = playgroundDAO;
-        this.userDAO = userDAO;
     }
 
     @Override
@@ -47,28 +45,4 @@ public class LocalRepository implements ILocalRepository {
         return playgroundDAO.getPlaygrounds();
     }
 
-    @Override
-    public Single<User> signupUser(User user) {
-
-        return Single.fromCallable(() -> {
-            long rowID = userDAO.add(user);
-            Timber.e("Saved playground locally with id: %s", rowID);
-            return LocaleUserUtils.clone(user, rowID);
-        });
-    }
-
-    @Override
-    public Completable update(User user) {
-        return Completable.fromAction(() -> userDAO.update(user));
-    }
-
-    @Override
-    public Completable delete(User user) {
-        return Completable.fromAction(() -> userDAO.delete(user));
-    }
-
-    @Override
-    public Single<User> getUser(long id) {
-        return userDAO.getUser(id);
-    }
 }

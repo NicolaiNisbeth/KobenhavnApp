@@ -72,6 +72,7 @@ public class RemoteDataSource {
 
     public List<Event> getEvents(int playgroundName) throws RemoteException, IOException {
         RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
+
         Response<List<Event>> response = endpoint.getEvents(playgroundName).execute();
 
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
@@ -80,17 +81,23 @@ public class RemoteDataSource {
         return new ArrayList<>(response.body());
     }
 
-    public void loginUser(String username, String password) throws IOException, RemoteException {
+    public User loginUser(String username, String password) throws IOException, RemoteException {
         RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
+
+        // TODO: properly has to be called in a background thread
         Response<User> response = endpoint.loginUser(username, password).execute();
 
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
+
+        return response.body();
     }
 
-    public void signupUser(User user) throws IOException, RemoteException {
+    public void signupUser(String name, String username, String password) throws IOException, RemoteException {
         RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
-        Response<User> response = endpoint.signupUser(user).execute();
+
+        // TODO: properly has to be called in a background thread
+        Response<User> response = endpoint.signupUser(name, username, password).execute();
 
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);

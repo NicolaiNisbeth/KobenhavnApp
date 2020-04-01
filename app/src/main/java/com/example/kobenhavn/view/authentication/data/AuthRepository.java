@@ -2,6 +2,9 @@ package com.example.kobenhavn.view.authentication.data;
 
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
+import com.example.kobenhavn.dal.remote.RemoteException;
+
+import java.io.IOException;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -9,16 +12,14 @@ import com.example.kobenhavn.dal.remote.RemoteDataSource;
  */
 public class AuthRepository {
     private static volatile AuthRepository instance;
-    public static DataSource dataSource;
     private User user = null;
 
-    private AuthRepository(DataSource dataSource) {
-        AuthRepository.dataSource = dataSource;
+    private AuthRepository() {
     }
 
-    public static AuthRepository getInstance(DataSource dataSource) {
+    public static AuthRepository getInstance() {
         if (instance == null) {
-            instance = new AuthRepository(dataSource);
+            instance = new AuthRepository();
         }
         return instance;
     }
@@ -29,21 +30,25 @@ public class AuthRepository {
 
     public void logout() {
         user = null;
-        dataSource.logout();
+        // dataSource.logout(); // TODO: revoke authentication
     }
 
     public Result<User> login(String username, String password) {
-        //Result<User> result = dataSource.login(username, password);
-        RemoteDataSource.getInstance().loginUser(username, password);
-
-        if (result instanceof Result.Success) {
-            setLoggedInUser(((Result.Success<User>) result).getData());
+        try {
+            this.user = RemoteDataSource.getInstance().loginUser(username, password);
+            return new Result.Success<>(user);
+        } catch (IOException | RemoteException e) {
+            return new Result.Error(new IOException("Error logging in", e));
         }
-        return result;
     }
 
     public Result signup(String name, String username, String password){
-        return dataSource.signup(name, username, password);
+        try {
+            RemoteDataSource.getInstance().signupUser(name, username, password);
+            return new Result.Success(null);
+        } catch (IOException | RemoteException e) {
+            return new Result.Error(e);
+        }
 
     }
 
