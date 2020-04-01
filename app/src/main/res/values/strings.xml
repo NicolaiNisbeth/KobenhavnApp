@@ -4,7 +4,6 @@
     <string name="title_legepladser">Legepladser</string>
     <string name="title_indstillinger">Indstillinger</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Tilmeldte aktiviteter</string>
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>

@@ -3,7 +3,6 @@ package com.example.kobenhavn;
 import android.os.Bundle;
 
 import com.example.kobenhavn.dal.sync.SyncPlaygroundLifecycleObserver;
-import com.example.kobenhavn.viewmodel.ViewModelFactory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,9 +19,6 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity {
 
     @Inject
-    ViewModelFactory viewModelFactory;
-
-    @Inject
     SyncPlaygroundLifecycleObserver syncPlaygroundLifecycleObserver;
 
     private LifecycleRegistry registry;
@@ -37,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 

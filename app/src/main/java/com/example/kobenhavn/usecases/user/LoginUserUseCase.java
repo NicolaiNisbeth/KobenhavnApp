@@ -12,6 +12,8 @@ public class LoginUserUseCase {
     }
 
     public Result<User> loginUser(String username, String password){
+        // TODO: maybe save user to phone db
+
         return authRepository.login(username, password);
     }
 }

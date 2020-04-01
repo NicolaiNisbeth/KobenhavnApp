@@ -13,7 +13,7 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class BuildersModule {
 
     @ContributesAndroidInjector(modules = PlaygroundsActivityModule.class)
-    abstract MainActivity bindCommentsActivity();
+    abstract LoginActivity bindCommentsActivity();
 
     // Add bindings for other sub-components here
 }

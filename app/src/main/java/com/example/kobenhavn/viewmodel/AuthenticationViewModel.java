@@ -11,7 +11,6 @@ import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.usecases.user.LoginUserUseCase;
 import com.example.kobenhavn.usecases.user.LogoutUserUseCase;
 import com.example.kobenhavn.usecases.user.SignupUserUseCase;
-import com.example.kobenhavn.view.authentication.data.AuthRepository;
 import com.example.kobenhavn.view.authentication.data.FormState;
 import com.example.kobenhavn.view.authentication.data.LoginResult;
 import com.example.kobenhavn.view.authentication.data.Result;
@@ -26,7 +25,6 @@ public class AuthenticationViewModel extends ViewModel {
     private MutableLiveData<FormState> formStateLive = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResultLive = new MutableLiveData<>();
     private MutableLiveData<SignupResult> signupResultLive = new MutableLiveData<>();
-
 
     public AuthenticationViewModel(LoginUserUseCase loginUser, SignupUserUseCase signupUser, LogoutUserUseCase logoutUser) {
         this.loginUser = loginUser;

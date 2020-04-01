@@ -1,5 +1,7 @@
 package com.example.kobenhavn.injections;
 
+import android.util.Log;
+
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import com.example.kobenhavn.dal.sync.SyncPlaygroundLifecycleObserver;
@@ -11,7 +13,10 @@ import com.example.kobenhavn.usecases.user.LoginUserUseCase;
 import com.example.kobenhavn.usecases.user.LogoutUserUseCase;
 import com.example.kobenhavn.usecases.user.SignupUserUseCase;
 import com.example.kobenhavn.view.authentication.data.AuthRepository;
-import com.example.kobenhavn.viewmodel.ViewModelFactory;
+import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
+import com.example.kobenhavn.viewmodel.AuthenticationViewModelFactory;
+import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
+import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 
 import dagger.Module;
 import dagger.Provides;
@@ -21,18 +26,19 @@ import dagger.Provides;
  */
 @Module
 public class PlaygroundsActivityModule {
+
     @Provides
-    ViewModelFactory provideViewModelFactory(GetPlaygroundsUseCase getCommentsUseCase,
-                                             AddPlaygroundUseCase addCommentUseCase,
-                                             DeletePlaygroundUseCase deletePlaygroundUseCase) {
-        return new ViewModelFactory(getCommentsUseCase, addCommentUseCase, deletePlaygroundUseCase);
+    AuthenticationViewModelFactory provideAuthenticationViewModelFactory(LoginUserUseCase loginUser,
+                                                                          SignupUserUseCase signupUser,
+                                                                          LogoutUserUseCase logoutUser){
+        return new AuthenticationViewModelFactory(loginUser, signupUser, logoutUser);
     }
 
     @Provides
-    ViewModelFactory provideViewModelFactoryy(LoginUserUseCase loginUserUseCase,
-                                             LogoutUserUseCase logoutUserUseCase,
-                                             SignupUserUseCase signupUserUseCase) {
-        return new ViewModelFactory(loginUserUseCase, signupUserUseCase, logoutUserUseCase);
+    PlaygroundsViewModelFactory providePlaygroundViewModelFactory(GetPlaygroundsUseCase getPlayground,
+                                                                  AddPlaygroundUseCase addPlayground,
+                                                                  DeletePlaygroundUseCase deletePlayground){
+        return new PlaygroundsViewModelFactory(getPlayground, addPlayground, deletePlayground);
     }
 
     @Provides
@@ -75,5 +81,4 @@ public class PlaygroundsActivityModule {
     LogoutUserUseCase provideLogoutUserUseCase(AuthRepository authRepository){
         return new LogoutUserUseCase(authRepository);
     }
-
 }

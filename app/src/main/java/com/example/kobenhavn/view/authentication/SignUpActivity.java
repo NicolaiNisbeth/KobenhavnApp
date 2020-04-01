@@ -12,11 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.view.authentication.data.AuthRepository;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
-import com.example.kobenhavn.viewmodel.ViewModelFactory;
+import com.example.kobenhavn.viewmodel.AuthenticationViewModelFactory;
 
 import javax.inject.Inject;
 
@@ -24,10 +24,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SignUpActivity extends AppCompatActivity {
-    private AuthenticationViewModel authViewModel;
     private ProgressDialog progressDialog;
+    private AuthenticationViewModel authViewModel;
 
-    @Inject ViewModelFactory viewModelFactory;
+    @Inject
+    AuthenticationViewModelFactory viewModelFactory;
 
     @BindView(R.id.input_name) EditText _nameText;
     @BindView(R.id.input_username) EditText _usernameText;
@@ -42,7 +43,7 @@ public class SignUpActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         progressDialog = new ProgressDialog(SignUpActivity.this);
-        authViewModel = viewModelFactory.create(AuthenticationViewModel.class);
+        authViewModel = ViewModelProviders.of(this, viewModelFactory).get(AuthenticationViewModel.class);
         _loginLink.setOnClickListener(v -> finish());
         _signupButton.setOnClickListener(v -> signup());
         _signupButton.setEnabled(false);
@@ -115,7 +116,6 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void showSignupSuccess() {
-        // TODO: maybe show user a dialog before sending him to login!
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         Toast.makeText(this, "Du er hermed oprettet. Vær venlig at logge ind.", Toast.LENGTH_SHORT).show();

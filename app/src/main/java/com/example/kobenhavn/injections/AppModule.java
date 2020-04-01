@@ -11,6 +11,7 @@ import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import com.example.kobenhavn.dal.remote.RemoteRepository;
 import com.example.kobenhavn.dal.sync.jobs.setup.GCMJobService;
 import com.example.kobenhavn.dal.sync.jobs.setup.SchedulerJobService;
+import com.example.kobenhavn.view.authentication.data.AuthRepository;
 
 import javax.inject.Singleton;
 
@@ -42,19 +43,25 @@ public class AppModule {
 
     @Singleton
     @Provides
-    PlaygroundDAO providePlaygroundDao(Context context) {
+    PlaygroundDAO providePlaygroundDAO(Context context) {
         return Database.getInstance(context).playgroundDAO();
     }
 
     @Singleton
     @Provides
-    ILocalRepository provideLocalCommentRepository(PlaygroundDAO playgroundDAO) {
+    ILocalRepository provideLocalRepository(PlaygroundDAO playgroundDAO) {
         return new LocalRepository(playgroundDAO);
     }
 
     @Singleton
     @Provides
-    IRemoteRepository provideRemoteCommentRepository() {
+    IRemoteRepository provideRemoteRepository() {
         return new RemoteRepository();
+    }
+
+    @Singleton
+    @Provides
+    AuthRepository provideAuthRepository(){
+        return AuthRepository.getInstance();
     }
 }

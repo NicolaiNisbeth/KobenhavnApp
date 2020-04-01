@@ -17,13 +17,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.SettingsModel;
 import com.example.kobenhavn.view.authentication.LoginActivity;
-import com.example.kobenhavn.view.authentication.data.AuthRepository;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
-import com.example.kobenhavn.viewmodel.ViewModelFactory;
+import com.example.kobenhavn.viewmodel.AuthenticationViewModelFactory;
 
 import javax.inject.Inject;
 
@@ -32,9 +32,10 @@ import butterknife.ButterKnife;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
     private Toolbar toolbar;
+    private AuthenticationViewModel viewModel;
 
     @Inject
-    ViewModelFactory viewModelFactory;
+    AuthenticationViewModelFactory viewModelFactory;
 
     @BindView(R.id.settings_profile_name) TextView _nameText;
     @BindView(R.id.settings_profile_number) TextView _numberText;
@@ -61,6 +62,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         TextView title = toolbar.findViewById(R.id.toolbar_title);
         title.setText("Indstillinger");
 
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(AuthenticationViewModel.class);
 
         _nameText.setText(settingsModel.getName());
         _numberText.setText(settingsModel.getPhoneNumber());
@@ -129,7 +131,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void logUd() {
-        viewModelFactory.create(AuthenticationViewModel.class).logoutUser();
+        viewModel.logoutUser();
         Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
     }

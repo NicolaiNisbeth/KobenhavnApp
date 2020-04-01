@@ -50,7 +50,6 @@ public class RemoteDataSource {
 
     public void getPlayground(long name) throws RemoteException, IOException {
         RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
-
         // Remote call can be executed synchronously since the job calling it is already backgrounded
         Response<Playground> response = endpoint.testResource().execute();
 
@@ -63,7 +62,6 @@ public class RemoteDataSource {
     public List<Playground> getPlaygrounds() throws RemoteException, IOException {
         RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
         Response<List<Playground>> response = endpoint.getPlaygrounds().execute();
-
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
 

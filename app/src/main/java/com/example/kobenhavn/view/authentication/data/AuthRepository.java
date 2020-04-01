@@ -14,9 +14,6 @@ public class AuthRepository {
     private static volatile AuthRepository instance;
     private User user = null;
 
-    private AuthRepository() {
-    }
-
     public static AuthRepository getInstance() {
         if (instance == null) {
             instance = new AuthRepository();
@@ -49,7 +46,6 @@ public class AuthRepository {
         } catch (IOException | RemoteException e) {
             return new Result.Error(e);
         }
-
     }
 
     private void setLoggedInUser(User user) {

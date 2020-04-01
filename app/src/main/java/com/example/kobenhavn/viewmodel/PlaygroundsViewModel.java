@@ -35,6 +35,7 @@ public class PlaygroundsViewModel extends ViewModel {
         loadPlaygrounds();
     }
 
+
     @Override
     protected void onCleared() {
         disposables.clear();

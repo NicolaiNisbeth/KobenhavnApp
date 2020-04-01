@@ -14,47 +14,50 @@ import android.widget.Toast;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.kobenhavn.MainActivity;
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.User;
-import com.example.kobenhavn.view.authentication.data.AuthRepository;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
-import com.example.kobenhavn.viewmodel.ViewModelFactory;
+import com.example.kobenhavn.viewmodel.AuthenticationViewModelFactory;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.AndroidInjection;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final int REQUEST_SIGNUP = 0;
-    private AuthenticationViewModel authViewModel;
-    private ProgressDialog progressDialog;
-
     @Inject
-    ViewModelFactory viewModelFactory;
+    AuthenticationViewModelFactory viewModelFactory;
 
     @BindView(R.id.input_username) EditText _usernameText;
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.btn_login) Button _loginButton;
     @BindView(R.id.link_signup) TextView _signupText;
 
+    private static final int REQUEST_SIGNUP = 0;
+    private ProgressDialog progressDialog;
+    private AuthenticationViewModel authViewModel;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.autentificering_login_activity);
         ButterKnife.bind(this);
 
         progressDialog = new ProgressDialog(this);
-
-        authViewModel = viewModelFactory.create(AuthenticationViewModel.class);
+        authViewModel = ViewModelProviders.of(this, viewModelFactory).get(AuthenticationViewModel.class);
         _signupText.setOnClickListener(v -> startSignUp());
         _loginButton.setOnClickListener(v -> login());
         _loginButton.setEnabled(false);
 
-        // On every key press will username and password be reported to loginViewModel and the
+        // On every key press will username and password will be reported to loginViewModel and the
         // loginFormState will be changed accordingly
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
@@ -97,11 +100,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void startSignUp() {
-        Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
-        startActivityForResult(intent, REQUEST_SIGNUP);
-    }
-
     private void login() {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
@@ -113,6 +111,11 @@ public class LoginActivity extends AppCompatActivity {
                                 _usernameText.getText().toString(),
                                 _passwordText.getText().toString()),
                 2000);
+    }
+
+    private void startSignUp() {
+        Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+        startActivityForResult(intent, REQUEST_SIGNUP);
     }
 
     @Override
