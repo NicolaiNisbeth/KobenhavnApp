@@ -1,19 +1,10 @@
 package com.example.kobenhavn.injections;
 
-import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
-import com.example.kobenhavn.dal.sync.SyncPlaygroundLifecycleObserver;
-import com.example.kobenhavn.usecases.playground.SubscribeToPlaygroundUseCase;
-import com.example.kobenhavn.usecases.playground.UnsubscribeToPlaygroundUseCase;
-import com.example.kobenhavn.usecases.playground.GetPlaygroundsUseCase;
-import com.example.kobenhavn.usecases.playground.UpdatePlaygroundUseCase;
 import com.example.kobenhavn.usecases.user.LoginUserUseCase;
 import com.example.kobenhavn.usecases.user.LogoutUserUseCase;
 import com.example.kobenhavn.usecases.user.SignupUserUseCase;
-import com.example.kobenhavn.view.authentication.data.AuthRepository;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModelFactory;
-import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
-
 import dagger.Module;
 import dagger.Provides;
 
@@ -31,17 +22,17 @@ class AuthenticationModule {
     }
 
     @Provides
-    LoginUserUseCase provideLoginUserUseCase(AuthRepository authRepository){
-        return new LoginUserUseCase(authRepository);
+    LoginUserUseCase provideLoginUserUseCase(IRemoteRepository remoteRepository){
+        return new LoginUserUseCase(remoteRepository);
     }
 
     @Provides
-    SignupUserUseCase provideSignupUserUseCase(AuthRepository authRepository){
-        return new SignupUserUseCase(authRepository);
+    SignupUserUseCase provideSignupUserUseCase(IRemoteRepository remoteRepository){
+        return new SignupUserUseCase(remoteRepository);
     }
 
     @Provides
-    LogoutUserUseCase provideLogoutUserUseCase(AuthRepository authRepository){
-        return new LogoutUserUseCase(authRepository);
+    LogoutUserUseCase provideLogoutUserUseCase(){
+        return new LogoutUserUseCase();
     }
 }

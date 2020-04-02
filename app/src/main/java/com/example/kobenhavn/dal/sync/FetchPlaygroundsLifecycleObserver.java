@@ -5,8 +5,9 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
 import com.example.kobenhavn.dal.local.model.Playground;
-import com.example.kobenhavn.usecases.playground.UnsubscribeToPlaygroundUseCase;
-import com.example.kobenhavn.usecases.playground.UpdatePlaygroundUseCase;
+import com.example.kobenhavn.usecases.playground.AddPlaygroundsToDbUseCase;
+
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -16,20 +17,18 @@ import timber.log.Timber;
 /**
  * Updates local database after remote comment sync requests
  */
-public class SyncPlaygroundLifecycleObserver implements LifecycleObserver {
-    private final UpdatePlaygroundUseCase updatePlaygroundUseCase;
-    private final UnsubscribeToPlaygroundUseCase unsubscribeToPlaygroundUseCase;
+public class FetchPlaygroundsLifecycleObserver implements LifecycleObserver {
+    private final AddPlaygroundsToDbUseCase addPlaygroundsToDbUseCase;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
-    public SyncPlaygroundLifecycleObserver(UpdatePlaygroundUseCase updatePlaygroundUseCase, UnsubscribeToPlaygroundUseCase unsubscribeToPlaygroundUseCase) {
-        this.updatePlaygroundUseCase = updatePlaygroundUseCase;
-        this.unsubscribeToPlaygroundUseCase = unsubscribeToPlaygroundUseCase;
+    public FetchPlaygroundsLifecycleObserver(AddPlaygroundsToDbUseCase addPlaygroundsToDbUseCase) {
+        this.addPlaygroundsToDbUseCase = addPlaygroundsToDbUseCase;
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     public void onResume() {
         Timber.e("onResume lifecycle event.");
-        disposables.add(SyncPlaygroundRxBus.getInstance()
+        disposables.add(SyncPlaygroundsRxBus.getInstance()
                 .toObservable()
                 .subscribe(this::handleSyncResponse, t -> Timber.e(t, "error handling sync response")));
     }
@@ -40,29 +39,32 @@ public class SyncPlaygroundLifecycleObserver implements LifecycleObserver {
         disposables.clear();
     }
 
-    private void handleSyncResponse(SyncPlaygroundRxBus.SyncPlaygroundResponse response) {
+    private void handleSyncResponse(SyncPlaygroundsRxBus.SyncPlaygroundResponse response) {
         if (response.type == SyncResponseType.SUCCESS) {
-            onSyncCommentSuccess(response.playground);
+            onFetchingPlaygroundsSuccess(response.playgrounds);
         } else {
-            onSyncCommentFailed(response.playground);
+            onFetchingPlaygroundsFailed(response.playgrounds);
         }
     }
 
-    private void onSyncCommentSuccess(Playground playground) {
-        Timber.e("received sync playground success event for %s", playground);
-        disposables.add(updatePlaygroundUseCase.updatePlayground(playground)
+    private void onFetchingPlaygroundsSuccess(List<Playground> playgrounds) {
+        Timber.e("received successfully fetched playgrounds %s", playgrounds);
+        disposables.add(addPlaygroundsToDbUseCase.addPlaygrounds(playgrounds)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> Timber.e("update playground success"),
-                        t -> Timber.e(t, "update playground error")));
+                .subscribe(() -> Timber.e("updated locale playgrounds successfully"),
+                        t -> Timber.e(t, "Error in updating locale playgrounds")));
     }
 
-    private void onSyncCommentFailed(Playground playground) {
-        Timber.d("received sync playground failed event for playground %s", playground);
+    private void onFetchingPlaygroundsFailed(List<Playground> playground) {
+        Timber.d("Error in fetching playgrounds %s", playground);
+        /*
         disposables.add(unsubscribeToPlaygroundUseCase.deletePlayground(playground)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> Timber.e("delete playground success"),
                         t -> Timber.e(t, "delete playground error")));
+
+         */
     }
 }

@@ -14,20 +14,20 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface RemoteEndpoint {
-    String BASE_URL = "http://jsonplaceholder.typicode.com/";
 
     /*
-    @GET("posts/{id}")
-    Call<Playground> getPlayground(@Path("id") long playgroundName);
-
-     */
-
-    // for now get all when logging in
-    @GET("posts")
-    Call<List<Playground>> getPlaygrounds();
-
+    String BASE_URL = "http://jsonplaceholder.typicode.com/";
     @GET("posts/1")
     Call<Playground> testResource();
+     */
+
+    String BASE_URL = "http://192.168.1.15:8088/rest/";
+
+
+    @GET("playground_list")
+    Call<List<Playground>> getPlaygrounds();
+
+
 
 
 
@@ -44,14 +44,11 @@ public interface RemoteEndpoint {
 
 
     // if user is not fetched then call get user
-    @POST("posts")
+    @POST("user_login")
     Call<User> loginUser(@Body User user);
 
     @POST("posts")
-    Call<User> loginUser(String username, String password);
-
-    @POST("posts")
-    Call<User> signupUser(String name, String username, String password);
+    Call<Boolean> signupUser(String name, String username, String password);
 
 
 

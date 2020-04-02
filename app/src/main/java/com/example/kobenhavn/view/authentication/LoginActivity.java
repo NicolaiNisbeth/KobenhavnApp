@@ -12,21 +12,27 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.kobenhavn.dal.sync.LoginUserRxBus;
+import com.example.kobenhavn.dal.sync.SyncResponseType;
 import com.example.kobenhavn.view.MenuActivity;
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModelFactory;
+import com.google.android.material.textfield.TextInputLayout;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -37,10 +43,14 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.btn_login) Button _loginButton;
     @BindView(R.id.link_signup) TextView _signupText;
+    @BindView(R.id.text_input_email) TextInputLayout _emailLayout;
+    @BindView(R.id.text_input_password) TextInputLayout _passwordInputLayout;
 
     private static final int REQUEST_SIGNUP = 0;
     private ProgressDialog progressDialog;
     private AuthenticationViewModel authViewModel;
+    private final CompositeDisposable disposables = new CompositeDisposable();
+    private FormHandler formHandler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +64,13 @@ public class LoginActivity extends AppCompatActivity {
         _signupText.setOnClickListener(v -> startSignUp());
         _loginButton.setOnClickListener(v -> login());
         _loginButton.setEnabled(false);
+        formHandler = new FormHandler();
+
+        disposables.add(LoginUserRxBus.getInstance().toObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::handleLoginResponse, t -> Timber.e(t, "error handling login response"))
+        );
 
         // On every key press will username and password will be reported to loginViewModel and the
         // loginFormState will be changed accordingly
@@ -64,7 +81,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable s) {
-                authViewModel.loginDataChanged(
+                _emailLayout.setError(null);
+                formHandler.loginDataChanged(
                         _usernameText.getText().toString(),
                         _passwordText.getText().toString()
                 );
@@ -74,41 +92,28 @@ public class LoginActivity extends AppCompatActivity {
         _passwordText.addTextChangedListener(afterTextChangedListener);
 
         // Observe loginFormState and show errors or enable login button
-        authViewModel.getFormStateLive().observe(this, formState -> {
+        formHandler.getFormStateLive().observe(this, formState -> {
             if (formState == null)
                 return;
 
             _loginButton.setEnabled(formState.isDataValid());
         });
+    }
 
-        // Observer loginResult and show errors or
-        authViewModel.getLoginResultLive().observe(this, loginResult -> {
-            if (loginResult == null)
-                return;
-
-            progressDialog.dismiss();
-            if (loginResult.getError() != null)
-                showLoginFailed(loginResult.getError());
-
-            if (loginResult.getSuccess() != null){
-                showLoginSuccess(loginResult.getSuccess());
-                setResult(Activity.RESULT_OK);
-                finish();
-            }
-        });
+    private void handleLoginResponse(LoginUserRxBus.LoginResponse response) {
+        progressDialog.dismiss();
+        if (response.type == SyncResponseType.SUCCESS) {
+            showLoginSuccess(response.user);
+        } else {
+            showLoginFailed();
+        }
     }
 
     private void login() {
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
+        progressDialog.setMessage("Autentificere...");
         progressDialog.show();
-
-        // call login after 2s to simulate handling of authentication
-        new android.os.Handler().postDelayed(() ->
-                        authViewModel.loginUser(
-                                _usernameText.getText().toString(),
-                                _passwordText.getText().toString()),
-                2000);
+        authViewModel.loginUser(_usernameText.getText().toString(), _passwordText.getText().toString());
     }
 
     private void startSignUp() {
@@ -122,17 +127,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void showLoginSuccess(User user) {
-        String welcome = getString(R.string.welcome) + user.getUsername();
+        String welcome = getString(R.string.welcome) + user.getFirstname();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, MenuActivity.class);
+        setResult(Activity.RESULT_OK);
         startActivity(intent);
+        finish();
     }
 
-    private void showLoginFailed(@StringRes Integer errorID) {
+    private void showLoginFailed() {
         _loginButton.setEnabled(false);
         _usernameText.setText("");
         _usernameText.requestFocus();
         _passwordText.setText("");
-        _usernameText.setError(getString(errorID));
+        _emailLayout.setError("Ugyldige logininformationer.");
     }
 }

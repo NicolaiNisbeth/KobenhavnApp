@@ -11,7 +11,6 @@ import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import com.example.kobenhavn.dal.remote.RemoteRepository;
 import com.example.kobenhavn.dal.sync.jobs.setup.GCMJobService;
 import com.example.kobenhavn.dal.sync.jobs.setup.SchedulerJobService;
-import com.example.kobenhavn.view.authentication.data.AuthRepository;
 
 import javax.inject.Singleton;
 
@@ -57,11 +56,5 @@ class AppModule {
     @Provides
     IRemoteRepository provideRemoteRepository() {
         return new RemoteRepository();
-    }
-
-    @Singleton
-    @Provides
-    AuthRepository provideAuthRepository(){
-        return AuthRepository.getInstance();
     }
 }

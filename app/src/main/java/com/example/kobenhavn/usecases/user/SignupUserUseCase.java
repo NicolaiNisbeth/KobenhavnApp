@@ -1,16 +1,17 @@
 package com.example.kobenhavn.usecases.user;
 
-import com.example.kobenhavn.view.authentication.data.AuthRepository;
-import com.example.kobenhavn.view.authentication.data.Result;
+import com.example.kobenhavn.dal.remote.IRemoteRepository;
+
+import io.reactivex.Completable;
 
 public class SignupUserUseCase {
-    private final AuthRepository authRepository;
+    private final IRemoteRepository remoteRepository;
 
-    public SignupUserUseCase(AuthRepository authRepository) {
-        this.authRepository = authRepository;
+    public SignupUserUseCase(IRemoteRepository remoteRepository) {
+        this.remoteRepository = remoteRepository;
     }
 
-    public Result signupUser(String name, String username, String password){
-        return authRepository.signup(name, username, password);
+    public Completable signupUser(String name, String username, String password){
+        return remoteRepository.signupUser(name, username, password);
     }
 }

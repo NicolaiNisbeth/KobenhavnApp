@@ -1,7 +1,6 @@
 package com.example.kobenhavn.dal.local;
 
 
-import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.local.model.Playground;
 
 import java.util.List;
@@ -20,18 +19,26 @@ public class LocalRepository implements ILocalRepository {
     }
 
     @Override
-    public Single<Playground> add(String text) {
-        Playground p = new Playground(text);
+    public Single<Playground> subscribeTo(Playground playground) {
+        return null;
+    }
 
+    @Override
+    public Completable add(List<Playground> playgrounds) {
+
+        /*
         return Single.fromCallable(() -> {
             long rowID = playgroundDAO.add(p);
             Timber.e("Saved playground locally with id: %s", rowID);
             return LocalePlaygroundUtils.clone(p, rowID);
         });
+
+         */
+        return null;
     }
 
     @Override
-    public Completable update(Playground playground) {
+    public Completable update(List<Playground> playground) {
         return Completable.fromAction(() -> playgroundDAO.update(playground));
     }
 

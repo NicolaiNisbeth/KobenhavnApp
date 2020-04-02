@@ -11,8 +11,6 @@ import com.example.kobenhavn.dal.local.LocalePlaygroundUtils;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.dal.remote.RemoteException;
-import com.example.kobenhavn.dal.sync.SyncPlaygroundRxBus;
-import com.example.kobenhavn.dal.sync.SyncResponseType;
 import com.example.kobenhavn.dal.sync.jobs.setup.JobPriority;
 
 import timber.log.Timber;
@@ -45,14 +43,14 @@ public class SyncPlaygroundJob extends Job {
 
         // remote call was successful--the Comment will be updated locally to reflect that sync is no longer pending
         Playground updatedPlayground = LocalePlaygroundUtils.clone(playground, false);
-        SyncPlaygroundRxBus.getInstance().post(SyncResponseType.SUCCESS , updatedPlayground);
+        //SyncPlaygroundRxBus.getInstance().post(SyncResponseType.SUCCESS , updatedPlayground);
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
         Timber.e("Canceling job. reason: %d, throwable: %s", cancelReason, throwable);
         // sync to remote failed
-        SyncPlaygroundRxBus.getInstance().post(SyncResponseType.FAILED, playground);
+        //SyncPlaygroundRxBus.getInstance().post(SyncResponseType.FAILED, playground);
     }
 
     @Override

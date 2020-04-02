@@ -20,7 +20,7 @@ public interface PlaygroundDAO {
     long add(Playground playground);
 
     @Update
-    void update(Playground playground);
+    void update(List<Playground> playgrounds);
 
     @Delete
     void delete(Playground playground);

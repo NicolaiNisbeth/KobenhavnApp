@@ -6,9 +6,10 @@ import androidx.lifecycle.ViewModel;
 
 
 import com.example.kobenhavn.dal.local.model.Playground;
+import com.example.kobenhavn.usecases.playground.FetchPlaygroundsUseCase;
+import com.example.kobenhavn.usecases.playground.GetPlaygroundsInDbUseCase;
 import com.example.kobenhavn.usecases.playground.SubscribeToPlaygroundUseCase;
 import com.example.kobenhavn.usecases.playground.UnsubscribeToPlaygroundUseCase;
-import com.example.kobenhavn.usecases.playground.GetPlaygroundsUseCase;
 
 import java.util.List;
 
@@ -18,19 +19,16 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class PlaygroundsViewModel extends ViewModel {
-    private final GetPlaygroundsUseCase getPlaygroundsUseCase;
-    private final SubscribeToPlaygroundUseCase subscribeToPlaygroundUseCase;
-    private final UnsubscribeToPlaygroundUseCase unsubscribeToPlaygroundUseCase;
+    private final GetPlaygroundsInDbUseCase getPlaygroundsInDbUseCase;
+    private final FetchPlaygroundsUseCase fetchPlaygroundsUseCase;
     private final CompositeDisposable disposables = new CompositeDisposable();
     private MutableLiveData<List<Playground>> playgroundsLiveData = new MutableLiveData<>();
 
-    public PlaygroundsViewModel(GetPlaygroundsUseCase getPlaygroundsUseCase,
-              SubscribeToPlaygroundUseCase subscribeToPlaygroundUseCase,
-              UnsubscribeToPlaygroundUseCase unsubscribeToPlaygroundUseCase){
+    public PlaygroundsViewModel(GetPlaygroundsInDbUseCase getPlaygroundsInDbUseCase,
+                                FetchPlaygroundsUseCase fetchPlaygroundsUseCase){
 
-        this.getPlaygroundsUseCase = getPlaygroundsUseCase;
-        this.subscribeToPlaygroundUseCase = subscribeToPlaygroundUseCase;
-        this.unsubscribeToPlaygroundUseCase = unsubscribeToPlaygroundUseCase;
+        this.getPlaygroundsInDbUseCase = getPlaygroundsInDbUseCase;
+        this.fetchPlaygroundsUseCase = fetchPlaygroundsUseCase;
 
         loadPlaygrounds();
     }
@@ -44,6 +42,7 @@ public class PlaygroundsViewModel extends ViewModel {
     /**
      * Adds new comment
      */
+    /*
     public void addPlayground(String commentText) {
         disposables.add(subscribeToPlaygroundUseCase.addPlayground(commentText)
                 .subscribeOn(Schedulers.io())
@@ -51,19 +50,30 @@ public class PlaygroundsViewModel extends ViewModel {
                 .subscribe(() -> Timber.e("add playground success"),
                         t -> Timber.e(t, "add playground error")));
     }
+     */
 
     /**
      * Exposes the latest comments so the UI can observe it
      */
-    public LiveData<List<Playground>> comments() {
+    public LiveData<List<Playground>> playgroundsLive() {
         return playgroundsLiveData;
     }
 
-    public void loadPlaygrounds() {
-        disposables.add(getPlaygroundsUseCase.getPlaygrounds()
+    public void loadPlaygrounds(){
+        disposables.add(getPlaygroundsInDbUseCase.getPlaygrounds()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(playgroundsLiveData::setValue,
-                        t -> Timber.e(t, "get playground error")));
+                        t -> Timber.e(t, "Get playgrounds from db error")));
+    }
+
+    public void fetchPlaygrounds() {
+        disposables.add(fetchPlaygroundsUseCase.fetchPlaygrounds()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    Timber.e("Fetched playgrounds successfully");
+                    loadPlaygrounds();
+                    }, t -> Timber.e(t, "Error in fetching playgrounds")));
     }
 }

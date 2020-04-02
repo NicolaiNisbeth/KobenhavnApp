@@ -11,7 +11,7 @@ public class LocaleUserUtils {
         );
     }
 
-    public static User clone(User from, long id){
+    public static User clone(User from, String id){
         return new User(id, from.getFirstname(), from.getLastname(),
                 from.getUsername(), from.getPassword(), from.getEmail(),
                 from.getImagepath(), from.getPhonenumber(), from.isSyncPending());

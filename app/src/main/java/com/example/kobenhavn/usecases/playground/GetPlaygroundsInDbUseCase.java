@@ -3,16 +3,18 @@ package com.example.kobenhavn.usecases.playground;
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.local.model.Playground;
 
-import io.reactivex.Completable;
+import java.util.List;
 
-public class UpdatePlaygroundUseCase {
+import io.reactivex.Flowable;
+
+public class GetPlaygroundsInDbUseCase {
     private final ILocalRepository localRepository;
 
-    public UpdatePlaygroundUseCase(ILocalRepository localRepository) {
+    public GetPlaygroundsInDbUseCase(ILocalRepository localRepository) {
         this.localRepository = localRepository;
     }
 
-    public Completable updatePlayground(Playground playground){
-        return localRepository.update(playground);
+    public Flowable<List<Playground>> getPlaygrounds(){
+        return localRepository.getPlaygrounds();
     }
 }

@@ -12,6 +12,8 @@ import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -21,6 +23,7 @@ public class RemoteDataSource {
 
     private static RemoteDataSource instance;
     private final Retrofit retrofit;
+    private final RemoteEndpoint API;
 
     public RemoteDataSource(){
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
@@ -31,7 +34,6 @@ public class RemoteDataSource {
                 .build();
 
         Gson gson = new GsonBuilder()
-                .excludeFieldsWithoutExposeAnnotation()
                 .create();
 
         retrofit = new Retrofit.Builder()
@@ -39,6 +41,9 @@ public class RemoteDataSource {
                 .baseUrl(RemoteEndpoint.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
+
+        API = retrofit.create(RemoteEndpoint.class);
+
     }
 
     public static synchronized RemoteDataSource getInstance(){
@@ -49,6 +54,7 @@ public class RemoteDataSource {
     }
 
     public void getPlayground(long name) throws RemoteException, IOException {
+        /*
         RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
         // Remote call can be executed synchronously since the job calling it is already backgrounded
         Response<Playground> response = endpoint.testResource().execute();
@@ -57,6 +63,8 @@ public class RemoteDataSource {
             throw new RemoteException(response);
 
         Timber.e("Playground is fetched successfully");
+
+         */
     }
 
     public List<Playground> getPlaygrounds() throws RemoteException, IOException {
@@ -79,33 +87,20 @@ public class RemoteDataSource {
         return new ArrayList<>(response.body());
     }
 
-    public User loginUser(String username, String password) throws IOException, RemoteException {
-        RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
-
-        // TODO: properly has to be called in a background thread
-        /*
-        Response<User> response = endpoint.loginUser(username, password).execute();
-
+    public User loginUser(String username, String password) throws RemoteException, IOException {
+        Response<User> response = API.loginUser(new User(username, password)).execute();
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
 
         return response.body();
-
-         */
-        return new User("firstname", "lastname", "username", "password", "email", "imagepath","phonenumber");
     }
 
-    public void signupUser(String name, String username, String password) throws IOException, RemoteException {
-        RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
 
-        // TODO: properly has to be called in a background thread
-        /*
-        Response<User> response = endpoint.signupUser(name, username, password).execute();
+    public void signupUser(String name, String username, String password) throws IOException, RemoteException {
+        Response<Boolean> response = API.signupUser(name, username, password).execute();
 
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
-
-         */
     }
 
     public void addUserToPlaygroundEvent(int eventID, String username) throws RemoteException, IOException {

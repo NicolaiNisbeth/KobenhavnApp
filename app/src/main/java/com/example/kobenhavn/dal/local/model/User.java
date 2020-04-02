@@ -1,22 +1,30 @@
 package com.example.kobenhavn.dal.local.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
+import retrofit2.http.Body;
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
  */
 
 @Entity(tableName = "user_table")
-public class User {
+public class User implements Serializable {
 
-    @PrimaryKey(autoGenerate = true)
-    private Long id;
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "id")
+    private String id;
 
     @ColumnInfo(name = "firstname")
     private String firstname;
@@ -42,7 +50,7 @@ public class User {
     @ColumnInfo(name = "sync_pending")
     private boolean syncPending;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -83,6 +91,12 @@ public class User {
     //private Set<String> playgroundIDs = new HashSet<>();
 
     @Ignore
+    public User(String username, String password){
+        this.username = username;
+        this.password = password;
+    }
+
+    @Ignore
     public User(String firstname, String lastname, String username, String password, String email, String imagepath, String phonenumber) {
         this.firstname = firstname;
         this.lastname = lastname;
@@ -94,7 +108,8 @@ public class User {
         this.syncPending = true;
     }
 
-    public User(long id, String firstname, String lastname, String username, String password, String email, String imagepath, String phonenumber, boolean syncPending) {
+
+    public User(String id, String firstname, String lastname, String username, String password, String email, String imagepath, String phonenumber, boolean syncPending) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -105,6 +120,8 @@ public class User {
         this.phonenumber = phonenumber;
         this.syncPending = syncPending;
     }
+
+
 
     @Override
     public String toString() {

@@ -2,11 +2,13 @@ package com.example.kobenhavn.injections;
 
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
-import com.example.kobenhavn.dal.sync.SyncPlaygroundLifecycleObserver;
-import com.example.kobenhavn.usecases.playground.GetPlaygroundsUseCase;
+import com.example.kobenhavn.dal.sync.FetchPlaygroundsLifecycleObserver;
+import com.example.kobenhavn.usecases.playground.AddPlaygroundsToDbUseCase;
+import com.example.kobenhavn.usecases.playground.FetchPlaygroundsUseCase;
+import com.example.kobenhavn.usecases.playground.GetPlaygroundsInDbUseCase;
 import com.example.kobenhavn.usecases.playground.SubscribeToPlaygroundUseCase;
 import com.example.kobenhavn.usecases.playground.UnsubscribeToPlaygroundUseCase;
-import com.example.kobenhavn.usecases.playground.UpdatePlaygroundUseCase;
+import com.example.kobenhavn.usecases.playground.UpdatePlaygroundsInDbUseCase;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 
 import dagger.Module;
@@ -19,16 +21,14 @@ import dagger.Provides;
 class MenuModule {
 
     @Provides
-    SyncPlaygroundLifecycleObserver provideSyncCommentLifecycleObserver(UpdatePlaygroundUseCase updatePlaygroundUseCase,
-                                                                        UnsubscribeToPlaygroundUseCase unsubscribeToPlaygroundUseCase) {
-        return new SyncPlaygroundLifecycleObserver(updatePlaygroundUseCase, unsubscribeToPlaygroundUseCase);
+    FetchPlaygroundsLifecycleObserver provideSyncCommentLifecycleObserver(AddPlaygroundsToDbUseCase addPlaygroundsToDbUseCase) {
+        return new FetchPlaygroundsLifecycleObserver(addPlaygroundsToDbUseCase);
     }
 
     @Provides
-    PlaygroundsViewModelFactory providePlaygroundViewModelFactory(GetPlaygroundsUseCase getPlayground,
-                                                                  SubscribeToPlaygroundUseCase addPlayground,
-                                                                  UnsubscribeToPlaygroundUseCase deletePlayground){
-        return new PlaygroundsViewModelFactory(getPlayground, addPlayground, deletePlayground);
+    PlaygroundsViewModelFactory providePlaygroundViewModelFactory(GetPlaygroundsInDbUseCase getPlayground,
+                                                                  FetchPlaygroundsUseCase fetchPlaygrounds){
+        return new PlaygroundsViewModelFactory(getPlayground, fetchPlaygrounds);
     }
 
     @Provides
@@ -37,13 +37,23 @@ class MenuModule {
     }
 
     @Provides
-    GetPlaygroundsUseCase provideGetPlaygroundssUseCase(ILocalRepository localRepository) {
-        return new GetPlaygroundsUseCase(localRepository);
+    AddPlaygroundsToDbUseCase provideAddPlaygroundsToDbUseCase(ILocalRepository localRepository){
+        return new AddPlaygroundsToDbUseCase(localRepository);
     }
 
     @Provides
-    UpdatePlaygroundUseCase provideUpdatePlaygroundUseCase(ILocalRepository localRepository) {
-        return new UpdatePlaygroundUseCase(localRepository);
+    GetPlaygroundsInDbUseCase provideGetPlaygroundsUseCase(ILocalRepository localRepository) {
+        return new GetPlaygroundsInDbUseCase(localRepository);
+    }
+
+    @Provides
+    FetchPlaygroundsUseCase provideFetchPlaygroundsUseCase(ILocalRepository localRepository, IRemoteRepository remoteRepository){
+        return new FetchPlaygroundsUseCase(localRepository, remoteRepository);
+    }
+
+    @Provides
+    UpdatePlaygroundsInDbUseCase provideUpdatePlaygroundUseCase(ILocalRepository localRepository) {
+        return new UpdatePlaygroundsInDbUseCase(localRepository);
     }
 
     @Provides

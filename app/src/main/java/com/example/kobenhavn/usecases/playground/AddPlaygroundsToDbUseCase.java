@@ -5,16 +5,16 @@ import com.example.kobenhavn.dal.local.model.Playground;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
+import io.reactivex.Completable;
 
-public class GetPlaygroundsUseCase {
+public class AddPlaygroundsToDbUseCase {
     private final ILocalRepository localRepository;
 
-    public GetPlaygroundsUseCase(ILocalRepository localRepository) {
+    public AddPlaygroundsToDbUseCase(ILocalRepository localRepository) {
         this.localRepository = localRepository;
     }
 
-    public Flowable<List<Playground>> getPlaygrounds(){
-        return localRepository.getPlaygrounds();
+    public Completable addPlaygrounds(List<Playground> playgrounds){
+        return localRepository.add(playgrounds);
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textAlignment="center"
-        android:text="Login på com.example.kobenhavn.App"
+        android:text="Login på App"
         style="@style/TextAppearance.AppCompat.Headline"/>
 
     <ImageView android:src="@mipmap/ic_launcher"
@@ -28,24 +28,34 @@
 
     <!-- Email Label -->
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
-        <EditText android:id="@+id/input_username"
+        android:layout_marginBottom="8dp"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:hint="Email eller brugernavn" />
+            android:hint="Email eller brugernavn"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Password Label -->
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
-        <EditText android:id="@+id/input_password"
+        android:layout_marginBottom="8dp"
+        app:errorEnabled="true"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"

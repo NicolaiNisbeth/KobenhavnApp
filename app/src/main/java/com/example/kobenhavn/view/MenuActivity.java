@@ -3,7 +3,7 @@ package com.example.kobenhavn.view;
 import android.os.Bundle;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.dal.sync.SyncPlaygroundLifecycleObserver;
+import com.example.kobenhavn.dal.sync.FetchPlaygroundsLifecycleObserver;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,7 +24,7 @@ import timber.log.Timber;
 public class MenuActivity extends AppCompatActivity {
 
     @Inject
-    SyncPlaygroundLifecycleObserver syncPlaygroundLifecycleObserver;
+    FetchPlaygroundsLifecycleObserver fetchPlaygroundsLifecycleObserver;
 
     @Inject
     PlaygroundsViewModelFactory viewModelFactory;
@@ -48,7 +48,7 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.main_activity);
 
         Timber.plant(new Timber.DebugTree());
-        getLifecycle().addObserver(syncPlaygroundLifecycleObserver);
+        getLifecycle().addObserver(fetchPlaygroundsLifecycleObserver);
 
         // Bottom Navigation
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -58,9 +58,7 @@ public class MenuActivity extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(PlaygroundsViewModel.class);
 
         if (savedInstanceState == null){
-            // fetch and update
-
-
+            viewModel.fetchPlaygrounds();
         }
     }
 }
