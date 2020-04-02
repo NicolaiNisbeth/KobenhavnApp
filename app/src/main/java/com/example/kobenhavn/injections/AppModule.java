@@ -22,7 +22,7 @@ import dagger.Provides;
  * This is where you will inject application-wide dependencies.
  */
 @Module
-public class AppModule {
+class AppModule {
 
     @Provides
     Context provideContext(App application) {

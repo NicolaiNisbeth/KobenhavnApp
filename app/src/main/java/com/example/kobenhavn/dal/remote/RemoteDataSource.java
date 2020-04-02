@@ -36,7 +36,7 @@ public class RemoteDataSource {
 
         retrofit = new Retrofit.Builder()
                 .client(httpClient)
-                .baseUrl("http://jsonplaceholder.typicode.com/")
+                .baseUrl(RemoteEndpoint.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
     }
@@ -83,22 +83,29 @@ public class RemoteDataSource {
         RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
 
         // TODO: properly has to be called in a background thread
+        /*
         Response<User> response = endpoint.loginUser(username, password).execute();
 
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
 
         return response.body();
+
+         */
+        return new User("firstname", "lastname", "username", "password", "email", "imagepath","phonenumber");
     }
 
     public void signupUser(String name, String username, String password) throws IOException, RemoteException {
         RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
 
         // TODO: properly has to be called in a background thread
+        /*
         Response<User> response = endpoint.signupUser(name, username, password).execute();
 
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
+
+         */
     }
 
     public void addUserToPlaygroundEvent(int eventID, String username) throws RemoteException, IOException {

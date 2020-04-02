@@ -39,7 +39,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.autentificering_signup_activity);
+        setContentView(R.layout.authentication_signup_activity);
         ButterKnife.bind(this);
 
         progressDialog = new ProgressDialog(SignUpActivity.this);

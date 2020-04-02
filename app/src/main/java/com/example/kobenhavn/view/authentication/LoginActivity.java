@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.autentificering_login_activity);
+        setContentView(R.layout.authentication_login_activity);
         ButterKnife.bind(this);
 
         progressDialog = new ProgressDialog(this);

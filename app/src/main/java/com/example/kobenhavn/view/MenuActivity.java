@@ -17,6 +17,8 @@ import androidx.navigation.ui.NavigationUI;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 import timber.log.Timber;
 
 public class MenuActivity extends AppCompatActivity {
@@ -41,6 +43,7 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
@@ -56,6 +59,7 @@ public class MenuActivity extends AppCompatActivity {
 
         if (savedInstanceState == null){
             // fetch and update
+
 
         }
     }
