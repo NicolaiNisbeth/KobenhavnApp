@@ -29,7 +29,6 @@ public class MainActivity extends DaggerAppCompatActivity {
     @Inject
     PlaygroundsViewModelFactory viewModelFactory;
 
-    private PlaygroundsViewModel viewModel;
     private LifecycleRegistry registry;
 
     @NotNull

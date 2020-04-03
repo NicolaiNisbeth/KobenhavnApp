@@ -24,6 +24,8 @@ import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModelFactory;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
+import com.example.kobenhavn.viewmodel.UserViewModel;
+import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 import com.google.android.material.textfield.TextInputLayout;
 
 import javax.inject.Inject;
@@ -38,12 +40,9 @@ import timber.log.Timber;
 
 public class LoginActivity extends AppCompatActivity {
 
-    @Inject
-    PlaygroundsViewModelFactory viewModelPlaygroundFactory;
-
-
-    @Inject
-    AuthenticationViewModelFactory viewModelAuthenticationFactory;
+    @Inject PlaygroundsViewModelFactory playgroundViewModelFactory;
+    @Inject AuthenticationViewModelFactory authenticationViewModelFactory;
+    @Inject UserViewModelFactory userViewModelFactory;
 
     @BindView(R.id.input_username) EditText _usernameText;
     @BindView(R.id.input_password) EditText _passwordText;
@@ -56,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private AuthenticationViewModel authViewModel;
     private PlaygroundsViewModel playgroundsViewModel;
+    private UserViewModel userViewModel;
     private final CompositeDisposable disposables = new CompositeDisposable();
     private FormHandler formHandler;
 
@@ -67,8 +67,10 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         progressDialog = new ProgressDialog(this);
-        authViewModel = ViewModelProviders.of(this, viewModelAuthenticationFactory).get(AuthenticationViewModel.class);
-        playgroundsViewModel = ViewModelProviders.of(this, viewModelPlaygroundFactory).get(PlaygroundsViewModel.class);
+        authViewModel = ViewModelProviders.of(this, authenticationViewModelFactory).get(AuthenticationViewModel.class);
+        playgroundsViewModel = ViewModelProviders.of(this, playgroundViewModelFactory).get(PlaygroundsViewModel.class);
+        userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
+
         _signupText.setOnClickListener(v -> startSignUp());
         _loginButton.setOnClickListener(v -> login());
         _loginButton.setEnabled(false);
@@ -137,6 +139,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void showLoginSuccess(User user) {
+        userViewModel.addUser(user);
         playgroundsViewModel.fetchPlaygrounds();
         Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();
         //String welcome = getString(R.string.welcome) + user.getFirstname();

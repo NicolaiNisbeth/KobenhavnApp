@@ -3,6 +3,7 @@ package com.example.kobenhavn.di;
 import com.example.kobenhavn.view.MainActivity;
 import com.example.kobenhavn.view.authentication.LoginActivity;
 import com.example.kobenhavn.view.authentication.SignUpActivity;
+import com.example.kobenhavn.view.playgrounds.add.AddPlaygroundActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -21,6 +22,9 @@ abstract class BuildersModule {
 
     @ContributesAndroidInjector(modules = {MenuModule.class, MenuFragmentBuildersModule.class})
     abstract MainActivity bindMenuActivity();
+
+    @ContributesAndroidInjector(modules = {MenuModule.class})
+    abstract AddPlaygroundActivity bindAddPlaygroundActivity();
 
     // Add bindings for other sub-components here
 }

@@ -1,5 +1,7 @@
 package com.example.kobenhavn.di;
 
+import androidx.room.Update;
+
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import com.example.kobenhavn.dal.sync.PlaygroundsLifecycleObserver;
@@ -9,7 +11,10 @@ import com.example.kobenhavn.usecases.playground.GetPlaygroundsInDbUseCase;
 import com.example.kobenhavn.usecases.playground.SubscribeToPlaygroundUseCase;
 import com.example.kobenhavn.usecases.playground.UnsubscribeToPlaygroundUseCase;
 import com.example.kobenhavn.usecases.playground.UpdatePlaygroundsInDbUseCase;
+import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
+import com.example.kobenhavn.usecases.user.UpdateUserInDbUseCase;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
+import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 
 import dagger.Module;
 import dagger.Provides;
@@ -21,7 +26,7 @@ import dagger.Provides;
 class MenuModule {
 
     @Provides
-    PlaygroundsLifecycleObserver provideSyncCommentLifecycleObserver(InsertPlaygroundsInDbUseCase insertPlaygroundsInDbUseCase, GetPlaygroundsInDbUseCase getPlaygroundsInDbUseCase) {
+    PlaygroundsLifecycleObserver providePlaygroundLifecycleObserver(InsertPlaygroundsInDbUseCase insertPlaygroundsInDbUseCase, GetPlaygroundsInDbUseCase getPlaygroundsInDbUseCase) {
         return new PlaygroundsLifecycleObserver(insertPlaygroundsInDbUseCase, getPlaygroundsInDbUseCase);
     }
 
@@ -29,6 +34,21 @@ class MenuModule {
     PlaygroundsViewModelFactory providePlaygroundViewModelFactory(GetPlaygroundsInDbUseCase getPlayground,
                                                                   FetchPlaygroundsUseCase fetchPlaygrounds){
         return new PlaygroundsViewModelFactory(getPlayground, fetchPlaygrounds);
+    }
+
+    @Provides
+    UserViewModelFactory provideUserViewModelFactory(AddUserToDbUseCase addUserToDbUseCase, UpdateUserInDbUseCase updateUserInDbUseCase){
+        return new UserViewModelFactory(addUserToDbUseCase, updateUserInDbUseCase);
+    }
+
+    @Provides
+    AddUserToDbUseCase provideAddUSerToDbUseCase(ILocalRepository localRepository){
+        return new AddUserToDbUseCase(localRepository);
+    }
+
+    @Provides
+    UpdateUserInDbUseCase provideUpdateUserInDbUseCase(ILocalRepository localRepository){
+        return new UpdateUserInDbUseCase(localRepository);
     }
 
     @Provides

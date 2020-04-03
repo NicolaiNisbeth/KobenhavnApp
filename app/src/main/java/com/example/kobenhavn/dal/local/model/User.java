@@ -5,14 +5,11 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-
-import com.google.gson.annotations.SerializedName;
+import androidx.room.TypeConverters;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
-import retrofit2.http.Body;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
@@ -50,6 +47,9 @@ public class User implements Serializable {
     @ColumnInfo(name = "sync_pending")
     private boolean syncPending;
 
+    @TypeConverters({UserConverter.class})
+    private List<Playground> subscribedPlaygrounds = new ArrayList<>();
+
     public String getId() {
         return id;
     }
@@ -84,6 +84,10 @@ public class User implements Serializable {
 
     public boolean isSyncPending() {
         return syncPending;
+    }
+
+    public List<Playground> getSubscribedPlaygrounds() {
+        return subscribedPlaygrounds;
     }
 
     //private Set<Event> events = new HashSet<>();

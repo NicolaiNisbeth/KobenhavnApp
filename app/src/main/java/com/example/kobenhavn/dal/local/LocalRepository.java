@@ -2,23 +2,29 @@ package com.example.kobenhavn.dal.local;
 
 
 import com.example.kobenhavn.dal.local.model.Playground;
+import com.example.kobenhavn.dal.local.model.User;
 
 import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import timber.log.Timber;
 
 public class LocalRepository implements ILocalRepository {
 
     private final PlaygroundDAO playgroundDAO;
+    private final UserDAO userDAO;
 
-    public LocalRepository(PlaygroundDAO playgroundDAO){
+    public LocalRepository(PlaygroundDAO playgroundDAO, UserDAO userDAO){
         this.playgroundDAO = playgroundDAO;
+        this.userDAO = userDAO;
     }
 
     @Override
-    public Single<Playground> subscribeTo(Playground playground) {
+    public Completable subscribeTo(Playground playground) {
+
+
         return null;
     }
 
@@ -46,8 +52,6 @@ public class LocalRepository implements ILocalRepository {
         return Completable.fromAction(() -> playgroundDAO.delete(playground));
     }
 
-
-
     @Override
     public Flowable<List<Playground>> getPlaygrounds() {
         return playgroundDAO.getPlaygrounds();
@@ -56,6 +60,20 @@ public class LocalRepository implements ILocalRepository {
     @Override
     public Completable insertAllPlaygrounds(List<Playground> playgrounds) {
         return Completable.fromAction(() -> playgroundDAO.insertAllPlaygrounds(playgrounds));
+    }
+
+    @Override
+    public Single<User> add(User user) {
+        return Single.fromCallable(() -> {
+            userDAO.add(user);
+            Timber.e("Saved user locally");
+            return LocaleUserUtils.clone(user, false);
+        });
+    }
+
+    @Override
+    public Completable update(User user) {
+        return Completable.fromAction(() -> userDAO.update(user));
     }
 
 }

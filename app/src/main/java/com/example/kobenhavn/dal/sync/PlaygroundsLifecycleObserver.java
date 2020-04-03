@@ -23,8 +23,6 @@ public class PlaygroundsLifecycleObserver implements LifecycleObserver {
     private final InsertPlaygroundsInDbUseCase insertPlaygroundsInDbUseCase;
     private final GetPlaygroundsInDbUseCase getPlaygroundsInDbUseCase;
     private final CompositeDisposable disposables = new CompositeDisposable();
-    private MutableLiveData<List<Playground>> playgroundsLiveData = new MutableLiveData<>();
-
 
     public PlaygroundsLifecycleObserver(InsertPlaygroundsInDbUseCase insertPlaygrounds, GetPlaygroundsInDbUseCase getPlaygrounds) {
         this.insertPlaygroundsInDbUseCase = insertPlaygrounds;
@@ -59,20 +57,9 @@ public class PlaygroundsLifecycleObserver implements LifecycleObserver {
         disposables.add(insertPlaygroundsInDbUseCase.insertPlaygrounds(playgrounds)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::getPlaygroundsInDB, t -> Timber.e("error inserting playgrounds")));
+                .subscribe(() -> Timber.e("successfully inserted playgrounds in locale db"),
+                        t -> Timber.e("error inserting playgrounds in locale db")));
 
-    }
-
-    private void getPlaygroundsInDB() {
-        Timber.e("successfully stored fetched playgrounds in locale db");
-        disposables.add(getPlaygroundsInDbUseCase.getPlaygrounds()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(playgroundsLiveData::setValue, t -> Timber.e(t, "error in getting playground from locale db")));
-    }
-
-    public MutableLiveData<List<Playground>> getPlaygroundsLiveData() {
-        return playgroundsLiveData;
     }
 
     private void onFetchingFailed(List<Playground> playground) {

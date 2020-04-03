@@ -18,14 +18,7 @@ public class SubscribeToPlaygroundUseCase {
         this.remoteRepository = remoteRepository;
     }
 
-    public Completable addPlayground(Playground playground){
-        // step 1: save locally
-        Timber.e("Step 1: Save playground locally");
-        Single<Playground> p = localRepository.subscribeTo(playground);
-
-        // step 2: sync with remote
-        Timber.e("Step 2: Sync with remote");
-        Completable completable = p.flatMapCompletable(remoteRepository::sync);
-        return completable;
+    public Completable subscribeTo(Playground playground){
+        return localRepository.subscribeTo(playground);
     }
 }

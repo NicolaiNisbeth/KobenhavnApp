@@ -33,38 +33,13 @@ public class PlaygroundsViewModel extends ViewModel {
         loadPlaygrounds();
     }
 
-
     @Override
     protected void onCleared() {
         disposables.clear();
     }
 
-    /**
-     * Adds new comment
-     */
-    /*
-    public void addPlayground(String commentText) {
-        disposables.add(subscribeToPlaygroundUseCase.addPlayground(commentText)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> Timber.e("add playground success"),
-                        t -> Timber.e(t, "add playground error")));
-    }
-     */
-
-    /**
-     * Exposes the latest comments so the UI can observe it
-     */
     public LiveData<List<Playground>> playgroundsLive() {
         return playgroundsLiveData;
-    }
-
-    public void loadPlaygrounds(){
-        disposables.add(getPlaygroundsInDbUseCase.getPlaygrounds()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(playgroundsLiveData::setValue,
-                        t -> Timber.e(t, "Get playgrounds from db error")));
     }
 
     public void fetchPlaygrounds() {
@@ -75,5 +50,13 @@ public class PlaygroundsViewModel extends ViewModel {
                     Timber.e("Fetched playgrounds successfully");
                     loadPlaygrounds();
                     }, t -> Timber.e(t, "Error in fetching playgrounds")));
+    }
+
+    public void loadPlaygrounds(){
+        disposables.add(getPlaygroundsInDbUseCase.getPlaygrounds()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(playgroundsLiveData::setValue,
+                        t -> Timber.e(t, "Get playgrounds from db error")));
     }
 }

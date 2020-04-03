@@ -2,6 +2,7 @@ package com.example.kobenhavn.view.playgrounds.add;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,18 +10,34 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.dal.local.model.PlaygroundModel;
+import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
+import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
+import com.example.kobenhavn.viewmodel.UserViewModel;
+import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 
 public class AddPlaygroundActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ArrayList<PlaygroundModel> playgroundData;
-    private AddPlaygroundAdapter adapter;
+    private AddPlaygroundAdapter recyclerViewAdapter;
+
+    @Inject
+    PlaygroundsViewModelFactory playgroundViewModelFactory;
+
+    @Inject
+    UserViewModelFactory userViewModelFactory;
+
+    private PlaygroundsViewModel playgroundsViewModel;
+    private UserViewModel userViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playgrounds_add_activity);
 
@@ -33,27 +50,11 @@ public class AddPlaygroundActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler_view_tilfoj_legeplads);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        playgroundData = new ArrayList<>();
-        adapter = new AddPlaygroundAdapter(this, playgroundData);
-        recyclerView.setAdapter(adapter);
+        recyclerViewAdapter = new AddPlaygroundAdapter(this, new ArrayList<>(), userViewModel);
+        recyclerView.setAdapter(recyclerViewAdapter);
 
-        initializeData();
-    }
+        playgroundsViewModel = ViewModelProviders.of(this, playgroundViewModelFactory).get(PlaygroundsViewModel.class);
+        playgroundsViewModel.playgroundsLive().observe(this, recyclerViewAdapter::updatePlaygroundList);
 
-    private void initializeData() {
-        //Get the resources from the XML file
-        String[] legeplads_titel = new String[]{"Lindevangsparken", "Sørbyparken", "Frederiksbergparken"};
-        String[] legeplads_adresse = new String[]{"Agervænget 34", "Søndermarken 22", "Blågadeplads 5"};
-
-        //Clear the existing data (to avoid duplication)
-        playgroundData.clear();
-
-        //Create the ArrayList of Sports objects with the titles and information about each sport
-        for(int i=0;i<legeplads_titel.length;i++){
-            playgroundData.add(new PlaygroundModel(legeplads_titel[i], legeplads_adresse[i], "", null, ""));
-        }
-
-        //Notify the adapter of the change
-        adapter.notifyDataSetChanged();
     }
 }
