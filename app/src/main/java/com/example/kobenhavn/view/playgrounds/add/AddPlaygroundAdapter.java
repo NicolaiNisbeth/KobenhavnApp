@@ -31,14 +31,10 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
 
     private List<Playground> playgrounds;
     private Context context;
-    private final UserViewModel userViewModel;
-    private final User loggedInUSer;
 
-    public AddPlaygroundAdapter(Context context, List<Playground> playgrounds, UserViewModel userViewModel) {
+    public AddPlaygroundAdapter(Context context, List<Playground> playgrounds) {
         this.playgrounds = playgrounds;
         this.context = context;
-        this.userViewModel = userViewModel;
-        loggedInUSer = userViewModel.getLoggedInUser();
     }
 
     @NotNull
@@ -68,9 +64,11 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
         playgrounds.remove(position);
         notifyDataSetChanged();
         Toast.makeText(context, "Legeplads er tilføjet", Toast.LENGTH_SHORT).show();
-
+/*
         loggedInUSer.getSubscribedPlaygrounds().add(playground);
         userViewModel.update(loggedInUSer);
+
+ */
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -99,11 +97,18 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
     public void updatePlaygroundList(List<Playground> playgroundList) {
         this.playgrounds.clear();
 
+/*
         List<Playground> subscribed = loggedInUSer.getSubscribedPlaygrounds();
+
         this.playgrounds.addAll(
                 playgroundList.stream()
                         .filter(p -> !subscribed.contains(p))
                         .collect(Collectors.toList()));
+
+
+         */
+
+        this.playgrounds.addAll(playgroundList);
         notifyDataSetChanged();
 
     }

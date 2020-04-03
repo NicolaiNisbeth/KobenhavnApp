@@ -48,16 +48,13 @@ public class AddPlaygroundActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        playgroundsViewModel = ViewModelProviders.of(this, playgroundViewModelFactory).get(PlaygroundsViewModel.class);
-        playgroundsViewModel.playgroundsLive().observe(this, recyclerViewAdapter::updatePlaygroundList);
-
-        userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
-
+        //userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
+        recyclerViewAdapter = new AddPlaygroundAdapter(this, new ArrayList<>());
         recyclerView = findViewById(R.id.recycler_view_tilfoj_legeplads);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewAdapter = new AddPlaygroundAdapter(this, new ArrayList<>(), userViewModel);
         recyclerView.setAdapter(recyclerViewAdapter);
 
-
+        playgroundsViewModel = ViewModelProviders.of(this, playgroundViewModelFactory).get(PlaygroundsViewModel.class);
+        playgroundsViewModel.playgroundsLive().observe(this, recyclerViewAdapter::updatePlaygroundList);
     }
 }

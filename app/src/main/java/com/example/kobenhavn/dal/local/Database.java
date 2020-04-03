@@ -11,7 +11,6 @@ import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.UserConverter;
 
 @androidx.room.Database(entities = {Playground.class, User.class}, version = 1, exportSchema = false)
-@TypeConverters({UserConverter.class})
 public abstract class Database extends RoomDatabase {
     private static Database instance;
     private static String DB_NAME = "offlinedb";

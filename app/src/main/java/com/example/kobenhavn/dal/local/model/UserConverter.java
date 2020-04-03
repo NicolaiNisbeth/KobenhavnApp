@@ -7,17 +7,18 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserConverter {
 
     @TypeConverter
-    public static ArrayList<Playground> fromString(String value) {
+    public static List<Playground> fromStringToList(String value) {
         Type listType = new TypeToken<ArrayList<Playground>>() {}.getType();
         return new Gson().fromJson(value, listType);
     }
 
     @TypeConverter
-    public static String fromArrayList(ArrayList<Playground> list) {
+    public static String fromListToString(List<Playground> list) {
         Gson gson = new Gson();
         return gson.toJson(list);
     }

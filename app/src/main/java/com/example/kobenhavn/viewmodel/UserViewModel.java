@@ -6,6 +6,8 @@ import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
 import com.example.kobenhavn.usecases.user.UpdateUserInDbUseCase;
 
+import java.sql.Time;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -28,10 +30,11 @@ public class UserViewModel extends ViewModel {
     }
 
     public void addUser(User user){
-        loggedInUser =  addUserToDbUseCase.addUser(user)
+        disposables.add(addUserToDbUseCase.addUser(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .blockingGet();
+                .subscribe((u) -> loggedInUser = u,
+                        t -> Timber.e("Update user error")));
     }
 
     public void update(User user){

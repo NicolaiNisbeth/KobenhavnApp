@@ -16,6 +16,7 @@ import java.util.List;
  */
 
 @Entity(tableName = "user_table")
+@TypeConverters(UserConverter.class)
 public class User implements Serializable {
 
     @PrimaryKey
@@ -47,8 +48,10 @@ public class User implements Serializable {
     @ColumnInfo(name = "sync_pending")
     private boolean syncPending;
 
-    @TypeConverters({UserConverter.class})
+
     private List<Playground> subscribedPlaygrounds = new ArrayList<>();
+
+
 
     public List<Playground> getSubscribedPlaygrounds() {
         return subscribedPlaygrounds;
@@ -57,6 +60,8 @@ public class User implements Serializable {
     public void setSubscribedPlaygrounds(List<Playground> subscribedPlaygrounds) {
         this.subscribedPlaygrounds = subscribedPlaygrounds;
     }
+
+
 
     public String getId() {
         return id;

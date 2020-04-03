@@ -109,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
             _loginButton.setEnabled(formState.isDataValid());
         });
 
-        showLoginSuccess(null); // TODO: to be removed
+        showLoginSuccess(new User("Nicolai", "Nisbeth")); // TODO: to be removed
     }
 
     private void handleLoginResponse(LoginUserRxBus.LoginResponse response) {
