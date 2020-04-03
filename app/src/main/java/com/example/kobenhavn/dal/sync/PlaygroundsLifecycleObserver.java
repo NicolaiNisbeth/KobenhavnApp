@@ -55,7 +55,7 @@ public class PlaygroundsLifecycleObserver implements LifecycleObserver {
     }
 
     private void onFetchingSuccess(List<Playground> playgrounds) {
-        Timber.e("received successfully fetched playgrounds");
+        Timber.e("Successfully fetched playgrounds");
         disposables.add(insertPlaygroundsInDbUseCase.insertPlaygrounds(playgrounds)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -64,6 +64,7 @@ public class PlaygroundsLifecycleObserver implements LifecycleObserver {
     }
 
     private void getPlaygroundsInDB() {
+        Timber.e("successfully stored fetched playgrounds in locale db");
         disposables.add(getPlaygroundsInDbUseCase.getPlaygrounds()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
