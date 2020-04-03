@@ -53,7 +53,7 @@ public class RemoteDataSource {
         return instance;
     }
 
-    public void getPlayground(long name) throws RemoteException, IOException {
+    public void getPlayground(String name) throws RemoteException, IOException {
         /*
         RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
         // Remote call can be executed synchronously since the job calling it is already backgrounded

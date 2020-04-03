@@ -39,7 +39,7 @@ public class SyncPlaygroundJob extends Job {
         Timber.e("Executing job for %s", playground);
 
         // if any exception is thrown, it will be handled by shouldReRunOnThrowable()
-        RemoteDataSource.getInstance().getPlayground(playground.getId());
+        RemoteDataSource.getInstance().getPlayground(playground.getName());
 
         // remote call was successful--the Comment will be updated locally to reflect that sync is no longer pending
         Playground updatedPlayground = LocalePlaygroundUtils.clone(playground, false);

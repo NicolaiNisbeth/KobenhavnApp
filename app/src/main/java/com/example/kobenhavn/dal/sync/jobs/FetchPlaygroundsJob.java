@@ -9,7 +9,7 @@ import com.birbit.android.jobqueue.RetryConstraint;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.dal.remote.RemoteException;
-import com.example.kobenhavn.dal.sync.SyncPlaygroundsRxBus;
+import com.example.kobenhavn.dal.sync.FetchPlaygroundsRxBus;
 import com.example.kobenhavn.dal.sync.SyncResponseType;
 import com.example.kobenhavn.dal.sync.jobs.setup.JobPriority;
 
@@ -38,12 +38,12 @@ public class FetchPlaygroundsJob extends Job {
         Timber.e("Executing fetching playground job");
 
         List<Playground> playgrounds = RemoteDataSource.getInstance().getPlaygrounds();
-        SyncPlaygroundsRxBus.getInstance().post(SyncResponseType.SUCCESS, playgrounds);
+        FetchPlaygroundsRxBus.getInstance().publishFetchingResponse(SyncResponseType.SUCCESS, playgrounds);
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
-        SyncPlaygroundsRxBus.getInstance().post(SyncResponseType.FAILED, null);
+        FetchPlaygroundsRxBus.getInstance().publishFetchingResponse(SyncResponseType.FAILED, null);
     }
 
     @Override

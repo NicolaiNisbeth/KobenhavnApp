@@ -8,7 +8,6 @@ import java.util.List;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
-import timber.log.Timber;
 
 public class LocalRepository implements ILocalRepository {
 
@@ -47,9 +46,16 @@ public class LocalRepository implements ILocalRepository {
         return Completable.fromAction(() -> playgroundDAO.delete(playground));
     }
 
+
+
     @Override
     public Flowable<List<Playground>> getPlaygrounds() {
         return playgroundDAO.getPlaygrounds();
+    }
+
+    @Override
+    public Completable insertAllPlaygrounds(List<Playground> playgrounds) {
+        return Completable.fromAction(() -> playgroundDAO.insertAllPlaygrounds(playgrounds))
     }
 
 }

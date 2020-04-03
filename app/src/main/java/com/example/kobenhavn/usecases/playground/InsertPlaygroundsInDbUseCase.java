@@ -7,14 +7,14 @@ import java.util.List;
 
 import io.reactivex.Completable;
 
-public class AddPlaygroundsToDbUseCase {
+public class InsertPlaygroundsInDbUseCase {
     private final ILocalRepository localRepository;
 
-    public AddPlaygroundsToDbUseCase(ILocalRepository localRepository) {
+    public InsertPlaygroundsInDbUseCase(ILocalRepository localRepository) {
         this.localRepository = localRepository;
     }
 
-    public Completable addPlaygrounds(List<Playground> playgrounds){
-        return localRepository.add(playgrounds);
+    public Completable insertPlaygrounds(List<Playground> playgrounds){
+        return localRepository.insertAllPlaygrounds(playgrounds);
     }
 }

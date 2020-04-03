@@ -14,10 +14,13 @@ import java.util.List;
 import io.reactivex.Flowable;
 
 @Dao
-public interface PlaygroundDAO {
+public interface PlaygroundDAO  {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long add(Playground playground);
+    void add(Playground playground);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAllPlaygrounds(List<Playground> playgrounds);
 
     @Update
     void update(List<Playground> playgrounds);

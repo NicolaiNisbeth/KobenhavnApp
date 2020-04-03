@@ -106,6 +106,8 @@ public class LoginActivity extends AppCompatActivity {
 
             _loginButton.setEnabled(formState.isDataValid());
         });
+
+        showLoginSuccess(null); // TODO: to be removed
     }
 
     private void handleLoginResponse(LoginUserRxBus.LoginResponse response) {
@@ -135,10 +137,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void showLoginSuccess(User user) {
-        // start fetching playgrounds
         playgroundsViewModel.fetchPlaygrounds();
-        String welcome = getString(R.string.welcome) + user.getFirstname();
-        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+        //String welcome = getString(R.string.welcome) + user.getFirstname();
+        //Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, MenuActivity.class);
         setResult(Activity.RESULT_OK);
         startActivity(intent);

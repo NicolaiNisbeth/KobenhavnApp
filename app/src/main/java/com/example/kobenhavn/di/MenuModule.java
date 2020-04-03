@@ -3,7 +3,7 @@ package com.example.kobenhavn.di;
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import com.example.kobenhavn.dal.sync.AddPlaygroundsLifecycleObserver;
-import com.example.kobenhavn.usecases.playground.AddPlaygroundsToDbUseCase;
+import com.example.kobenhavn.usecases.playground.InsertPlaygroundsInDbUseCase;
 import com.example.kobenhavn.usecases.playground.FetchPlaygroundsUseCase;
 import com.example.kobenhavn.usecases.playground.GetPlaygroundsInDbUseCase;
 import com.example.kobenhavn.usecases.playground.SubscribeToPlaygroundUseCase;
@@ -21,8 +21,8 @@ import dagger.Provides;
 class MenuModule {
 
     @Provides
-    AddPlaygroundsLifecycleObserver provideSyncCommentLifecycleObserver(AddPlaygroundsToDbUseCase addPlaygroundsToDbUseCase) {
-        return new AddPlaygroundsLifecycleObserver(addPlaygroundsToDbUseCase);
+    AddPlaygroundsLifecycleObserver provideSyncCommentLifecycleObserver(InsertPlaygroundsInDbUseCase insertPlaygroundsInDbUseCase) {
+        return new AddPlaygroundsLifecycleObserver(insertPlaygroundsInDbUseCase, getPlaygroundsInDbUseCase);
     }
 
     @Provides
@@ -37,8 +37,8 @@ class MenuModule {
     }
 
     @Provides
-    AddPlaygroundsToDbUseCase provideAddPlaygroundsToDbUseCase(ILocalRepository localRepository){
-        return new AddPlaygroundsToDbUseCase(localRepository);
+    InsertPlaygroundsInDbUseCase provideAddPlaygroundsToDbUseCase(ILocalRepository localRepository){
+        return new InsertPlaygroundsInDbUseCase(localRepository);
     }
 
     @Provides

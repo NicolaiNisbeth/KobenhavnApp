@@ -14,5 +14,6 @@ public interface ILocalRepository {
     Completable update(List<Playground> playground);
     Completable delete(Playground playground);
     Flowable<List<Playground>> getPlaygrounds();
+    Completable insertAllPlaygrounds(List<Playground> playgrounds);
 
 }
