@@ -50,6 +50,14 @@ public class User implements Serializable {
     @TypeConverters({UserConverter.class})
     private List<Playground> subscribedPlaygrounds = new ArrayList<>();
 
+    public List<Playground> getSubscribedPlaygrounds() {
+        return subscribedPlaygrounds;
+    }
+
+    public void setSubscribedPlaygrounds(List<Playground> subscribedPlaygrounds) {
+        this.subscribedPlaygrounds = subscribedPlaygrounds;
+    }
+
     public String getId() {
         return id;
     }
@@ -86,13 +94,12 @@ public class User implements Serializable {
         return syncPending;
     }
 
-    public List<Playground> getSubscribedPlaygrounds() {
-        return subscribedPlaygrounds;
-    }
 
     //private Set<Event> events = new HashSet<>();
 
     //private Set<String> playgroundIDs = new HashSet<>();
+
+
 
     @Ignore
     public User(String username, String password){

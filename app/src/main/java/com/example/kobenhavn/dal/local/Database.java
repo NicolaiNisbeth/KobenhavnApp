@@ -4,11 +4,14 @@ import android.content.Context;
 
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.local.model.Playground;
+import com.example.kobenhavn.dal.local.model.UserConverter;
 
 @androidx.room.Database(entities = {Playground.class, User.class}, version = 1, exportSchema = false)
+@TypeConverters({UserConverter.class})
 public abstract class Database extends RoomDatabase {
     private static Database instance;
     private static String DB_NAME = "offlinedb";
@@ -23,4 +26,6 @@ public abstract class Database extends RoomDatabase {
     }
 
     public abstract PlaygroundDAO playgroundDAO();
+
+    public abstract UserDAO userDAO();
 }

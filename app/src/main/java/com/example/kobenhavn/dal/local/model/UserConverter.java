@@ -8,7 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-class UserConverter {
+public class UserConverter {
 
     @TypeConverter
     public static ArrayList<Playground> fromString(String value) {

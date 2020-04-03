@@ -1,6 +1,7 @@
 package com.example.kobenhavn.dal.local;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -20,7 +21,7 @@ public interface UserDAO {
     @Update
     void update(User user);
 
-    @DELETE
+    @Delete
     void delete(User user);
 
     @Query("SELECT * FROM user_table WHERE id = :id")

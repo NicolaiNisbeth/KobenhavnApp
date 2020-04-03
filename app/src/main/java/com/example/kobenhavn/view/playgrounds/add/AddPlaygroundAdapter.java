@@ -98,12 +98,14 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
 
     public void updatePlaygroundList(List<Playground> playgroundList) {
         this.playgrounds.clear();
+
         List<Playground> subscribed = loggedInUSer.getSubscribedPlaygrounds();
         this.playgrounds.addAll(
                 playgroundList.stream()
                         .filter(p -> !subscribed.contains(p))
                         .collect(Collectors.toList()));
         notifyDataSetChanged();
+
     }
 
 }

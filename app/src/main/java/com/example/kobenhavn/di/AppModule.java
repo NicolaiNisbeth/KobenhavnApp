@@ -7,6 +7,7 @@ import com.example.kobenhavn.dal.local.Database;
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.local.LocalRepository;
 import com.example.kobenhavn.dal.local.PlaygroundDAO;
+import com.example.kobenhavn.dal.local.UserDAO;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import com.example.kobenhavn.dal.remote.RemoteRepository;
 import com.example.kobenhavn.dal.sync.jobs.setup.GCMJobService;
@@ -48,8 +49,14 @@ class AppModule {
 
     @Singleton
     @Provides
-    ILocalRepository provideLocalRepository(PlaygroundDAO playgroundDAO) {
-        return new LocalRepository(playgroundDAO);
+    UserDAO provideUserDAO(Context context){
+        return Database.getInstance(context).userDAO();
+    }
+
+    @Singleton
+    @Provides
+    ILocalRepository provideLocalRepository(PlaygroundDAO playgroundDAO, UserDAO userDAO) {
+        return new LocalRepository(playgroundDAO, userDAO);
     }
 
     @Singleton

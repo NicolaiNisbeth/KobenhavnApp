@@ -23,6 +23,7 @@ abstract class BuildersModule {
     @ContributesAndroidInjector(modules = {MenuModule.class, MenuFragmentBuildersModule.class})
     abstract MainActivity bindMenuActivity();
 
+
     @ContributesAndroidInjector(modules = {MenuModule.class})
     abstract AddPlaygroundActivity bindAddPlaygroundActivity();
 
