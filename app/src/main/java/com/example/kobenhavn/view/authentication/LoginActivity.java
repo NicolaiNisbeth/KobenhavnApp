@@ -22,6 +22,8 @@ import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModelFactory;
+import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
+import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 import com.google.android.material.textfield.TextInputLayout;
 
 import javax.inject.Inject;
@@ -37,7 +39,11 @@ import timber.log.Timber;
 public class LoginActivity extends AppCompatActivity {
 
     @Inject
-    AuthenticationViewModelFactory viewModelFactory;
+    PlaygroundsViewModelFactory viewModelPlaygroundFactory;
+
+
+    @Inject
+    AuthenticationViewModelFactory viewModelAuthenticationFactory;
 
     @BindView(R.id.input_username) EditText _usernameText;
     @BindView(R.id.input_password) EditText _passwordText;
@@ -49,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final int REQUEST_SIGNUP = 0;
     private ProgressDialog progressDialog;
     private AuthenticationViewModel authViewModel;
+    private PlaygroundsViewModel playgroundsViewModel;
     private final CompositeDisposable disposables = new CompositeDisposable();
     private FormHandler formHandler;
 
@@ -60,7 +67,8 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         progressDialog = new ProgressDialog(this);
-        authViewModel = ViewModelProviders.of(this, viewModelFactory).get(AuthenticationViewModel.class);
+        authViewModel = ViewModelProviders.of(this, viewModelAuthenticationFactory).get(AuthenticationViewModel.class);
+        playgroundsViewModel = ViewModelProviders.of(this, viewModelPlaygroundFactory).get(PlaygroundsViewModel.class);
         _signupText.setOnClickListener(v -> startSignUp());
         _loginButton.setOnClickListener(v -> login());
         _loginButton.setEnabled(false);
@@ -127,6 +135,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void showLoginSuccess(User user) {
+        // start fetching playgrounds
+        playgroundsViewModel.fetchPlaygrounds();
         String welcome = getString(R.string.welcome) + user.getFirstname();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, MenuActivity.class);

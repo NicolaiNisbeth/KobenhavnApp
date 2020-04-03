@@ -1,4 +1,4 @@
-package com.example.kobenhavn.injections;
+package com.example.kobenhavn.di;
 
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import com.example.kobenhavn.usecases.user.LoginUserUseCase;

@@ -1,4 +1,4 @@
-package com.example.kobenhavn.injections;
+package com.example.kobenhavn.di;
 
 import android.content.Context;
 

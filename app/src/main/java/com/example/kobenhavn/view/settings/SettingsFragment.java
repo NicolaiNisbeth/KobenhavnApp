@@ -1,5 +1,6 @@
 package com.example.kobenhavn.view.settings;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -29,6 +30,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.AndroidInjection;
+import dagger.android.support.AndroidSupportInjection;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
     private Toolbar toolbar;
@@ -66,6 +69,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         _nameText.setText(settingsModel.getName());
         _numberText.setText(settingsModel.getPhoneNumber());
+        _logoutText.setOnClickListener(v -> logUd());
 
         ((TextView) _nameAndAddressView.findViewById(R.id.settings_item_left)).setText("Navn og adresse");
         ((EditText) _nameAndAddressView.findViewById(R.id.settings_item_middle)).setText(settingsModel.getName());
@@ -87,9 +91,13 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         toogleEditText(_changePasswordView.findViewById(R.id.settings_item_middle), false, _changePasswordView.findViewById(R.id.settings_item_right));
         _changePasswordView.findViewById(R.id.settings_item_right).setOnClickListener(this);
 
-        _logoutText.setOnClickListener(v -> logUd());
-
         return root;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
     }
 
     @Override

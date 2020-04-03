@@ -1,8 +1,8 @@
-package com.example.kobenhavn.injections;
+package com.example.kobenhavn.di;
 
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
-import com.example.kobenhavn.dal.sync.FetchPlaygroundsLifecycleObserver;
+import com.example.kobenhavn.dal.sync.AddPlaygroundsLifecycleObserver;
 import com.example.kobenhavn.usecases.playground.AddPlaygroundsToDbUseCase;
 import com.example.kobenhavn.usecases.playground.FetchPlaygroundsUseCase;
 import com.example.kobenhavn.usecases.playground.GetPlaygroundsInDbUseCase;
@@ -21,8 +21,8 @@ import dagger.Provides;
 class MenuModule {
 
     @Provides
-    FetchPlaygroundsLifecycleObserver provideSyncCommentLifecycleObserver(AddPlaygroundsToDbUseCase addPlaygroundsToDbUseCase) {
-        return new FetchPlaygroundsLifecycleObserver(addPlaygroundsToDbUseCase);
+    AddPlaygroundsLifecycleObserver provideSyncCommentLifecycleObserver(AddPlaygroundsToDbUseCase addPlaygroundsToDbUseCase) {
+        return new AddPlaygroundsLifecycleObserver(addPlaygroundsToDbUseCase);
     }
 
     @Provides
@@ -60,4 +60,7 @@ class MenuModule {
     UnsubscribeToPlaygroundUseCase provideDeletePlaygroundUseCase(ILocalRepository localRepository) {
         return new UnsubscribeToPlaygroundUseCase(localRepository);
     }
+
+
+
 }

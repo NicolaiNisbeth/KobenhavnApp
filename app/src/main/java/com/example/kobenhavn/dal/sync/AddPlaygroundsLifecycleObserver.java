@@ -17,11 +17,11 @@ import timber.log.Timber;
 /**
  * Updates local database after remote comment sync requests
  */
-public class FetchPlaygroundsLifecycleObserver implements LifecycleObserver {
+public class AddPlaygroundsLifecycleObserver implements LifecycleObserver {
     private final AddPlaygroundsToDbUseCase addPlaygroundsToDbUseCase;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
-    public FetchPlaygroundsLifecycleObserver(AddPlaygroundsToDbUseCase addPlaygroundsToDbUseCase) {
+    public AddPlaygroundsLifecycleObserver(AddPlaygroundsToDbUseCase addPlaygroundsToDbUseCase) {
         this.addPlaygroundsToDbUseCase = addPlaygroundsToDbUseCase;
     }
 
@@ -57,7 +57,7 @@ public class FetchPlaygroundsLifecycleObserver implements LifecycleObserver {
     }
 
     private void onFetchingPlaygroundsFailed(List<Playground> playground) {
-        Timber.d("Error in fetching playgrounds %s", playground);
+        Timber.d("Error in adding playgrounds %s", playground);
         /*
         disposables.add(unsubscribeToPlaygroundUseCase.deletePlayground(playground)
                 .subscribeOn(Schedulers.io())
