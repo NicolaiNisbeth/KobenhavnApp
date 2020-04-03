@@ -21,8 +21,11 @@ public interface RemoteEndpoint {
     Call<Playground> testResource();
      */
 
-    String BASE_URL = "http://192.168.1.15:8088/rest/";
+    // stationær
+    //String BASE_URL = "http://192.168.1.15:8088/rest/";
 
+    // laptop
+    String BASE_URL = "http://192.168.1.56:8088/rest/";
 
     @GET("playground_list")
     Call<List<Playground>> getPlaygrounds();
