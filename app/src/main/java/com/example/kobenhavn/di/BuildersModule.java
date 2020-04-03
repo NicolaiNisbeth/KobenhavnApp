@@ -1,6 +1,6 @@
 package com.example.kobenhavn.di;
 
-import com.example.kobenhavn.view.MenuActivity;
+import com.example.kobenhavn.view.MainActivity;
 import com.example.kobenhavn.view.authentication.LoginActivity;
 import com.example.kobenhavn.view.authentication.SignUpActivity;
 
@@ -20,7 +20,7 @@ abstract class BuildersModule {
     abstract SignUpActivity bindSignupActivity();
 
     @ContributesAndroidInjector(modules = {MenuModule.class, MenuFragmentBuildersModule.class})
-    abstract MenuActivity bindMenuActivity();
+    abstract MainActivity bindMenuActivity();
 
     // Add bindings for other sub-components here
 }

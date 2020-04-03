@@ -3,13 +3,12 @@ package com.example.kobenhavn.view;
 import android.os.Bundle;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.dal.sync.AddPlaygroundsLifecycleObserver;
+import com.example.kobenhavn.dal.sync.PlaygroundsLifecycleObserver;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.lifecycle.LifecycleRegistry;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -22,10 +21,10 @@ import dagger.android.AndroidInjection;
 import dagger.android.support.DaggerAppCompatActivity;
 import timber.log.Timber;
 
-public class MenuActivity extends DaggerAppCompatActivity {
+public class MainActivity extends DaggerAppCompatActivity {
 
     @Inject
-    AddPlaygroundsLifecycleObserver addPlaygroundsLifecycleObserver;
+    PlaygroundsLifecycleObserver playgroundsLifecycleObserver;
 
     @Inject
     PlaygroundsViewModelFactory viewModelFactory;
@@ -49,7 +48,7 @@ public class MenuActivity extends DaggerAppCompatActivity {
         setContentView(R.layout.main_activity);
 
         Timber.plant(new Timber.DebugTree());
-        getLifecycle().addObserver(addPlaygroundsLifecycleObserver);
+        getLifecycle().addObserver(playgroundsLifecycleObserver);
 
         // Bottom Navigation
         BottomNavigationView navView = findViewById(R.id.nav_view);

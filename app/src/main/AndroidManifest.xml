@@ -18,17 +18,17 @@
 
         <activity
             android:name=".view.playgrounds.add.AddPlaygroundActivity"
-            android:parentActivityName=".view.MenuActivity">
+            android:parentActivityName=".view.MainActivity">
 
         </activity>
         <activity
-            android:name=".view.MenuActivity"
+            android:name=".view.MainActivity"
             android:label="@string/app_name">
 
         </activity>
         <activity
             android:name=".view.events.CardActivity"
-            android:parentActivityName=".view.MenuActivity">
+            android:parentActivityName=".view.MainActivity">
 
         </activity>
 

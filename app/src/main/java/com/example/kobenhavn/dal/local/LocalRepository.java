@@ -55,7 +55,7 @@ public class LocalRepository implements ILocalRepository {
 
     @Override
     public Completable insertAllPlaygrounds(List<Playground> playgrounds) {
-        return Completable.fromAction(() -> playgroundDAO.insertAllPlaygrounds(playgrounds))
+        return Completable.fromAction(() -> playgroundDAO.insertAllPlaygrounds(playgrounds));
     }
 
 }
