@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kobenhavn.R;
+import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.PlaygroundModel;
 
 import butterknife.BindView;
@@ -18,7 +19,7 @@ import butterknife.ButterKnife;
 
 public class PlaygroundsFragment extends Fragment {
     private static final String LEGEPLADS_MODEL = "com.example.kobenhavn.ui.legepladser.playgroundsModel";
-    private PlaygroundModel playgroundModel;
+    private Playground playgroundModel;
 
     @BindView(R.id.future_date_text) TextView _titleText;
     @BindView(R.id.future_subtitle_text) TextView _addresseText;
@@ -28,7 +29,7 @@ public class PlaygroundsFragment extends Fragment {
 
     public PlaygroundsFragment() { }
 
-    public static PlaygroundsFragment newInstance(PlaygroundModel model) {
+    public static PlaygroundsFragment newInstance(Playground model) {
         PlaygroundsFragment fragment = new PlaygroundsFragment();
         Bundle args = new Bundle();
         args.putParcelable(LEGEPLADS_MODEL, model);
@@ -48,9 +49,9 @@ public class PlaygroundsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.playgrounds_info_item, container, false);
         ButterKnife.bind(this, root);
-        _titleText.setText(playgroundModel.getTitle());
-        _addresseText.setText(playgroundModel.getAddress());
-        _descriptionText.setText(playgroundModel.getDescription());
+        _titleText.setText(playgroundModel.getName());
+        _addresseText.setText(String.format("%s %s", playgroundModel.getStreetName(), playgroundModel.getStreetNumber()));
+        _descriptionText.setText(playgroundModel.getCommune());
         return root;
     }
 }

@@ -20,7 +20,7 @@ abstract class BuildersModule {
     @ContributesAndroidInjector(modules = AuthenticationModule.class)
     abstract SignUpActivity bindSignupActivity();
 
-    @ContributesAndroidInjector(modules = {MenuModule.class, MenuFragmentBuildersModule.class})
+    @ContributesAndroidInjector(modules = {MenuModule.class, MainFragmentBuildersModule.class})
     abstract MainActivity bindMenuActivity();
 
 

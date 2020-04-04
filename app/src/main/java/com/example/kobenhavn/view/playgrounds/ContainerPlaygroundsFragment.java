@@ -22,7 +22,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.kobenhavn.R;
+import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.PlaygroundModel;
+import com.example.kobenhavn.dal.local.model.inmemory.LoggedInUser;
 import com.example.kobenhavn.view.playgrounds.add.AddPlaygroundActivity;
 import com.google.android.material.tabs.TabLayout;
 
@@ -47,8 +49,8 @@ public class ContainerPlaygroundsFragment extends Fragment {
 
         // fetch data
         tabList = new ArrayList<>();
-        for (PlaygroundModel model : fetchSubscribedLegepladser()){
-            tabList.add(new Pair<>(model.getTitle(), PlaygroundsFragment.newInstance(model)));
+        for (Playground model : LoggedInUser.user.getSubscribedPlaygrounds()){
+            tabList.add(new Pair<>(model.getName(), PlaygroundsFragment.newInstance(model)));
         }
 
         // setup table layout
@@ -57,14 +59,6 @@ public class ContainerPlaygroundsFragment extends Fragment {
         viewPager.setAdapter(sectionsPagerAdapter);
         final TabLayout tabLayout = root.findViewById(R.id.playground_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-
-        final int TAB_CONTENT_START = 96;
-        tabLayout.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            final int maxAllowWidthOfTabBar = tabLayout.getMeasuredWidth() + TAB_CONTENT_START;
-            if (scrollX > maxAllowWidthOfTabBar)
-                tabLayout.setScrollX(maxAllowWidthOfTabBar);
-        });
-
         return root;
     }
 
@@ -113,17 +107,5 @@ public class ContainerPlaygroundsFragment extends Fragment {
         }
 
 
-    }
-    public ArrayList<PlaygroundModel> fetchSubscribedLegepladser(){
-        ArrayList<PlaygroundModel> data = new ArrayList<>();
-        PlaygroundModel lindevangsparken = new PlaygroundModel("Lindevangsparken", "Agervænget 34", "beskrivelse", null, "img_url");
-        PlaygroundModel soerbyparken = new PlaygroundModel("Sørbyparken", "Blåhavsgade 5", "beskrivelse", null, "img_url");
-        PlaygroundModel frederiksbergparken = new PlaygroundModel("Frederiksbergparken", "Søpapair 13", "beskrivelse", null, "img_url");
-        PlaygroundModel athenparken = new PlaygroundModel("Athenparken", "Berliner Strasse 55", "beskrivelse", null, "img_url");
-        data.add(lindevangsparken);
-        data.add(soerbyparken);
-        data.add(frederiksbergparken);
-        data.add(athenparken);
-        return data;
     }
 }

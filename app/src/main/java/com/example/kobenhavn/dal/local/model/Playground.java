@@ -1,6 +1,11 @@
 package com.example.kobenhavn.dal.local.model;
 
+import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -15,7 +20,12 @@ import java.util.Objects;
  * Immutable POJO that represents a playground
  */
 @Entity(tableName = "playground_table")
-public class Playground implements Serializable {
+public class Playground implements Serializable, Parcelable {
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Playground createFromParcel(Parcel in){return new Playground(in);}
+        public Playground[] newArray(int size){return new Playground[size];}
+    };
 
     @PrimaryKey
     @NonNull
@@ -118,6 +128,20 @@ public class Playground implements Serializable {
         this.syncPending = syncPending;
     }
 
+    private Playground(Parcel in){
+        this.id = in.readString();
+        this.name = in.readString();
+        this.imagepath = in.readString();
+        //this.toiletPossibilities = in.readBoolean();
+        //this.hasSoccerField = in.readBoolean();
+        this.streetName = in.readString();
+        this.streetNumber = in.readInt();
+        this.commune = in.readString();
+        this.zipCode = in.readInt();
+        //this.syncPending = in.readBoolean();
+
+    }
+
     @Override
     public String toString() {
         return "Playground{" +
@@ -154,5 +178,24 @@ public class Playground implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, imagepath, toiletPossibilities, hasSoccerField, streetName, streetNumber, commune, zipCode, syncPending);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(imagepath);
+        //dest.writeBoolean(toiletPossibilities);
+        //dest.writeBoolean(hasSoccerField);
+        dest.writeString(streetName);
+        dest.writeInt(streetNumber);
+        dest.writeString(commune);
+        dest.writeInt(zipCode);
+        //dest.writeBoolean(syncPending);
     }
 }
