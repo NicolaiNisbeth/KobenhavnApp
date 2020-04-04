@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.dal.local.model.EventModel;
+import com.example.kobenhavn.dal.local.model.Event;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
@@ -23,12 +23,12 @@ import butterknife.ButterKnife;
 
 public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHolder> {
 
-    private List<EventModel> eventData;
+    private List<Event> events;
     private Context context;
     private OnItemClickListener listener;
 
-    public EnrolledAdapter(Context context, ArrayList<EventModel> eventData) {
-        this.eventData = eventData;
+    public EnrolledAdapter(Context context, List<Event> events) {
+        this.events = events;
         this.context = context;
     }
 
@@ -40,20 +40,20 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
 
 
     public void deleteItem(int position){
-        Toast.makeText(context, eventData.get(position).getTitle() + " blev fjernet.", Toast.LENGTH_SHORT).show();
-        eventData.remove(position);
+        Toast.makeText(context, events.get(position).getTitle() + " blev fjernet.", Toast.LENGTH_SHORT).show();
+        events.remove(position);
         notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(EnrolledAdapter.ViewHolder holder, int position) {
-        EventModel eventModel = eventData.get(position);
-        holder.bindTo(eventModel);
+        Event event = events.get(position);
+        holder.bindTo(event);
     }
 
     @Override
     public int getItemCount() {
-        return eventData.size();
+        return events.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -71,14 +71,14 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (listener != null && position != RecyclerView.NO_POSITION) {
-                    listener.onItemClick(eventData.get(position));
+                    listener.onItemClick(events.get(position));
                 }
             });
 
             _deleteButton.setOnClickListener(v -> deleteItem(getAdapterPosition()));
         }
 
-        void bindTo(EventModel event) {
+        void bindTo(Event event) {
             _dateText.setText(event.getDate());
             _subtitleText.setText(event.getSubtitle());
             _titleText.setText(event.getTitle());
@@ -88,7 +88,7 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
     }
 
     public interface OnItemClickListener {
-        void onItemClick(EventModel eventModel);
+        void onItemClick(Event eventModel);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

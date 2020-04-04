@@ -9,23 +9,22 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.dal.local.model.EventModel;
+import com.example.kobenhavn.dal.local.model.Event;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder> {
-    private List<EventModel> eventModel;
+    private List<Event> event;
     private Context context;
     private OnItemClickListener listener;
 
-    public FutureAdapter(Context context, ArrayList<EventModel> aktivitetsData) {
-        this.eventModel = aktivitetsData;
+    public FutureAdapter(Context context, List<Event> event) {
+        this.event = event;
         this.context = context;
     }
 
@@ -36,13 +35,13 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
     }
 
     public void onBindViewHolder(FutureAdapter.ViewHolder holder, int position) {
-        EventModel currentEvent = eventModel.get(position);
+        Event currentEvent = event.get(position);
         holder.bindTo(currentEvent);
     }
 
     @Override
     public int getItemCount() {
-        return eventModel.size();
+        return event.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -60,23 +59,23 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (listener != null & position != RecyclerView.NO_POSITION) {
-                    listener.onItemClick(eventModel.get(position));
+                    listener.onItemClick(event.get(position));
                 }
             });
         }
 
-        void bindTo(EventModel aktivitet) {
-            _dateText.setText(aktivitet.getDate());
-            _subtitleText.setText(aktivitet.getSubtitle());
-            _titleText.setText(aktivitet.getTitle());
-            _timeText.setText(aktivitet.getTime());
-            _descriptionText.setText(aktivitet.getDescription());
-            _interestedText.setText(aktivitet.getInterested());
+        void bindTo(Event event) {
+            _dateText.setText(event.getDate());
+            _subtitleText.setText(event.getSubtitle());
+            _titleText.setText(event.getTitle());
+            _timeText.setText(event.getTime());
+            _descriptionText.setText(event.getDescription());
+            _interestedText.setText(event.getInterested());
         }
     }
 
     public interface OnItemClickListener {
-        void onItemClick(EventModel eventModel);
+        void onItemClick(Event event);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
