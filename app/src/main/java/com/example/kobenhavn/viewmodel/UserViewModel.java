@@ -3,10 +3,10 @@ package com.example.kobenhavn.viewmodel;
 import androidx.lifecycle.ViewModel;
 
 import com.example.kobenhavn.dal.local.model.User;
-import com.example.kobenhavn.dal.local.model.stub.LoggedInUser;
+import com.example.kobenhavn.dal.local.model.inmemory.LoggedInUser;
 import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
 import com.example.kobenhavn.usecases.user.GetUserFromDbUseCase;
-import com.example.kobenhavn.usecases.user.UpdateUserInDbUseCase;
+import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionInDbUseCase;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -15,13 +15,13 @@ import timber.log.Timber;
 
 public class UserViewModel extends ViewModel {
     private final AddUserToDbUseCase addUserToDbUseCase;
-    private final UpdateUserInDbUseCase updateUserInDbUseCase;
+    private final UpdateUserSubscriptionInDbUseCase updateUserSubscriptionInDbUseCase;
     private final GetUserFromDbUseCase getUserFromDbUseCase;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
-    public UserViewModel(AddUserToDbUseCase addUserToDbUseCase, UpdateUserInDbUseCase updateUserInDbUseCase, GetUserFromDbUseCase getUserFromDbUseCase) {
+    public UserViewModel(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionInDbUseCase updateUserSubscriptionInDbUseCase, GetUserFromDbUseCase getUserFromDbUseCase) {
         this.addUserToDbUseCase = addUserToDbUseCase;
-        this.updateUserInDbUseCase = updateUserInDbUseCase;
+        this.updateUserSubscriptionInDbUseCase = updateUserSubscriptionInDbUseCase;
         this.getUserFromDbUseCase = getUserFromDbUseCase;
     }
 
@@ -43,12 +43,12 @@ public class UserViewModel extends ViewModel {
     }
 
     public void update(User user){
-        disposables.add(updateUserInDbUseCase.updateUserInDB(user)
+        disposables.add(updateUserSubscriptionInDbUseCase.updateUserSubscriptions(user.getUsername(), user.getSubscribedPlaygrounds())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(u -> {
-                    Timber.e("Update user success %s" , u);
-                    LoggedInUser.user = u;
+                .subscribe(() -> {
+                    Timber.e("Update user success");
+                    getUser(user.getUsername());
                     }, t -> Timber.e("Update user error")));
     }
 

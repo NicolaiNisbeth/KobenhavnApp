@@ -9,6 +9,7 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Immutable POJO that represents a playground
@@ -131,5 +132,27 @@ public class Playground implements Serializable {
                 ", zipCode=" + zipCode +
                 ", syncPending=" + syncPending +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Playground that = (Playground) o;
+        return toiletPossibilities == that.toiletPossibilities &&
+                hasSoccerField == that.hasSoccerField &&
+                streetNumber == that.streetNumber &&
+                zipCode == that.zipCode &&
+                syncPending == that.syncPending &&
+                id.equals(that.id) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(imagepath, that.imagepath) &&
+                Objects.equals(streetName, that.streetName) &&
+                Objects.equals(commune, that.commune);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, imagepath, toiletPossibilities, hasSoccerField, streetName, streetNumber, commune, zipCode, syncPending);
     }
 }

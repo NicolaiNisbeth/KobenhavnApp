@@ -21,5 +21,7 @@ public interface ILocalRepository {
 
     Single<User> update(User user);
 
+    Completable updateSubscription(String username, List<Playground> playgrounds);
+
     Single<User> getUser(String username);
 }

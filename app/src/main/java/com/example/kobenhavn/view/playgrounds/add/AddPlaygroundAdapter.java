@@ -12,18 +12,13 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.dal.local.model.EventModel;
 import com.example.kobenhavn.dal.local.model.Playground;
-import com.example.kobenhavn.dal.local.model.PlaygroundModel;
-import com.example.kobenhavn.dal.local.model.User;
-import com.example.kobenhavn.dal.local.model.stub.LoggedInUser;
+import com.example.kobenhavn.dal.local.model.inmemory.LoggedInUser;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -107,10 +102,6 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
         Timber.e("updateplaygroundlist %s", subscribed);
         playgroundList.removeIf(subscribed::contains);
         this.playgrounds.addAll(playgroundList);
-
-
-
-        //this.playgrounds.addAll(playgroundList);
         notifyDataSetChanged();
 
     }

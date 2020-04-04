@@ -7,7 +7,10 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
+
+import java.util.List;
 
 import io.reactivex.Single;
 import retrofit2.http.DELETE;
@@ -20,6 +23,9 @@ public interface UserDAO {
 
     @Update
     void update(User user);
+
+    @Query("UPDATE user_table SET subscribed_playgrounds = :subscribed WHERE username = :username")
+    void update(String username, List<Playground> subscribed);
 
     @Delete
     void delete(User user);

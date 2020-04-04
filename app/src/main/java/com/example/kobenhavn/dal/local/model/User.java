@@ -16,7 +16,6 @@ import java.util.List;
  */
 
 @Entity(tableName = "user_table")
-@TypeConverters(UserConverter.class)
 public class User implements Serializable {
 
     @PrimaryKey

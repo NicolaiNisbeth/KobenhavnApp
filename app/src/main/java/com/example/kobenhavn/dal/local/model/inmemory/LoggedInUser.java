@@ -1,4 +1,4 @@
-package com.example.kobenhavn.dal.local.model.stub;
+package com.example.kobenhavn.dal.local.model.inmemory;
 
 import com.example.kobenhavn.dal.local.model.User;
 
