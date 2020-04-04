@@ -4,6 +4,7 @@ import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.local.model.User;
 
 import io.reactivex.Single;
+import timber.log.Timber;
 
 public class AddUserToDbUseCase {
     private ILocalRepository localRepository;

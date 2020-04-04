@@ -2,6 +2,8 @@ package com.example.kobenhavn.dal.local;
 
 import com.example.kobenhavn.dal.local.model.User;
 
+import io.reactivex.Single;
+
 public class LocaleUserUtils {
     public static User clone(User from, boolean syncPending){
         return new User(

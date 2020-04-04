@@ -24,7 +24,7 @@ public interface UserDAO {
     @Delete
     void delete(User user);
 
-    @Query("SELECT * FROM user_table WHERE id = :id")
-    Single<User> getUser(long id);
+    @Query("SELECT * FROM user_table WHERE username = :username")
+    Single<User> getUser(String username);
 
 }

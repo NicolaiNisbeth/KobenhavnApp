@@ -19,5 +19,7 @@ public interface ILocalRepository {
 
     Single<User> add(User user);
 
-    Completable update(User user);
+    Single<User> update(User user);
+
+    Single<User> getUser(String username);
 }

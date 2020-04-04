@@ -16,6 +16,7 @@ import com.example.kobenhavn.dal.local.model.EventModel;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.PlaygroundModel;
 import com.example.kobenhavn.dal.local.model.User;
+import com.example.kobenhavn.dal.local.model.stub.LoggedInUser;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -26,15 +27,18 @@ import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdapter.ViewHolder> {
 
     private List<Playground> playgrounds;
     private Context context;
+    private UserViewModel userViewModel;
 
-    public AddPlaygroundAdapter(Context context, List<Playground> playgrounds) {
+    public AddPlaygroundAdapter(Context context, List<Playground> playgrounds, UserViewModel userViewModel) {
         this.playgrounds = playgrounds;
         this.context = context;
+        this.userViewModel = userViewModel;
     }
 
     @NotNull
@@ -62,13 +66,14 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
 
     public void addItem(int position, Playground playground){
         playgrounds.remove(position);
-        notifyDataSetChanged();
-        Toast.makeText(context, "Legeplads er tilføjet", Toast.LENGTH_SHORT).show();
-/*
-        loggedInUSer.getSubscribedPlaygrounds().add(playground);
-        userViewModel.update(loggedInUSer);
 
- */
+        Toast.makeText(context, "Legeplads er tilføjet", Toast.LENGTH_SHORT).show();
+        List<Playground> d = LoggedInUser.user.getSubscribedPlaygrounds();
+        d.add(playground);
+        LoggedInUser.user.setSubscribedPlaygrounds(d);
+        LoggedInUser.user.setPassword("hahahahah");
+        userViewModel.update(LoggedInUser.user);
+        notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -97,18 +102,15 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
     public void updatePlaygroundList(List<Playground> playgroundList) {
         this.playgrounds.clear();
 
-/*
-        List<Playground> subscribed = loggedInUSer.getSubscribedPlaygrounds();
 
-        this.playgrounds.addAll(
-                playgroundList.stream()
-                        .filter(p -> !subscribed.contains(p))
-                        .collect(Collectors.toList()));
-
-
-         */
-
+        List<Playground> subscribed = LoggedInUser.user.getSubscribedPlaygrounds();
+        Timber.e("updateplaygroundlist %s", subscribed);
+        playgroundList.removeIf(subscribed::contains);
         this.playgrounds.addAll(playgroundList);
+
+
+
+        //this.playgrounds.addAll(playgroundList);
         notifyDataSetChanged();
 
     }

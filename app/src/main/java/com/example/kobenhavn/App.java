@@ -12,6 +12,7 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import timber.log.Timber;
 
 public class App extends Application implements HasActivityInjector, HasSupportFragmentInjector {
 
@@ -29,6 +30,8 @@ public class App extends Application implements HasActivityInjector, HasSupportF
                 .application(this)
                 .build()
                 .inject(this);
+
+        Timber.plant(new Timber.DebugTree());
 
         JobManagerFactory.getJobManager(this);
     }

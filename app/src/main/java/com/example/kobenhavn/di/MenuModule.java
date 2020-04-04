@@ -12,6 +12,7 @@ import com.example.kobenhavn.usecases.playground.SubscribeToPlaygroundUseCase;
 import com.example.kobenhavn.usecases.playground.UnsubscribeToPlaygroundUseCase;
 import com.example.kobenhavn.usecases.playground.UpdatePlaygroundsInDbUseCase;
 import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
+import com.example.kobenhavn.usecases.user.GetUserFromDbUseCase;
 import com.example.kobenhavn.usecases.user.UpdateUserInDbUseCase;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
@@ -37,8 +38,8 @@ class MenuModule {
     }
 
     @Provides
-    UserViewModelFactory provideUserViewModelFactory(AddUserToDbUseCase addUserToDbUseCase, UpdateUserInDbUseCase updateUserInDbUseCase){
-        return new UserViewModelFactory(addUserToDbUseCase, updateUserInDbUseCase);
+    UserViewModelFactory provideUserViewModelFactory(AddUserToDbUseCase addUserToDbUseCase, UpdateUserInDbUseCase updateUserInDbUseCase, GetUserFromDbUseCase getUserFromDbUseCase){
+        return new UserViewModelFactory(addUserToDbUseCase, updateUserInDbUseCase, getUserFromDbUseCase);
     }
 
     @Provides
@@ -49,6 +50,11 @@ class MenuModule {
     @Provides
     UpdateUserInDbUseCase provideUpdateUserInDbUseCase(ILocalRepository localRepository){
         return new UpdateUserInDbUseCase(localRepository);
+    }
+
+    @Provides
+    GetUserFromDbUseCase provideGetUserFromDbUseCase(ILocalRepository localRepository){
+        return new GetUserFromDbUseCase(localRepository);
     }
 
     @Provides

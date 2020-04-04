@@ -48,7 +48,7 @@ public class User implements Serializable {
     @ColumnInfo(name = "sync_pending")
     private boolean syncPending;
 
-
+    @ColumnInfo(name = "subscribed_playgrounds")
     private List<Playground> subscribedPlaygrounds = new ArrayList<>();
 
 
@@ -105,6 +105,41 @@ public class User implements Serializable {
     //private Set<String> playgroundIDs = new HashSet<>();
 
 
+    public void setId(@NonNull String id) {
+        this.id = id;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setImagepath(String imagepath) {
+        this.imagepath = imagepath;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public void setSyncPending(boolean syncPending) {
+        this.syncPending = syncPending;
+    }
 
     @Ignore
     public User(String username, String password){
@@ -138,7 +173,6 @@ public class User implements Serializable {
     }
 
 
-
     @Override
     public String toString() {
         return "User{" +
@@ -150,6 +184,8 @@ public class User implements Serializable {
                 ", email='" + email + '\'' +
                 ", imagepath='" + imagepath + '\'' +
                 ", phonenumber='" + phonenumber + '\'' +
+                ", syncPending=" + syncPending +
+                ", subscribedPlaygrounds=" + subscribedPlaygrounds +
                 '}';
     }
 }

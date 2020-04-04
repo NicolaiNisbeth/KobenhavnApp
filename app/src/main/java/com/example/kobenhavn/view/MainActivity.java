@@ -46,7 +46,6 @@ public class MainActivity extends DaggerAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        Timber.plant(new Timber.DebugTree());
         getLifecycle().addObserver(playgroundsLifecycleObserver);
 
         // Bottom Navigation
