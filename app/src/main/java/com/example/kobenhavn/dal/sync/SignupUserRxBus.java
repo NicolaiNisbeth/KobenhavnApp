@@ -1,6 +1,5 @@
 package com.example.kobenhavn.dal.sync;
 
-import com.example.kobenhavn.dal.local.model.User;
 import com.jakewharton.rxrelay2.PublishRelay;
 
 import io.reactivex.Observable;

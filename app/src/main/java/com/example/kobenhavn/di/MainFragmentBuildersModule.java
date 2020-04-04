@@ -10,7 +10,7 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 abstract class MainFragmentBuildersModule {
 
-    @ContributesAndroidInjector(modules = AuthenticationModule.class)
+    @ContributesAndroidInjector(modules = {AuthenticationModule.class, MenuModule.class})
     abstract SettingsFragment contributeSettingsFragment();
 
     @ContributesAndroidInjector(modules = AuthenticationModule.class)

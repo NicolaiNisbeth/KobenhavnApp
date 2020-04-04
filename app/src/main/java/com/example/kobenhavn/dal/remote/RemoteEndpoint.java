@@ -22,15 +22,17 @@ public interface RemoteEndpoint {
      */
 
     // stationær
-    String BASE_URL = "http://192.168.1.15:8088/rest/";
+    String BASE_URL = "http://192.168.1.15:8090/";
 
     // laptop
-    //String BASE_URL = "http://192.168.1.56:8088/rest/";
+    //String BASE_URL = "http://192.168.1.56:8090//";
 
-    @GET("playground_list")
+    @GET("playgrounds")
     Call<List<Playground>> getPlaygrounds();
 
 
+    @PUT("rest/update_user")
+    Call<User> updateUser(@Body User user);
 
 
 
@@ -57,8 +59,6 @@ public interface RemoteEndpoint {
 
 
 
-    @PUT("posts")
-    Call<User> updateUser(@Body User user);
 
     @PUT("posts")  //eventID, username
     Call<Event> addUserToPlaygroundEvent(int eventID, String usenname);

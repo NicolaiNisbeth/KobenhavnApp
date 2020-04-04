@@ -6,21 +6,24 @@ import com.example.kobenhavn.dal.sync.jobs.FetchPlaygroundsJob;
 import com.example.kobenhavn.dal.sync.jobs.LoginUserJob;
 import com.example.kobenhavn.dal.sync.jobs.SignupUserJob;
 import com.example.kobenhavn.dal.sync.jobs.SyncPlaygroundJob;
+import com.example.kobenhavn.dal.sync.jobs.SyncUserJob;
 import com.example.kobenhavn.dal.sync.jobs.setup.JobManagerFactory;
 
 import io.reactivex.Completable;
 
+/**
+ * Adds a new job in background thread to be fired at remote REST API
+ */
 public class RemoteRepository implements IRemoteRepository {
 
     @Override
     public Completable sync(Playground playground) {
-        // adds a new job in the background
         return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new SyncPlaygroundJob(playground)));
     }
 
     @Override
     public Completable sync(User user) {
-        return null;
+        return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new SyncUserJob(user)));
     }
 
     @Override

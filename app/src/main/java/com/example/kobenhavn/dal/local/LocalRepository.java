@@ -73,7 +73,11 @@ public class LocalRepository implements ILocalRepository {
 
     @Override
     public Single<User> update(User user) {
-        return null;
+        return Single.fromCallable(() -> {
+            userDAO.update(user);
+            Timber.e("User is updated locally");
+            return LocaleUserUtils.clone(user, false);
+        });
     }
 
     @Override

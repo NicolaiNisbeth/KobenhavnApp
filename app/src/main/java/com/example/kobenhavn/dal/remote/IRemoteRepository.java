@@ -4,6 +4,7 @@ import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
 
 import io.reactivex.Completable;
+import io.reactivex.Single;
 
 public interface IRemoteRepository {
     Completable sync(Playground playground);

@@ -7,6 +7,7 @@ import com.example.kobenhavn.dal.local.model.inmemory.LoggedInUser;
 import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
 import com.example.kobenhavn.usecases.user.GetUserFromDbUseCase;
 import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionInDbUseCase;
+import com.example.kobenhavn.usecases.user.UpdateUserUseCase;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -17,12 +18,14 @@ public class UserViewModel extends ViewModel {
     private final AddUserToDbUseCase addUserToDbUseCase;
     private final UpdateUserSubscriptionInDbUseCase updateUserSubscriptionInDbUseCase;
     private final GetUserFromDbUseCase getUserFromDbUseCase;
+    private final UpdateUserUseCase updateUserUseCase;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
-    public UserViewModel(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionInDbUseCase updateUserSubscriptionInDbUseCase, GetUserFromDbUseCase getUserFromDbUseCase) {
+    public UserViewModel(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionInDbUseCase updateUserSubscriptionInDbUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase) {
         this.addUserToDbUseCase = addUserToDbUseCase;
         this.updateUserSubscriptionInDbUseCase = updateUserSubscriptionInDbUseCase;
         this.getUserFromDbUseCase = getUserFromDbUseCase;
+        this.updateUserUseCase = updateUserUseCase;
     }
 
     @Override
@@ -42,14 +45,24 @@ public class UserViewModel extends ViewModel {
 
     }
 
-    public void update(User user){
+    public void updateSubscriptions(User user){
         disposables.add(updateUserSubscriptionInDbUseCase.updateUserSubscriptions(user.getUsername(), user.getSubscribedPlaygrounds())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                    Timber.e("Update user success");
+                    Timber.e("Update user subscriptions success");
                     getUser(user.getUsername());
-                    }, t -> Timber.e("Update user error")));
+                    }, t -> Timber.e("Update user subscriptions error")));
+    }
+
+    public void updateUser(User user){
+        disposables.add(updateUserUseCase.updateUser(user)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(() -> {
+            Timber.e("update user success");
+            getUser(user.getUsername());
+        }, t -> Timber.e("update user error")));
     }
 
     public void getUser(String username){

@@ -1,5 +1,7 @@
 package com.example.kobenhavn.di;
 
+import androidx.room.Update;
+
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import com.example.kobenhavn.dal.sync.PlaygroundsLifecycleObserver;
@@ -12,6 +14,7 @@ import com.example.kobenhavn.usecases.playground.UpdatePlaygroundsInDbUseCase;
 import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
 import com.example.kobenhavn.usecases.user.GetUserFromDbUseCase;
 import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionInDbUseCase;
+import com.example.kobenhavn.usecases.user.UpdateUserUseCase;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 
@@ -36,8 +39,13 @@ class MenuModule {
     }
 
     @Provides
-    UserViewModelFactory provideUserViewModelFactory(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionInDbUseCase updateUserSubscriptionInDbUseCase, GetUserFromDbUseCase getUserFromDbUseCase){
-        return new UserViewModelFactory(addUserToDbUseCase, updateUserSubscriptionInDbUseCase, getUserFromDbUseCase);
+    UserViewModelFactory provideUserViewModelFactory(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionInDbUseCase updateUserSubscriptionInDbUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase){
+        return new UserViewModelFactory(addUserToDbUseCase, updateUserSubscriptionInDbUseCase, getUserFromDbUseCase, updateUserUseCase);
+    }
+
+    @Provides
+    UpdateUserUseCase provideUpdateUser(ILocalRepository localRepository, IRemoteRepository remoteRepository){
+        return new UpdateUserUseCase(localRepository, remoteRepository);
     }
 
     @Provides

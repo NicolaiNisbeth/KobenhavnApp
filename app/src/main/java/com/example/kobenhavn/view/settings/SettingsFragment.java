@@ -21,30 +21,36 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.dal.local.model.SettingsModel;
+import com.example.kobenhavn.dal.local.model.User;
+import com.example.kobenhavn.dal.local.model.inmemory.LoggedInUser;
 import com.example.kobenhavn.view.authentication.LoginActivity;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModelFactory;
+import com.example.kobenhavn.viewmodel.UserViewModel;
+import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.android.AndroidInjection;
 import dagger.android.support.AndroidSupportInjection;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
     private Toolbar toolbar;
-    private AuthenticationViewModel viewModel;
+    private AuthenticationViewModel authenticationViewModel;
+    private UserViewModel userViewModel;
 
     @Inject
-    AuthenticationViewModelFactory viewModelFactory;
+    AuthenticationViewModelFactory authenticationViewModelFactory;
+
+    @Inject
+    UserViewModelFactory userViewModelFactory;
 
     @BindView(R.id.settings_profile_name) TextView _nameText;
     @BindView(R.id.settings_profile_number) TextView _numberText;
     @BindView(R.id.settings_logout) TextView _logoutText;
 
-    @BindView(R.id.settings_name_and_address) View _nameAndAddressView;
+    @BindView(R.id.settings_name_and_address) View _nameView;
     @BindView(R.id.settings_email) View _emailView;
     @BindView(R.id.settings_mobile_number) View _mobileNumberView;
     @BindView(R.id.settings_change_password) View _changePasswordView;
@@ -52,9 +58,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.settings_fragment, container, false);
         ButterKnife.bind(this, root);
-
-        // fetch data
-        SettingsModel settingsModel = fetchIndstillinger();
 
         // setup toolbar
         setHasOptionsMenu(true);
@@ -65,29 +68,30 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         TextView title = toolbar.findViewById(R.id.toolbar_title);
         title.setText("Indstillinger");
 
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(AuthenticationViewModel.class);
+        authenticationViewModel = ViewModelProviders.of(this, authenticationViewModelFactory).get(AuthenticationViewModel.class);
+        userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
 
-        _nameText.setText(settingsModel.getName());
-        _numberText.setText(settingsModel.getPhoneNumber());
+        _nameText.setText(LoggedInUser.user.getFirstname());
+        _numberText.setText(LoggedInUser.user.getPhonenumber());
         _logoutText.setOnClickListener(v -> logUd());
 
-        ((TextView) _nameAndAddressView.findViewById(R.id.settings_item_left)).setText("Navn og adresse");
-        ((EditText) _nameAndAddressView.findViewById(R.id.settings_item_middle)).setText(settingsModel.getName());
-        toogleEditText(_nameAndAddressView.findViewById(R.id.settings_item_middle), false, _nameAndAddressView.findViewById(R.id.settings_item_right));
-        _nameAndAddressView.findViewById(R.id.settings_item_right).setOnClickListener(this);
+        ((TextView) _nameView.findViewById(R.id.settings_item_left)).setText("Navn");
+        ((EditText) _nameView.findViewById(R.id.settings_item_middle)).setText(LoggedInUser.user.getFirstname());
+        toogleEditText(_nameView.findViewById(R.id.settings_item_middle), false, _nameView.findViewById(R.id.settings_item_right));
+        _nameView.findViewById(R.id.settings_item_right).setOnClickListener(this);
 
         ((TextView) _emailView.findViewById(R.id.settings_item_left)).setText("E-mail");
-        ((EditText) _emailView.findViewById(R.id.settings_item_middle)).setText(settingsModel.getEmail());
+        ((EditText) _emailView.findViewById(R.id.settings_item_middle)).setText(LoggedInUser.user.getEmail());
         toogleEditText(_emailView.findViewById(R.id.settings_item_middle), false, _emailView.findViewById(R.id.settings_item_right));
         _emailView.findViewById(R.id.settings_item_right).setOnClickListener(this);
 
         ((TextView) _mobileNumberView.findViewById(R.id.settings_item_left)).setText("Mobilnummer");
-        ((EditText) _mobileNumberView.findViewById(R.id.settings_item_middle)).setText(settingsModel.getPhoneNumber());
+        ((EditText) _mobileNumberView.findViewById(R.id.settings_item_middle)).setText(LoggedInUser.user.getPhonenumber());
         toogleEditText(_mobileNumberView.findViewById(R.id.settings_item_middle), false, _mobileNumberView.findViewById(R.id.settings_item_right));
         _mobileNumberView.findViewById(R.id.settings_item_right).setOnClickListener(this);
 
         ((TextView) _changePasswordView.findViewById(R.id.settings_item_left)).setText("Skift kode");
-        ((EditText) _changePasswordView.findViewById(R.id.settings_item_middle)).setText(settingsModel.getPassword());
+        ((EditText) _changePasswordView.findViewById(R.id.settings_item_middle)).setText(LoggedInUser.user.getPassword());
         toogleEditText(_changePasswordView.findViewById(R.id.settings_item_middle), false, _changePasswordView.findViewById(R.id.settings_item_right));
         _changePasswordView.findViewById(R.id.settings_item_right).setOnClickListener(this);
 
@@ -102,8 +106,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (v == _nameAndAddressView.findViewById(R.id.settings_item_right)) {
-            toogleEditText(_nameAndAddressView.findViewById(R.id.settings_item_middle), true, _nameAndAddressView.findViewById(R.id.settings_item_right));
+        if (v == _nameView.findViewById(R.id.settings_item_right)) {
+            toogleEditText(_nameView.findViewById(R.id.settings_item_middle), true, _nameView.findViewById(R.id.settings_item_right));
 
         } else if (v == _emailView.findViewById(R.id.settings_item_right)) {
             toogleEditText(_emailView.findViewById(R.id.settings_item_middle), true, _emailView.findViewById(R.id.settings_item_right));
@@ -112,7 +116,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             toogleEditText(_mobileNumberView.findViewById(R.id.settings_item_middle), true, _mobileNumberView.findViewById(R.id.settings_item_right));
 
         } else if (v == _changePasswordView.findViewById(R.id.settings_item_right)) {
-            toogleEditText(_changePasswordView.findViewById(R.id.settings_item_middle), true, _changePasswordView.findViewById(R.id.settings_item_right));
+            //toogleEditText(_changePasswordView.findViewById(R.id.settings_item_middle), true, _changePasswordView.findViewById(R.id.settings_item_right));
         }
     }
 
@@ -126,12 +130,23 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.save_settings) {
-            toogleEditText(_nameAndAddressView.findViewById(R.id.settings_item_middle), false, _nameAndAddressView.findViewById(R.id.settings_item_right));
-            toogleEditText(_emailView.findViewById(R.id.settings_item_middle), false, _emailView.findViewById(R.id.settings_item_right));
-            toogleEditText(_mobileNumberView.findViewById(R.id.settings_item_middle), false, _mobileNumberView.findViewById(R.id.settings_item_right));
-            toogleEditText(_changePasswordView.findViewById(R.id.settings_item_middle), false, _changePasswordView.findViewById(R.id.settings_item_right));
+            EditText _nameEdit = _nameView.findViewById(R.id.settings_item_middle);
+            EditText _emailEdit = _emailView.findViewById(R.id.settings_item_middle);
+            EditText _mobileEdit = _mobileNumberView.findViewById(R.id.settings_item_middle);
+            EditText _passwordEdit = _changePasswordView.findViewById(R.id.settings_item_middle);
+
+            toogleEditText(_nameEdit, false, _nameView.findViewById(R.id.settings_item_right));
+            toogleEditText(_emailEdit, false, _emailView.findViewById(R.id.settings_item_right));
+            toogleEditText(_mobileEdit, false, _mobileNumberView.findViewById(R.id.settings_item_right));
+            toogleEditText(_passwordEdit, false, _changePasswordView.findViewById(R.id.settings_item_right));
             Toast.makeText(getContext(), "Saved changes.", Toast.LENGTH_SHORT).show();
-            // TODO: save bruger and make API call
+
+            LoggedInUser.user.setFirstname(_nameEdit.getText().toString());
+            LoggedInUser.user.setEmail(_emailEdit.getText().toString());
+            LoggedInUser.user.setPhonenumber(_mobileEdit.getText().toString());
+            LoggedInUser.user.setPassword(_passwordEdit.getText().toString());
+
+            userViewModel.updateUser(LoggedInUser.user);
             return true;
         }
 
@@ -139,15 +154,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void logUd() {
-        viewModel.logoutUser();
+        authenticationViewModel.logoutUser();
         Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
-    }
-
-
-    public SettingsModel fetchIndstillinger() {
-        SettingsModel settingsModel = new SettingsModel("Nicolai Nisbeth", "+45 28 77 19 95", "nicolai.nisbeth@hotmail.com", "nicolai1995");
-        return settingsModel;
     }
 
     private void toogleEditText(EditText editText, boolean activated, ImageButton viewById) {

@@ -23,7 +23,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Playground;
-import com.example.kobenhavn.dal.local.model.PlaygroundModel;
 import com.example.kobenhavn.dal.local.model.inmemory.LoggedInUser;
 import com.example.kobenhavn.view.playgrounds.add.AddPlaygroundActivity;
 import com.google.android.material.tabs.TabLayout;

@@ -67,7 +67,7 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
         d.add(playground);
         LoggedInUser.user.setSubscribedPlaygrounds(d);
         LoggedInUser.user.setPassword("hahahahah");
-        userViewModel.update(LoggedInUser.user);
+        userViewModel.updateSubscriptions(LoggedInUser.user);
         notifyDataSetChanged();
     }
 

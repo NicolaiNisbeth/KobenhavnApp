@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Playground;
-import com.example.kobenhavn.dal.local.model.PlaygroundModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
