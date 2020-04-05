@@ -50,9 +50,7 @@ public class ContainerEventsFragment extends Fragment {
         List<Event> futureEvents = new ArrayList<>();
         List<Event> enrolledEvents = new ArrayList<>();
 
-        for (Playground subPlayground : LoggedInUser.user.getSubscribedPlaygrounds()){
 
-        }
 
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(root.getContext(), getChildFragmentManager(), futureEvents, enrolledEvents);

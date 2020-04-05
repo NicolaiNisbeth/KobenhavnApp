@@ -22,10 +22,10 @@ public interface RemoteEndpoint {
      */
 
     // stationær
-    String BASE_URL = "http://192.168.1.15:8090/";
+    String BASE_URL = "http://192.168.1.15:8088/";
 
     // laptop
-    //String BASE_URL = "http://192.168.1.56:8090//";
+    //String BASE_URL = "http://192.168.1.56:8088//";
 
     @GET("playgrounds")
     Call<List<Playground>> getPlaygrounds();

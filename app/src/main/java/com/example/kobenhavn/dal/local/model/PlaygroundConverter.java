@@ -9,7 +9,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserConverter {
+public class PlaygroundConverter {
 
     @TypeConverter
     public static List<Playground> fromStringToList(String value) {

@@ -3,8 +3,6 @@ package com.example.kobenhavn.view;
 import android.os.Bundle;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.dal.sync.PlaygroundsLifecycleObserver;
-import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -19,12 +17,11 @@ import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
 import dagger.android.support.DaggerAppCompatActivity;
-import timber.log.Timber;
 
 public class MainActivity extends DaggerAppCompatActivity {
 
     @Inject
-    PlaygroundsLifecycleObserver playgroundsLifecycleObserver;
+    MainLifecycleObserver mainLifecycleObserver;
 
     @Inject
     PlaygroundsViewModelFactory viewModelFactory;
@@ -46,7 +43,7 @@ public class MainActivity extends DaggerAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        getLifecycle().addObserver(playgroundsLifecycleObserver);
+        getLifecycle().addObserver(mainLifecycleObserver);
 
         // Bottom Navigation
         BottomNavigationView navView = findViewById(R.id.nav_view);

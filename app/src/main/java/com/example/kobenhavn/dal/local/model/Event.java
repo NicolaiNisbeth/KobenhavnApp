@@ -12,8 +12,9 @@ public class Event {
     private String description;
     private int participants;
     private String playgroundName;
+    private Details details;
 
-    public Event(String id, String name, String imagepath, Date date, String subtitle, String time, String description, int participants, String playgroundName) {
+    public Event(String id, String name, String imagepath, Date date, String subtitle, String time, String description, int participants, String playgroundName, Details details) {
         this.id = id;
         this.name = name;
         this.imagepath = imagepath;
@@ -23,6 +24,7 @@ public class Event {
         this.description = description;
         this.participants = participants;
         this.playgroundName = playgroundName;
+        this.details = details;
     }
 
     public String getId() {
@@ -95,5 +97,13 @@ public class Event {
 
     public void setPlaygroundName(String playgroundName) {
         this.playgroundName = playgroundName;
+    }
+
+    public Details getDetails() {
+        return details;
+    }
+
+    public void setDetails(Details details) {
+        this.details = details;
     }
 }

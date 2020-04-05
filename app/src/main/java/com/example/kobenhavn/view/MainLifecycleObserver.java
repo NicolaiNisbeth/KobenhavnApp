@@ -1,4 +1,4 @@
-package com.example.kobenhavn.dal.sync;
+package com.example.kobenhavn.view;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
@@ -6,6 +6,9 @@ import androidx.lifecycle.OnLifecycleEvent;
 
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
+import com.example.kobenhavn.dal.sync.FetchPlaygroundsRxBus;
+import com.example.kobenhavn.dal.sync.SyncResponseType;
+import com.example.kobenhavn.dal.sync.SyncUserRxBus;
 import com.example.kobenhavn.usecases.playground.GetPlaygroundsInDbUseCase;
 import com.example.kobenhavn.usecases.playground.InsertPlaygroundsInDbUseCase;
 
@@ -19,12 +22,18 @@ import timber.log.Timber;
 /**
  * Updates local database after remote comment sync requests
  */
-public class PlaygroundsLifecycleObserver implements LifecycleObserver {
+public class MainLifecycleObserver implements LifecycleObserver {
     private final InsertPlaygroundsInDbUseCase insertPlaygroundsInDbUseCase;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
-    public PlaygroundsLifecycleObserver(InsertPlaygroundsInDbUseCase insertPlaygrounds, GetPlaygroundsInDbUseCase getPlaygrounds) {
+    public MainLifecycleObserver(InsertPlaygroundsInDbUseCase insertPlaygrounds, GetPlaygroundsInDbUseCase getPlaygrounds) {
         this.insertPlaygroundsInDbUseCase = insertPlaygrounds;
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    public void onPause() {
+        Timber.e("onPause lifecycle event.");
+        disposables.clear();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
@@ -48,18 +57,12 @@ public class PlaygroundsLifecycleObserver implements LifecycleObserver {
         }
     }
 
-    private void onSyncingFailed(User user) {
-        Timber.e("Failed to sync user");
-    }
-
     private void onSyncingSuccess(User user) {
         Timber.e("Successfully synced users");
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    public void onPause() {
-        Timber.e("onPause lifecycle event.");
-        disposables.clear();
+    private void onSyncingFailed(User user) {
+        Timber.e("Failed to sync user");
     }
 
     private void handleFetchResponse(FetchPlaygroundsRxBus.FetchPlaygroundResponse response) {

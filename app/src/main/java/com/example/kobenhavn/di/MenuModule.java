@@ -1,10 +1,8 @@
 package com.example.kobenhavn.di;
 
-import androidx.room.Update;
-
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
-import com.example.kobenhavn.dal.sync.PlaygroundsLifecycleObserver;
+import com.example.kobenhavn.view.MainLifecycleObserver;
 import com.example.kobenhavn.usecases.playground.InsertPlaygroundsInDbUseCase;
 import com.example.kobenhavn.usecases.playground.FetchPlaygroundsUseCase;
 import com.example.kobenhavn.usecases.playground.GetPlaygroundsInDbUseCase;
@@ -28,8 +26,8 @@ import dagger.Provides;
 class MenuModule {
 
     @Provides
-    PlaygroundsLifecycleObserver providePlaygroundLifecycleObserver(InsertPlaygroundsInDbUseCase insertPlaygroundsInDbUseCase, GetPlaygroundsInDbUseCase getPlaygroundsInDbUseCase) {
-        return new PlaygroundsLifecycleObserver(insertPlaygroundsInDbUseCase, getPlaygroundsInDbUseCase);
+    MainLifecycleObserver providePlaygroundLifecycleObserver(InsertPlaygroundsInDbUseCase insertPlaygroundsInDbUseCase, GetPlaygroundsInDbUseCase getPlaygroundsInDbUseCase) {
+        return new MainLifecycleObserver(insertPlaygroundsInDbUseCase, getPlaygroundsInDbUseCase);
     }
 
     @Provides

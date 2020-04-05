@@ -51,8 +51,10 @@ public class ContainerPlaygroundsFragment extends Fragment {
 
         // fetch data
         tabList = new ArrayList<>();
-        for (Playground model : LoggedInUser.user.getSubscribedPlaygrounds()){
-            tabList.add(new Pair<>(model.getName(), PlaygroundsFragment.newInstance(model)));
+        if (LoggedInUser.user != null){
+            for (Playground model : LoggedInUser.user.getSubscribedPlaygrounds()){
+                tabList.add(new Pair<>(model.getName(), PlaygroundsFragment.newInstance(model)));
+            }
         }
 
         tabList.sort((o1, o2) -> o1.first.compareTo(o2.first));

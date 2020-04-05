@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -34,6 +35,7 @@ public class RemoteDataSource {
                 .build();
 
         Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Date.class, new DateDeserializer())
                 .create();
 
         retrofit = new Retrofit.Builder()
