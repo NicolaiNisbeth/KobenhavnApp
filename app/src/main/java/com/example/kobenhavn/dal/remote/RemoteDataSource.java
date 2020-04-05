@@ -24,7 +24,8 @@ public class RemoteDataSource {
 
     private static RemoteDataSource instance;
     private final Retrofit retrofit;
-    private final RemoteEndpoint API;
+    private static RemoteEndpoint API;
+    public static User loggedInUser;
 
     public RemoteDataSource(){
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
@@ -89,11 +90,12 @@ public class RemoteDataSource {
         return new ArrayList<>(response.body());
     }
 
-    public User loginUser(String username, String password) throws RemoteException, IOException {
+    public static User loginUser(String username, String password) throws RemoteException, IOException {
         Response<User> response = API.loginUser(new User(username, password)).execute();
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
 
+        loggedInUser = response.body();
         return response.body();
     }
 

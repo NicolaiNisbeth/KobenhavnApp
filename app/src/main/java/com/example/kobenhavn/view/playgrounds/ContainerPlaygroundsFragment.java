@@ -19,25 +19,36 @@ import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Playground;
-import com.example.kobenhavn.dal.local.model.inmemory.LoggedInUser;
+import com.example.kobenhavn.dal.local.model.User;
+import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.view.playgrounds.add.AddPlaygroundActivity;
+import com.example.kobenhavn.viewmodel.UserViewModel;
+import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 import com.google.android.material.tabs.TabLayout;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Objects;
+
+import javax.inject.Inject;
+
+import dagger.android.support.AndroidSupportInjection;
 
 public class ContainerPlaygroundsFragment extends Fragment {
     private Toolbar toolbar;
     private ArrayList<Pair<String, PlaygroundsFragment>> tabList;
 
+    @Inject
+    UserViewModelFactory userViewModelFactory;
+
+    private UserViewModel viewModel;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        AndroidSupportInjection.inject(this);
         View root = inflater.inflate(R.layout.playgrounds_container_fragment, container, false);
 
         // setup toolbar
@@ -49,15 +60,9 @@ public class ContainerPlaygroundsFragment extends Fragment {
         TextView title = toolbar.findViewById(R.id.toolbar_title);
         title.setText("Legepladser");
 
-        // fetch data
-        tabList = new ArrayList<>();
-        if (LoggedInUser.user != null){
-            for (Playground model : LoggedInUser.user.getSubscribedPlaygrounds()){
-                tabList.add(new Pair<>(model.getName(), PlaygroundsFragment.newInstance(model)));
-            }
-        }
+        viewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
 
-        tabList.sort((o1, o2) -> o1.first.compareTo(o2.first));
+        tabList = new ArrayList<>();
 
         // setup table layout
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(root.getContext(), getChildFragmentManager(), tabList);
@@ -65,6 +70,14 @@ public class ContainerPlaygroundsFragment extends Fragment {
         viewPager.setAdapter(sectionsPagerAdapter);
         final TabLayout tabLayout = root.findViewById(R.id.playground_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
+
+        if (RemoteDataSource.loggedInUser != null){
+            tabList.clear();
+            for (Playground model : RemoteDataSource.loggedInUser.getSubscribedPlaygrounds()){
+                tabList.add(new Pair<>(model.getName(), PlaygroundsFragment.newInstance(model)));
+            }
+            tabList.sort((o1, o2) -> o1.first.compareTo(o2.first));
+        }
         return root;
     }
 
@@ -109,9 +122,7 @@ public class ContainerPlaygroundsFragment extends Fragment {
 
         @Override
         public Fragment getItem(int i) {
-            return ((Fragment) Objects.requireNonNull(tabList.get(i).second));
+            return Objects.requireNonNull(tabList.get(i).second);
         }
-
-
     }
 }
