@@ -28,6 +28,13 @@ public class MainLifecycleObserver implements LifecycleObserver {
 
     public MainLifecycleObserver(InsertPlaygroundsInDbUseCase insertPlaygrounds, GetPlaygroundsInDbUseCase getPlaygrounds) {
         this.insertPlaygroundsInDbUseCase = insertPlaygrounds;
+        disposables.add(FetchPlaygroundsRxBus.getInstance()
+                .toObservable()
+                .subscribe(this::handleFetchResponse, t -> Timber.e(t, "error handling playground fetch response")));
+
+        disposables.add(SyncUserRxBus.getInstance()
+                .toObservable()
+                .subscribe(this::handleUserResponse, t -> Timber.e(t, "error handling user sync response")));
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
