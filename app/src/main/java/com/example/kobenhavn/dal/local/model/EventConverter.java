@@ -12,13 +12,13 @@ import java.util.List;
 public class EventConverter {
 
     @TypeConverter
-    public static List<Event> fromStringToList(String value){
+    public static ArrayList<Event> fromStringToList(String value){
         Type listType = new TypeToken<ArrayList<Event>>(){}.getType();
         return new Gson().fromJson(value, listType);
     }
 
     @TypeConverter
-    public static String fromListToString(List<Event> list){
+    public static String fromListToString(ArrayList<Event> list){
         Gson gson = new Gson();
         return gson.toJson(list);
     }

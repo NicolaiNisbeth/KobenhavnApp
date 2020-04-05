@@ -65,10 +65,10 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
         }
 
         void bindTo(Event event) {
-            _dateText.setText(event.getDate().toString());
+            _dateText.setText(event.getDetails().getDate().toString());
             _subtitleText.setText(event.getSubtitle());
             _titleText.setText(event.getName());
-            _timeText.setText(event.getTime());
+            _timeText.setText(event.getDetails().getStartTime().toString());
             _descriptionText.setText(event.getDescription());
             _interestedText.setText(event.getParticipants());
         }

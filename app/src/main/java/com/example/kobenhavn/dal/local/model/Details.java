@@ -13,6 +13,15 @@ public class Details {
         this.endTime = endTime;
     }
 
+    @Override
+    public String toString() {
+        return "Details{" +
+                "date=" + date +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                '}';
+    }
+
     public Date getDate() {
         return date;
     }

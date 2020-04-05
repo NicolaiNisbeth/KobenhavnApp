@@ -6,25 +6,35 @@ public class Event {
     private String id;
     private String name;
     private String imagepath;
-    private Date date;
     private String subtitle;
-    private String time;
     private String description;
     private int participants;
     private String playgroundName;
     private Details details;
 
-    public Event(String id, String name, String imagepath, Date date, String subtitle, String time, String description, int participants, String playgroundName, Details details) {
+    public Event(String id, String name, String imagepath, String subtitle, String description, int participants, String playgroundName, Details details) {
         this.id = id;
         this.name = name;
         this.imagepath = imagepath;
-        this.date = date;
         this.subtitle = subtitle;
-        this.time = time;
         this.description = description;
         this.participants = participants;
         this.playgroundName = playgroundName;
         this.details = details;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", imagepath='" + imagepath + '\'' +
+                ", subtitle='" + subtitle + '\'' +
+                ", description='" + description + '\'' +
+                ", participants=" + participants +
+                ", playgroundName='" + playgroundName + '\'' +
+                ", details=" + details +
+                '}';
     }
 
     public String getId() {
@@ -51,28 +61,12 @@ public class Event {
         this.imagepath = imagepath;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public String getSubtitle() {
         return subtitle;
     }
 
     public void setSubtitle(String subtitle) {
         this.subtitle = subtitle;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 
     public String getDescription() {

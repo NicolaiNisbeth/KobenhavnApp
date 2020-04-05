@@ -14,6 +14,7 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -61,7 +62,7 @@ public class Playground implements Serializable, Parcelable {
     private boolean syncPending;
 
     @ColumnInfo(name = "events")
-    private List<Event> events;
+    private ArrayList<Event> events;
 
     @NonNull
     public String getId() {
@@ -104,12 +105,12 @@ public class Playground implements Serializable, Parcelable {
         return syncPending;
     }
 
-    public List<Event> getEvents() {
+    public ArrayList<Event> getEvents() {
         return events;
     }
 
     @Ignore
-    public Playground(@NonNull String id, String name, String imagepath, boolean toiletPossibilities, boolean hasSoccerField, String streetName, int streetNumber, String commune, int zipCode) {
+    public Playground(@NonNull String id, String name, String imagepath, boolean toiletPossibilities, boolean hasSoccerField, String streetName, int streetNumber, String commune, int zipCode, ArrayList<Event> events) {
         this.id = id;
         this.name = name;
         this.imagepath = imagepath;
@@ -120,10 +121,11 @@ public class Playground implements Serializable, Parcelable {
         this.commune = commune;
         this.zipCode = zipCode;
         this.syncPending = true;
+        this.events = events;
     }
 
 
-    public Playground(@NonNull String id, String name, String imagepath, boolean toiletPossibilities, boolean hasSoccerField, String streetName, int streetNumber, String commune, int zipCode, boolean syncPending, List<Event> events) {
+    public Playground(@NonNull String id, String name, String imagepath, boolean toiletPossibilities, boolean hasSoccerField, String streetName, int streetNumber, String commune, int zipCode, boolean syncPending, ArrayList<Event> events) {
         this.id = id;
         this.name = name;
         this.imagepath = imagepath;
@@ -147,6 +149,7 @@ public class Playground implements Serializable, Parcelable {
         this.streetNumber = in.readInt();
         this.commune = in.readString();
         this.zipCode = in.readInt();
+        this.events = in.readArrayList(Event.class.getClassLoader());
         //this.syncPending = in.readBoolean();
 
     }
@@ -164,6 +167,7 @@ public class Playground implements Serializable, Parcelable {
                 ", commune='" + commune + '\'' +
                 ", zipCode=" + zipCode +
                 ", syncPending=" + syncPending +
+                ", events=" + events +
                 '}';
     }
 
@@ -206,5 +210,6 @@ public class Playground implements Serializable, Parcelable {
         dest.writeString(commune);
         dest.writeInt(zipCode);
         //dest.writeBoolean(syncPending);
+        dest.writeList(events);
     }
 }
