@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 
+import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.usecases.playground.FetchPlaygroundsUseCase;
 import com.example.kobenhavn.usecases.playground.GetPlaygroundsInDbUseCase;
@@ -23,6 +24,8 @@ public class PlaygroundsViewModel extends ViewModel {
     private final FetchPlaygroundsUseCase fetchPlaygroundsUseCase;
     private final CompositeDisposable disposables = new CompositeDisposable();
     private MutableLiveData<List<Playground>> playgroundsLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<Event>> enrolledEvents = new MutableLiveData<>();
+    private MutableLiveData<List<Event>> futureEvents = new MutableLiveData<>();
 
     public PlaygroundsViewModel(GetPlaygroundsInDbUseCase getPlaygroundsInDbUseCase,
                                 FetchPlaygroundsUseCase fetchPlaygroundsUseCase){

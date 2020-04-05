@@ -27,7 +27,10 @@ import com.example.kobenhavn.dal.local.model.inmemory.LoggedInUser;
 import com.example.kobenhavn.view.playgrounds.add.AddPlaygroundActivity;
 import com.google.android.material.tabs.TabLayout;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Objects;
 
 public class ContainerPlaygroundsFragment extends Fragment {
@@ -51,6 +54,8 @@ public class ContainerPlaygroundsFragment extends Fragment {
         for (Playground model : LoggedInUser.user.getSubscribedPlaygrounds()){
             tabList.add(new Pair<>(model.getName(), PlaygroundsFragment.newInstance(model)));
         }
+
+        tabList.sort((o1, o2) -> o1.first.compareTo(o2.first));
 
         // setup table layout
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(root.getContext(), getChildFragmentManager(), tabList);

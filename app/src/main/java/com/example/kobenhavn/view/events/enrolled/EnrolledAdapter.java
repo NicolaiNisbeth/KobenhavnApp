@@ -15,7 +15,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,7 +39,7 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
 
 
     public void deleteItem(int position){
-        Toast.makeText(context, events.get(position).getTitle() + " blev fjernet.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, events.get(position).getName() + " blev fjernet.", Toast.LENGTH_SHORT).show();
         events.remove(position);
         notifyDataSetChanged();
     }
@@ -79,11 +78,11 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
         }
 
         void bindTo(Event event) {
-            _dateText.setText(event.getDate());
+            _dateText.setText(event.getDate().toString());
             _subtitleText.setText(event.getSubtitle());
-            _titleText.setText(event.getTitle());
+            _titleText.setText(event.getName());
             _timeText.setText(event.getTime());
-            _interestedText.setText(event.getInterested());
+            _interestedText.setText(event.getParticipants());
         }
     }
 

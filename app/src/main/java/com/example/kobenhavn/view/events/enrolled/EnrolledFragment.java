@@ -42,11 +42,11 @@ public class EnrolledFragment extends Fragment {
         adapter.setOnItemClickListener(event -> {
             Intent intent = new Intent(getContext(), CardActivity.class);
             intent.putExtra(CardActivity.EXTRA_DATE, event.getDate());
-            intent.putExtra(CardActivity.EXTRA_TITLE, event.getTitle());
+            intent.putExtra(CardActivity.EXTRA_TITLE, event.getName());
             intent.putExtra(CardActivity.EXTRA_TIME, event.getTime());
             intent.putExtra(CardActivity.EXTRA_SUBTITLE, event.getSubtitle());
             intent.putExtra(CardActivity.EXTRA_DESCRIPTION, event.getDescription());
-            intent.putExtra(CardActivity.EXTRA_INTERESTED, event.getInterested());
+            intent.putExtra(CardActivity.EXTRA_INTERESTED, event.getParticipants());
             startActivity(intent);
         });
 

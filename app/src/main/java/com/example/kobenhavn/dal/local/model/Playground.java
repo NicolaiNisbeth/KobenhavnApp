@@ -14,6 +14,7 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -59,6 +60,9 @@ public class Playground implements Serializable, Parcelable {
     @ColumnInfo(name = "sync_pending")
     private boolean syncPending;
 
+    @ColumnInfo(name = "events")
+    private List<Event> events;
+
     @NonNull
     public String getId() {
         return id;
@@ -100,6 +104,10 @@ public class Playground implements Serializable, Parcelable {
         return syncPending;
     }
 
+    public List<Event> getEvents() {
+        return events;
+    }
+
     @Ignore
     public Playground(@NonNull String id, String name, String imagepath, boolean toiletPossibilities, boolean hasSoccerField, String streetName, int streetNumber, String commune, int zipCode) {
         this.id = id;
@@ -115,7 +123,7 @@ public class Playground implements Serializable, Parcelable {
     }
 
 
-    public Playground(@NonNull String id, String name, String imagepath, boolean toiletPossibilities, boolean hasSoccerField, String streetName, int streetNumber, String commune, int zipCode, boolean syncPending) {
+    public Playground(@NonNull String id, String name, String imagepath, boolean toiletPossibilities, boolean hasSoccerField, String streetName, int streetNumber, String commune, int zipCode, boolean syncPending, List<Event> events) {
         this.id = id;
         this.name = name;
         this.imagepath = imagepath;
@@ -126,6 +134,7 @@ public class Playground implements Serializable, Parcelable {
         this.commune = commune;
         this.zipCode = zipCode;
         this.syncPending = syncPending;
+        this.events = events;
     }
 
     private Playground(Parcel in){

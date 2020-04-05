@@ -16,6 +16,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Event;
+import com.example.kobenhavn.dal.local.model.Playground;
+import com.example.kobenhavn.dal.local.model.inmemory.LoggedInUser;
 import com.example.kobenhavn.view.events.future.FutureFragment;
 import com.example.kobenhavn.view.events.enrolled.EnrolledFragment;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
@@ -45,9 +47,12 @@ public class ContainerEventsFragment extends Fragment {
         final View root = inflater.inflate(R.layout.events_container_fragment, container, false);
         playgroundsViewModel = ViewModelProviders.of(this, playgroundViewModelFactory).get(PlaygroundsViewModel.class);
 
-        playgroundsViewModel.playgroundsLive().observe(this);
         List<Event> futureEvents = new ArrayList<>();
         List<Event> enrolledEvents = new ArrayList<>();
+
+        for (Playground subPlayground : LoggedInUser.user.getSubscribedPlaygrounds()){
+
+        }
 
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(root.getContext(), getChildFragmentManager(), futureEvents, enrolledEvents);
