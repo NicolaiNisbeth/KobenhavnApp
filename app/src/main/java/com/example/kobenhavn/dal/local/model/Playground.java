@@ -210,6 +210,6 @@ public class Playground implements Serializable, Parcelable {
         dest.writeString(commune);
         dest.writeInt(zipCode);
         //dest.writeBoolean(syncPending);
-        dest.writeList(events);
+//        dest.writeList(events);
     }
 }

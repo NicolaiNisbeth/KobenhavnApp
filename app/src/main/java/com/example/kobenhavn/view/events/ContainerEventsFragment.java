@@ -16,9 +16,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Event;
-import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
-import com.example.kobenhavn.dal.local.model.inmemory.LoggedInUser;
+import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.view.events.future.FutureFragment;
 import com.example.kobenhavn.view.events.enrolled.EnrolledFragment;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
@@ -51,10 +50,10 @@ public class ContainerEventsFragment extends Fragment {
         List<Event> futureEvents = new ArrayList<>();
         List<Event> enrolledEvents = new ArrayList<>();
 
-        if (LoggedInUser.user != null){
+        if (RemoteDataSource.loggedInUser != null){
 
-            User user = LoggedInUser.user;
-            System.out.println("DETAILS " + user.getSubscribedPlaygrounds().get(0).getEvents().get(0).getDetails());
+            User user = RemoteDataSource.loggedInUser;
+            //System.out.println("DETAILS " + user.getSubscribedPlaygrounds().get(0).getEvents().get(0).getDetails());
         }
 
 

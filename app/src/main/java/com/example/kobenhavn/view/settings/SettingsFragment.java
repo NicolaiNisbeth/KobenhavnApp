@@ -72,12 +72,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         authenticationViewModel = ViewModelProviders.of(this, authenticationViewModelFactory).get(AuthenticationViewModel.class);
         userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
         if (RemoteDataSource.loggedInUser != null){
-            _nameText.setText(RemoteDataSource.loggedInUser.getFirstname());
-            _numberText.setText(RemoteDataSource.loggedInUser.getPhonenumber());
-            ((EditText) _nameView.findViewById(R.id.settings_item_middle)).setText(RemoteDataSource.loggedInUser.getFirstname());
-            ((EditText) _emailView.findViewById(R.id.settings_item_middle)).setText(RemoteDataSource.loggedInUser.getEmail());
-            ((EditText) _mobileNumberView.findViewById(R.id.settings_item_middle)).setText(RemoteDataSource.loggedInUser.getPhonenumber());
-            ((EditText) _changePasswordView.findViewById(R.id.settings_item_middle)).setText(RemoteDataSource.loggedInUser.getPassword());
+            userViewModel.observerUserAlive().observe(getViewLifecycleOwner(), this::updateUI);
         }
 
         _logoutText.setOnClickListener(v -> logUd());
@@ -101,9 +96,15 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         return root;
     }
 
-
-
-
+    private void updateUI(User user) {
+        System.out.println(user);
+        _nameText.setText(user.getFirstname());
+        _numberText.setText(user.getPhonenumber());
+        ((EditText) _nameView.findViewById(R.id.settings_item_middle)).setText(user.getFirstname());
+        ((EditText) _emailView.findViewById(R.id.settings_item_middle)).setText(user.getEmail());
+        ((EditText) _mobileNumberView.findViewById(R.id.settings_item_middle)).setText(user.getPhonenumber());
+        ((EditText) _changePasswordView.findViewById(R.id.settings_item_middle)).setText(user.getPassword());
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {

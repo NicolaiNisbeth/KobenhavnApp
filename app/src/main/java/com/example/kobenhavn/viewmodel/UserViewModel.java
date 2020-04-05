@@ -1,9 +1,10 @@
 package com.example.kobenhavn.viewmodel;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.kobenhavn.dal.local.model.User;
-import com.example.kobenhavn.dal.local.model.inmemory.LoggedInUser;
+import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
 import com.example.kobenhavn.usecases.user.GetUserFromDbUseCase;
 import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionInDbUseCase;
@@ -41,7 +42,10 @@ public class UserViewModel extends ViewModel {
                 .subscribe(u -> {
                     Timber.e("Insert user success %s", u);
                     getUser(u.getUsername());
-                    }, t -> getUser(user.getUsername())));
+                    }, t -> {
+                    Timber.e("User alread existed");
+                    getUser(user.getUsername());
+                }));
 
     }
 
@@ -72,9 +76,13 @@ public class UserViewModel extends ViewModel {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(u -> {
             Timber.e("Got user success %s", u);
-            LoggedInUser.user = u;
+            RemoteDataSource.loggedInUser = u;
         }, t -> Timber.e("Got user error")));
     }
 
+    public LiveData<User> observerUserAlive() {
+        Timber.e("!!!User livedata changed!!!");
+        return getUserFromDbUseCase.getUserLive(RemoteDataSource.loggedInUser.getUsername());
+    }
 
 }

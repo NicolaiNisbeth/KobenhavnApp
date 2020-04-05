@@ -1,5 +1,7 @@
 package com.example.kobenhavn.usecases.user;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.local.model.User;
 
@@ -10,6 +12,10 @@ public class GetUserFromDbUseCase {
 
     public GetUserFromDbUseCase(ILocalRepository localRepository) {
         this.localRepository = localRepository;
+    }
+
+    public LiveData<User> getUserLive(String username){
+        return localRepository.getUserLive(username);
     }
 
     public Single<User> getUser(String username){

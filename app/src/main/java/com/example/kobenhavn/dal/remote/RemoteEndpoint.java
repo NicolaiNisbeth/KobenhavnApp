@@ -35,6 +35,10 @@ public interface RemoteEndpoint {
     Call<User> updateUser(@Body User user);
 
 
+    // if user is not fetched then call get user
+    @POST("/rest/user_login")
+    Call<User> loginUser(@Body User user);
+
 
 
 
@@ -47,10 +51,6 @@ public interface RemoteEndpoint {
 
 
 
-
-    // if user is not fetched then call get user
-    @POST("user_login")
-    Call<User> loginUser(@Body User user);
 
     @POST("posts")
     Call<Boolean> signupUser(String name, String username, String password);

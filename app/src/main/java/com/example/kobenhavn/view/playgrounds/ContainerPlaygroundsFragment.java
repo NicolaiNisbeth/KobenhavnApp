@@ -64,6 +64,8 @@ public class ContainerPlaygroundsFragment extends Fragment {
 
         tabList = new ArrayList<>();
 
+
+
         // setup table layout
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(root.getContext(), getChildFragmentManager(), tabList);
         ViewPager viewPager = root.findViewById(R.id.playgrounds_view_pager);
@@ -71,13 +73,11 @@ public class ContainerPlaygroundsFragment extends Fragment {
         final TabLayout tabLayout = root.findViewById(R.id.playground_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
-        if (RemoteDataSource.loggedInUser != null){
-            tabList.clear();
-            for (Playground model : RemoteDataSource.loggedInUser.getSubscribedPlaygrounds()){
-                tabList.add(new Pair<>(model.getName(), PlaygroundsFragment.newInstance(model)));
-            }
-            tabList.sort((o1, o2) -> o1.first.compareTo(o2.first));
+        if (RemoteDataSource.loggedInUser.getSubscribedPlaygrounds() != null){
+            viewModel.observerUserAlive().observe(getViewLifecycleOwner(), sectionsPagerAdapter::onChange);
         }
+
+
         return root;
     }
 
@@ -123,6 +123,16 @@ public class ContainerPlaygroundsFragment extends Fragment {
         @Override
         public Fragment getItem(int i) {
             return Objects.requireNonNull(tabList.get(i).second);
+        }
+
+        public void onChange(User user) {
+            tabList.clear();
+            for (Playground model : RemoteDataSource.loggedInUser.getSubscribedPlaygrounds()){
+                tabList.add(new Pair<>(model.getName(), PlaygroundsFragment.newInstance(model)));
+            }
+            tabList.sort((o1, o2) -> o1.first.compareTo(o2.first));
+
+            notifyDataSetChanged();
         }
     }
 }

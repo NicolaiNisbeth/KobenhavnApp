@@ -1,5 +1,6 @@
 package com.example.kobenhavn.dal.local;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -29,6 +30,9 @@ public interface UserDAO {
 
     @Delete
     void delete(User user);
+
+    @Query("SELECT * FROM user_table WHERE username = :username")
+    LiveData<User> getUserLive(String username);
 
     @Query("SELECT * FROM user_table WHERE username = :username")
     Single<User> getUser(String username);

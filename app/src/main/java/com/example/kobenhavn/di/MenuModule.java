@@ -16,6 +16,8 @@ import com.example.kobenhavn.usecases.user.UpdateUserUseCase;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 
+import javax.inject.Named;
+
 import dagger.Module;
 import dagger.Provides;
 

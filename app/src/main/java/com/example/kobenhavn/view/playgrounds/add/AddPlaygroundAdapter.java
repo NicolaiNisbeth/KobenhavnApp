@@ -13,11 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Playground;
-import com.example.kobenhavn.dal.local.model.inmemory.LoggedInUser;
+import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -63,11 +64,10 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
         playgrounds.remove(position);
 
         Toast.makeText(context, "Legeplads er tilføjet", Toast.LENGTH_SHORT).show();
-        List<Playground> d = LoggedInUser.user.getSubscribedPlaygrounds();
+        List<Playground> d = RemoteDataSource.loggedInUser.getSubscribedPlaygrounds();
         d.add(playground);
-        LoggedInUser.user.setSubscribedPlaygrounds(d);
-        LoggedInUser.user.setPassword("hahahahah");
-        userViewModel.updateSubscriptions(LoggedInUser.user);
+        RemoteDataSource.loggedInUser.setSubscribedPlaygrounds(d);
+        userViewModel.updateSubscriptions(RemoteDataSource.loggedInUser);
         notifyDataSetChanged();
     }
 
@@ -97,10 +97,13 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
     public void updatePlaygroundList(List<Playground> playgroundList) {
         this.playgrounds.clear();
 
+        if (RemoteDataSource.loggedInUser.getSubscribedPlaygrounds() == null)
+            RemoteDataSource.loggedInUser.setSubscribedPlaygrounds(new ArrayList<>());
 
-        List<Playground> subscribed = LoggedInUser.user.getSubscribedPlaygrounds();
+        List<Playground> subscribed = RemoteDataSource.loggedInUser.getSubscribedPlaygrounds();
         Timber.e("updateplaygroundlist %s", subscribed);
         playgroundList.removeIf(subscribed::contains);
+
         this.playgrounds.addAll(playgroundList);
         notifyDataSetChanged();
 

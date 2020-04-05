@@ -1,5 +1,7 @@
 package com.example.kobenhavn.dal.local;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
 
@@ -22,6 +24,8 @@ public interface ILocalRepository {
     Single<User> update(User user);
 
     Completable updateSubscription(String username, List<Playground> playgrounds);
+
+    LiveData<User> getUserLive(String username);
 
     Single<User> getUser(String username);
 }

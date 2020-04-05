@@ -1,6 +1,8 @@
 package com.example.kobenhavn.dal.local;
 
 
+import androidx.lifecycle.LiveData;
+
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
 
@@ -89,6 +91,11 @@ public class LocalRepository implements ILocalRepository {
     }
 
 
+
+    @Override
+    public LiveData<User> getUserLive(String username) {
+        return userDAO.getUserLive(username);
+    }
 
     @Override
     public Single<User> getUser(String username) {

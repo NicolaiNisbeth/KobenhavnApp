@@ -14,9 +14,10 @@ abstract class MainFragmentBuildersModule {
     @ContributesAndroidInjector(modules = {AuthenticationModule.class, MenuModule.class})
     abstract SettingsFragment contributeSettingsFragment();
 
-    @ContributesAndroidInjector(modules = AuthenticationModule.class)
+    @ContributesAndroidInjector(modules = {AuthenticationModule.class, MenuModule.class})
     abstract ContainerPlaygroundsFragment contributeContainerPlaygroundsFragment();
 
     @ContributesAndroidInjector(modules = MenuModule.class)
     abstract ContainerEventsFragment contributeContainterEventFragment();
+
 }
