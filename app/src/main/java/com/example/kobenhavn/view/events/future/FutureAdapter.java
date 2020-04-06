@@ -70,7 +70,7 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
             _titleText.setText(event.getName());
             _timeText.setText(event.getDetails().getStartTime().toString());
             _descriptionText.setText(event.getDescription());
-            _interestedText.setText(event.getParticipants());
+            _interestedText.setText(String.valueOf(event.getParticipants()));
         }
     }
 

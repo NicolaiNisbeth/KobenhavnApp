@@ -2,6 +2,7 @@ package com.example.kobenhavn.view.events;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Event;
+import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.view.events.future.FutureFragment;
@@ -28,6 +30,7 @@ import com.google.android.material.tabs.TabLayout;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,10 +53,20 @@ public class ContainerEventsFragment extends Fragment {
         List<Event> futureEvents = new ArrayList<>();
         List<Event> enrolledEvents = new ArrayList<>();
 
-        if (RemoteDataSource.loggedInUser != null){
-
+        if (RemoteDataSource.loggedInUser != null && RemoteDataSource.loggedInUser.getSubscribedPlaygrounds() != null){
             User user = RemoteDataSource.loggedInUser;
-            //System.out.println("DETAILS " + user.getSubscribedPlaygrounds().get(0).getEvents().get(0).getDetails());
+
+            for (Playground playground : user.getSubscribedPlaygrounds()){
+                for (Event event : playground.getEvents()){
+                    Date date = event.getDetails().getDate();
+                    if (event.getParticipants() == 0){
+                        enrolledEvents.add(event);
+                    }
+                    if (DateUtils.isToday(date.getTime()) || date.after(new Date(System.currentTimeMillis()))){
+                        futureEvents.add(event);
+                    }
+                }
+            }
         }
 
 

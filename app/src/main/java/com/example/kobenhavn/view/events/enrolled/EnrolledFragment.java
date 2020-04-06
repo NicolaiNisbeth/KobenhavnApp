@@ -19,13 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EnrolledFragment extends Fragment {
-    private static List<Event> events;
+    private static List<Event> enrolledEvents;
     private RecyclerView recyclerView;
     private EnrolledAdapter adapter;
 
     public EnrolledFragment() { }
     public static EnrolledFragment newInstance(List<Event> enrolledEvents) {
-        EnrolledFragment.events = enrolledEvents;
+        EnrolledFragment.enrolledEvents = enrolledEvents;
         return new EnrolledFragment();
     }
 
@@ -34,8 +34,7 @@ public class EnrolledFragment extends Fragment {
         final View root = inflater.inflate(R.layout.events_enrolled_fragment, container, false);
         recyclerView = root.findViewById(R.id.recycler_view_enrolled);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
-        events = new ArrayList<>();
-        adapter = new EnrolledAdapter(root.getContext(), events);
+        adapter = new EnrolledAdapter(root.getContext(), enrolledEvents);
         recyclerView.setAdapter(adapter);
 
 

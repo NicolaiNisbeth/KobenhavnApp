@@ -82,7 +82,7 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
             _subtitleText.setText(event.getSubtitle());
             _titleText.setText(event.getName());
             _timeText.setText(event.getDetails().getStartTime().toString());
-            _interestedText.setText(event.getParticipants());
+            _interestedText.setText(String.valueOf(event.getParticipants()));
         }
     }
 
