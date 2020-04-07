@@ -1,6 +1,8 @@
 package com.example.kobenhavn.di;
 
 import com.example.kobenhavn.view.events.ContainerEventsFragment;
+import com.example.kobenhavn.view.events.enrolled.EnrolledFragment;
+import com.example.kobenhavn.view.events.future.FutureFragment;
 import com.example.kobenhavn.view.playgrounds.ContainerPlaygroundsFragment;
 import com.example.kobenhavn.view.playgrounds.PlaygroundsFragment;
 import com.example.kobenhavn.view.settings.SettingsFragment;
@@ -19,5 +21,13 @@ abstract class MainFragmentBuildersModule {
 
     @ContributesAndroidInjector(modules = MenuModule.class)
     abstract ContainerEventsFragment contributeContainterEventFragment();
+
+    @ContributesAndroidInjector(modules = MenuModule.class)
+    abstract EnrolledFragment contributeEnrolledFragment();
+
+    @ContributesAndroidInjector(modules = MenuModule.class)
+    abstract FutureFragment contributeFutureFragment();
+
+
 
 }

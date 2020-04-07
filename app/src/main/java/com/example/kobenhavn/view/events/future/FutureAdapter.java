@@ -1,6 +1,7 @@
 package com.example.kobenhavn.view.events.future;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,21 +11,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Event;
+import com.example.kobenhavn.dal.local.model.Playground;
+import com.example.kobenhavn.dal.local.model.User;
+import com.example.kobenhavn.dal.remote.RemoteDataSource;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder> {
-    private List<Event> event;
+    private List<Event> futureEvents = new ArrayList<>();
     private Context context;
     private OnItemClickListener listener;
 
-    public FutureAdapter(Context context, List<Event> event) {
-        this.event = event;
+    public FutureAdapter(Context context) {
         this.context = context;
     }
 
@@ -35,14 +40,30 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
     }
 
     public void onBindViewHolder(FutureAdapter.ViewHolder holder, int position) {
-        Event currentEvent = event.get(position);
+        Event currentEvent = futureEvents.get(position);
         holder.bindTo(currentEvent);
     }
 
     @Override
     public int getItemCount() {
-        return event.size();
+        return futureEvents.size();
     }
+
+    public void handleFutureEvents(User user) {
+        futureEvents.clear();
+
+        for (Playground playground : user.getSubscribedPlaygrounds()){
+            for (Event event : playground.getEvents()){
+                Date date = event.getDetails().getDate();
+                if (DateUtils.isToday(date.getTime()) || date.after(new Date(System.currentTimeMillis()))){
+                    futureEvents.add(event);
+
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
 
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.future_date_text) TextView _dateText;
@@ -59,7 +80,7 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (listener != null & position != RecyclerView.NO_POSITION) {
-                    listener.onItemClick(event.get(position));
+                    listener.onItemClick(futureEvents.get(position));
                 }
             });
         }

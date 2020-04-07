@@ -2,9 +2,11 @@ package com.example.kobenhavn.dal.local;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Completable;
@@ -28,4 +30,7 @@ public interface ILocalRepository {
     LiveData<User> getUserLive(String username);
 
     Single<User> getUser(String username);
+
+
+    Single<User> joinEvent(String username, ArrayList<Event> enrolledEvents);
 }

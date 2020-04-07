@@ -1,4 +1,4 @@
-package com.example.kobenhavn.dal.local.model;
+package com.example.kobenhavn.dal.local.converter;
 
 import androidx.room.TypeConverter;
 

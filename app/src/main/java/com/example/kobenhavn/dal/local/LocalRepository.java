@@ -3,9 +3,11 @@ package com.example.kobenhavn.dal.local;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Completable;
@@ -76,7 +78,7 @@ public class LocalRepository implements ILocalRepository {
     @Override
     public Single<User> update(User user) {
         return Single.fromCallable(() -> {
-            userDAO.update(user);
+            userDAO.updateUser(user);
             Timber.e("User is updated locally");
             return LocaleUserUtils.clone(user, false);
         });
@@ -85,7 +87,7 @@ public class LocalRepository implements ILocalRepository {
     @Override
     public Completable updateSubscription(String username, List<Playground> playgrounds) {
         return Completable.fromAction(() -> {
-            userDAO.update(username, playgrounds);
+            userDAO.updateSubscribedPlaygrounds(username, playgrounds);
             Timber.e("Updated user locally");
         });
     }
@@ -102,4 +104,11 @@ public class LocalRepository implements ILocalRepository {
         return userDAO.getUser(username);
     }
 
+    @Override
+    public Single<User> joinEvent(String username, ArrayList<Event> enrolledEvents) {
+        return Single.fromCallable(() -> {
+            userDAO.UpdateEnrolledEvents(username, enrolledEvents);
+            return null;
+        });
+    }
 }

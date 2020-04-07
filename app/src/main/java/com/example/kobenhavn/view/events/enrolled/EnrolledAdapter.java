@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Event;
+import com.example.kobenhavn.dal.local.model.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -22,12 +24,11 @@ import butterknife.ButterKnife;
 
 public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHolder> {
 
-    private List<Event> events;
     private Context context;
     private OnItemClickListener listener;
+    private List<Event> events = new ArrayList<>();
 
-    public EnrolledAdapter(Context context, List<Event> events) {
-        this.events = events;
+    public EnrolledAdapter(Context context) {
         this.context = context;
     }
 
@@ -53,6 +54,12 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
     @Override
     public int getItemCount() {
         return events.size();
+    }
+
+    public void updateEnrolledList(User user) {
+        events.clear();
+        events.addAll(user.getEvents());
+        notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

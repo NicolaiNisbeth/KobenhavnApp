@@ -56,7 +56,6 @@ public class AddPlaygroundActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        // TODO: order should not matter!!!!!
         playgroundsViewModel = ViewModelProviders.of(this, playgroundViewModelFactory).get(PlaygroundsViewModel.class);
         playgroundsViewModel.playgroundsLive().observe(this, recyclerViewAdapter::updatePlaygroundList);
         userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(this, recyclerViewAdapter::filterPlaygroundList);

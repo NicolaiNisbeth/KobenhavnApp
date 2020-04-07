@@ -85,14 +85,8 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
             _titleText.setText(playground.getName());
             _addressText.setText(String.format("%s %s", playground.getStreetName(), playground.getStreetNumber()));
         }
-    }
 
-    public void subscribeToPlayground(int position, Playground playground){
-        Toast.makeText(context, "Legeplads er tilføjet", Toast.LENGTH_SHORT).show();
-        allPlaygrounds.remove(position);
-        userViewModel.updateSubscriptions(RemoteDataSource.loggedInUser, playground);
     }
-
     public void filterPlaygroundList(User user) {
         Timber.e("filterplaygroundlist");
         allPlaygrounds.removeIf(user.getSubscribedPlaygrounds()::contains);
@@ -109,6 +103,12 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
             filterPlaygroundList(user);
             isFilterCalled = false;
         }
+    }
+
+    public void subscribeToPlayground(int position, Playground playground){
+        Toast.makeText(context, "Legeplads er tilføjet", Toast.LENGTH_SHORT).show();
+        allPlaygrounds.remove(position);
+        userViewModel.updateSubscriptions(user, playground);
     }
 
 }

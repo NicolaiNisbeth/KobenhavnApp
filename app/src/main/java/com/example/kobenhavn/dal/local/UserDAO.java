@@ -8,9 +8,11 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -23,10 +25,13 @@ public interface UserDAO {
     long add(User user);
 
     @Update
-    void update(User user);
+    void updateUser(User user);
 
     @Query("UPDATE user_table SET subscribed_playgrounds = :subscribed WHERE username = :username")
-    void update(String username, List<Playground> subscribed);
+    void updateSubscribedPlaygrounds(String username, List<Playground> subscribed);
+
+    @Query("UPDATE user_table SET events = :enrolledEvents WHERE username = :username")
+    void UpdateEnrolledEvents(String username, ArrayList<Event> enrolledEvents);
 
     @Delete
     void delete(User user);

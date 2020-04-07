@@ -1,7 +1,8 @@
-package com.example.kobenhavn.dal.local.model;
+package com.example.kobenhavn.dal.local.converter;
 
 import androidx.room.TypeConverter;
 
+import com.example.kobenhavn.dal.local.model.Playground;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -9,16 +10,16 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventConverter {
+public class PlaygroundConverter {
 
     @TypeConverter
-    public static ArrayList<Event> fromStringToList(String value){
-        Type listType = new TypeToken<ArrayList<Event>>(){}.getType();
+    public static List<Playground> fromStringToList(String value) {
+        Type listType = new TypeToken<ArrayList<Playground>>() {}.getType();
         return new Gson().fromJson(value, listType);
     }
 
     @TypeConverter
-    public static String fromListToString(ArrayList<Event> list){
+    public static String fromListToString(List<Playground> list) {
         Gson gson = new Gson();
         return gson.toJson(list);
     }

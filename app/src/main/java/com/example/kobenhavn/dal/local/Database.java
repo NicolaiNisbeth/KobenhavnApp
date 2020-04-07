@@ -6,13 +6,13 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.example.kobenhavn.dal.local.model.DetailsTimeConverter;
-import com.example.kobenhavn.dal.local.model.EventConverter;
-import com.example.kobenhavn.dal.local.model.PlaygroundConverter;
+import com.example.kobenhavn.dal.local.converter.DetailsTimeConverter;
+import com.example.kobenhavn.dal.local.converter.EventConverter;
+import com.example.kobenhavn.dal.local.converter.PlaygroundConverter;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.local.model.Playground;
 
-@androidx.room.Database(entities = {Playground.class, User.class}, version = 2, exportSchema = false)
+@androidx.room.Database(entities = {Playground.class, User.class}, version = 1, exportSchema = false)
 @TypeConverters({PlaygroundConverter.class, EventConverter.class, DetailsTimeConverter.class})
 public abstract class Database extends RoomDatabase {
     private static Database instance;

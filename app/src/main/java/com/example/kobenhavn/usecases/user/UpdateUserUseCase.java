@@ -7,8 +7,8 @@ import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import io.reactivex.Completable;
 
 public class UpdateUserUseCase {
-    private ILocalRepository localRepository;
-    private IRemoteRepository remoteRepository;
+    private final ILocalRepository localRepository;
+    private final IRemoteRepository remoteRepository;
 
     public UpdateUserUseCase(ILocalRepository localRepository, IRemoteRepository remoteRepository) {
         this.localRepository = localRepository;

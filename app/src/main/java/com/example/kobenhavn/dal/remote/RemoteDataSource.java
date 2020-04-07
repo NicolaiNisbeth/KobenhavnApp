@@ -109,13 +109,6 @@ public class RemoteDataSource {
             throw new RemoteException(response);
     }
 
-    public void addUserToPlaygroundEvent(int eventID, String username) throws RemoteException, IOException {
-        RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
-        Response<Event> response = endpoint.addUserToPlaygroundEvent(eventID, username).execute();
-
-        if (response == null || !response.isSuccessful() || response.errorBody() != null)
-            throw new RemoteException(response);
-    }
 
     public void removeUserFromPlaygroundEvent(int eventID, String username) throws RemoteException, IOException {
         RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
@@ -131,5 +124,13 @@ public class RemoteDataSource {
 
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
+    }
+
+    public User updateUserWithEvent(String playgroundName, String eventID, String username) throws IOException, RemoteException {
+        Response<User> response = API.updateUserWithEvent(playgroundName, eventID, username).execute();
+        if (response == null || !response.isSuccessful() || response.errorBody() != null)
+            throw new RemoteException(response);
+
+        return response.body();
     }
 }

@@ -4,13 +4,18 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
+import com.example.kobenhavn.usecases.event.JoinEventUseCase;
+import com.example.kobenhavn.usecases.event.LeaveEventUseCase;
 import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
 import com.example.kobenhavn.usecases.user.GetUserFromDbUseCase;
 import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionInDbUseCase;
 import com.example.kobenhavn.usecases.user.UpdateUserUseCase;
+
+import java.util.ArrayList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -22,13 +27,18 @@ public class UserViewModel extends ViewModel {
     private final UpdateUserSubscriptionInDbUseCase updateUserSubscriptionInDbUseCase;
     private final GetUserFromDbUseCase getUserFromDbUseCase;
     private final UpdateUserUseCase updateUserUseCase;
+    private final JoinEventUseCase joinEventUseCase;
+    private final LeaveEventUseCase leaveEventUseCase;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
-    public UserViewModel(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionInDbUseCase updateUserSubscriptionInDbUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase) {
+
+    public UserViewModel(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionInDbUseCase updateUserSubscriptionInDbUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase, JoinEventUseCase joinEventUseCase, LeaveEventUseCase leaveEventUseCase) {
         this.addUserToDbUseCase = addUserToDbUseCase;
         this.updateUserSubscriptionInDbUseCase = updateUserSubscriptionInDbUseCase;
         this.getUserFromDbUseCase = getUserFromDbUseCase;
         this.updateUserUseCase = updateUserUseCase;
+        this.joinEventUseCase = joinEventUseCase;
+        this.leaveEventUseCase = leaveEventUseCase;
     }
 
     @Override
@@ -66,6 +76,15 @@ public class UserViewModel extends ViewModel {
     public LiveData<User> getUser(String username){
         // https://developer.android.com/topic/libraries/architecture/livedata
         return getUserFromDbUseCase.getUserLive(username);
+    }
+
+
+    public void joinEvent(String playgroundName, String eventID, String username, ArrayList<Event> events){
+        disposables.add(joinEventUseCase.joinEvent(playgroundName, username, eventID, events)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> Timber.e("User joined event successfully"),
+                        t -> Timber.e("Error in user joining event")));
     }
 
 

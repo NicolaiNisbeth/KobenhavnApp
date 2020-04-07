@@ -25,7 +25,7 @@ public interface RemoteEndpoint {
     //String BASE_URL = "http://192.168.1.15:8088/";
 
     // laptop
-    String BASE_URL = "http://192.168.1.30:8088/";
+    String BASE_URL = "http://192.168.1.62:8088/";
 
     @GET("playgrounds")
     Call<List<Playground>> getPlaygrounds();
@@ -36,11 +36,14 @@ public interface RemoteEndpoint {
 
 
     // if user is not fetched then call get user
-    @POST("/rest/user_login")
+    @POST("rest/user_login")
     Call<User> loginUser(@Body User user);
 
 
-
+    @PUT("playgrounds/{pID}/events/{eID}/participants/{uID}")
+    Call<User> updateUserWithEvent(@Path("pID") String playgroundName,
+                                   @Path("eID") String eventID,
+                                   @Path("uID") String username);
 
 
     // call for each subscribed playground
@@ -55,13 +58,6 @@ public interface RemoteEndpoint {
     @POST("posts")
     Call<Boolean> signupUser(String name, String username, String password);
 
-
-
-
-
-
-    @PUT("posts")  //eventID, username
-    Call<Event> addUserToPlaygroundEvent(int eventID, String usenname);
 
     @PUT("posts") // eventID, username
     Call<Event> removeUserFromPlaygroundEvent(int eventID, String username);

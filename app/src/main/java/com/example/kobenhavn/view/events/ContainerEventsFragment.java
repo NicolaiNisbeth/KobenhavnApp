@@ -40,12 +40,9 @@ import javax.inject.Inject;
 import dagger.android.support.AndroidSupportInjection;
 
 public class ContainerEventsFragment extends Fragment {
-    @Inject
-    PlaygroundsViewModelFactory playgroundViewModelFactory;
 
     @Inject UserViewModelFactory userViewModelFactory;
 
-    private PlaygroundsViewModel playgroundsViewModel;
     private UserViewModel userViewModel;
 
 
@@ -53,34 +50,17 @@ public class ContainerEventsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         AndroidSupportInjection.inject(this);
         final View root = inflater.inflate(R.layout.events_container_fragment, container, false);
-        playgroundsViewModel = ViewModelProviders.of(this, playgroundViewModelFactory).get(PlaygroundsViewModel.class);
         userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
 
-        List<Event> enrolledEvents = new ArrayList<>();
-        userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), user -> enrolledEvents.addAll(user.getEvents()));
-
-
-        List<Event> futureEvents = new ArrayList<>();
-
-        if (RemoteDataSource.loggedInUser != null && RemoteDataSource.loggedInUser.getSubscribedPlaygrounds() != null){
-            User user = RemoteDataSource.loggedInUser;
-
-            for (Playground playground : user.getSubscribedPlaygrounds()){
-                for (Event event : playground.getEvents()){
-                    Date date = event.getDetails().getDate();
-                    if (DateUtils.isToday(date.getTime()) || date.after(new Date(System.currentTimeMillis()))){
-                        futureEvents.add(event);
-                    }
-                }
-            }
-        }
-
-
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(root.getContext(), getChildFragmentManager(), futureEvents, enrolledEvents);
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(root.getContext(), getChildFragmentManager());
         ViewPager viewPager = root.findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = root.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
+
+        userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), sectionsPagerAdapter::handleEnrolledEvents);
+
+
         return root;
     }
 
@@ -88,13 +68,11 @@ public class ContainerEventsFragment extends Fragment {
 
         private final String[] TAB_TITLES = new String[]{"Kommende", "Tilmeldte"};
         private final Context mContext;
-        private final List<Event> futureEvents, enrolledEvents;
 
-        public SectionsPagerAdapter(Context context, FragmentManager fm, List<Event> futureEvents, List<Event> enrolledEvents) {
+        public SectionsPagerAdapter(Context context, FragmentManager fm) {
             super(fm);
             mContext = context;
-            this.futureEvents = futureEvents;
-            this.enrolledEvents = enrolledEvents;
+
         }
 
         @NotNull
@@ -103,10 +81,10 @@ public class ContainerEventsFragment extends Fragment {
             Fragment fragment = null;
             switch (position) {
                 case 0:
-                    fragment = FutureFragment.newInstance(futureEvents);
+                    fragment = FutureFragment.newInstance();
                     break;
                 case 1:
-                    fragment = EnrolledFragment.newInstance(enrolledEvents);
+                    fragment = EnrolledFragment.newInstance();
                     break;
             }
             return Objects.requireNonNull(fragment);
@@ -121,6 +99,10 @@ public class ContainerEventsFragment extends Fragment {
         @Override
         public int getCount() {
             return TAB_TITLES.length;
+        }
+
+        public void handleEnrolledEvents(User user) {
+
         }
     }
 }
