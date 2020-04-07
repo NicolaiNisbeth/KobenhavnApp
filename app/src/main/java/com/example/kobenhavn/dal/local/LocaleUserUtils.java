@@ -9,14 +9,16 @@ public class LocaleUserUtils {
         return new User(
                 from.getId(), from.getFirstname(), from.getLastname(),
                 from.getUsername(), from.getPassword(), from.getEmail(),
-                from.getImagepath(), from.getPhonenumber(), syncPending
+                from.getImagepath(), from.getPhonenumber(), syncPending,
+                from.getSubscribedPlaygrounds(), from.getEvents()
         );
     }
 
     public static User clone(User from, String id){
         return new User(id, from.getFirstname(), from.getLastname(),
                 from.getUsername(), from.getPassword(), from.getEmail(),
-                from.getImagepath(), from.getPhonenumber(), from.isSyncPending());
+                from.getImagepath(), from.getPhonenumber(), from.isSyncPending(),
+                from.getSubscribedPlaygrounds(), from.getEvents());
     }
 
 

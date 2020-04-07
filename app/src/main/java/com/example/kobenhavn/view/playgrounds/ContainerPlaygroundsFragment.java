@@ -74,7 +74,7 @@ public class ContainerPlaygroundsFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
 
         if (RemoteDataSource.loggedInUser.getSubscribedPlaygrounds() != null){
-            viewModel.observerUserAlive().observe(getViewLifecycleOwner(), sectionsPagerAdapter::onChange);
+            viewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), sectionsPagerAdapter::onChange);
         }
 
 

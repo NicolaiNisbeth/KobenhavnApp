@@ -97,6 +97,7 @@ public class RemoteDataSource {
 
         loggedInUser = response.body();
         if (loggedInUser.getSubscribedPlaygrounds() == null) loggedInUser.setSubscribedPlaygrounds(new ArrayList<>());
+        if (loggedInUser.getEvents() == null) loggedInUser.setEvents(new ArrayList<>());
         return loggedInUser;
     }
 

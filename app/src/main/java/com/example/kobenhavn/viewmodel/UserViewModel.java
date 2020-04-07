@@ -1,6 +1,7 @@
 package com.example.kobenhavn.viewmodel;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.kobenhavn.dal.local.model.User;
@@ -39,13 +40,8 @@ public class UserViewModel extends ViewModel {
         disposables.add(addUserToDbUseCase.addUser(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(u -> {
-                    Timber.e("Insert user success %s", u);
-                    getUser(u.getUsername());
-                    }, t -> {
-                    Timber.e("User alread existed");
-                    getUser(user.getUsername());
-                }));
+                .subscribe(u -> Timber.e("Insert user success %s", u),
+                        t -> Timber.e("User alread existed")));
 
     }
 
@@ -53,23 +49,22 @@ public class UserViewModel extends ViewModel {
         disposables.add(updateUserSubscriptionInDbUseCase.updateUserSubscriptions(user.getUsername(), user.getSubscribedPlaygrounds())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                    Timber.e("Update user subscriptions success");
-                    getUser(user.getUsername());
-                    }, t -> Timber.e("Update user subscriptions error")));
+                .subscribe(() -> Timber.e("Update user subscriptions success"),
+                        t -> Timber.e("Update user subscriptions error")));
     }
 
     public void updateUser(User user){
         disposables.add(updateUserUseCase.updateUser(user)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(() -> {
-            Timber.e("update user success");
-            getUser(user.getUsername());
-        }, t -> Timber.e("update user error")));
+        .subscribe(() -> Timber.e("update user success"),
+                t -> Timber.e("update user error")));
     }
 
-    public void getUser(String username){
+    /*
+    public void loadUser(String username){
+        if (username == null) return;
+
         Timber.e("trying to get user");
         disposables.add(getUserFromDbUseCase.getUser(username)
         .subscribeOn(Schedulers.io())
@@ -80,9 +75,10 @@ public class UserViewModel extends ViewModel {
         }, t -> Timber.e("Got user error")));
     }
 
-    public LiveData<User> observerUserAlive() {
-        Timber.e("!!!User livedata changed!!!");
-        return getUserFromDbUseCase.getUserLive(RemoteDataSource.loggedInUser.getUsername());
+     */
+
+    public LiveData<User> getUser(String username){
+        return getUserFromDbUseCase.getUserLive(username);
     }
 
 }

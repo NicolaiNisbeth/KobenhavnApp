@@ -24,6 +24,7 @@ import com.example.kobenhavn.view.events.future.FutureFragment;
 import com.example.kobenhavn.view.events.enrolled.EnrolledFragment;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
+import com.example.kobenhavn.viewmodel.UserViewModel;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 import com.google.android.material.tabs.TabLayout;
 
@@ -36,22 +37,30 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
-import dagger.android.AndroidInjection;
 import dagger.android.support.AndroidSupportInjection;
 
 public class ContainerEventsFragment extends Fragment {
     @Inject
     PlaygroundsViewModelFactory playgroundViewModelFactory;
 
+    @Inject UserViewModelFactory userViewModelFactory;
+
     private PlaygroundsViewModel playgroundsViewModel;
+    private UserViewModel userViewModel;
+
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         AndroidSupportInjection.inject(this);
         final View root = inflater.inflate(R.layout.events_container_fragment, container, false);
         playgroundsViewModel = ViewModelProviders.of(this, playgroundViewModelFactory).get(PlaygroundsViewModel.class);
+        userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
+
+        List<Event> enrolledEvents = new ArrayList<>();
+        userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), user -> enrolledEvents.addAll(user.getEvents()));
+
 
         List<Event> futureEvents = new ArrayList<>();
-        List<Event> enrolledEvents = new ArrayList<>();
 
         if (RemoteDataSource.loggedInUser != null && RemoteDataSource.loggedInUser.getSubscribedPlaygrounds() != null){
             User user = RemoteDataSource.loggedInUser;
@@ -59,9 +68,6 @@ public class ContainerEventsFragment extends Fragment {
             for (Playground playground : user.getSubscribedPlaygrounds()){
                 for (Event event : playground.getEvents()){
                     Date date = event.getDetails().getDate();
-                    if (event.getParticipants() == 0){
-                        enrolledEvents.add(event);
-                    }
                     if (DateUtils.isToday(date.getTime()) || date.after(new Date(System.currentTimeMillis()))){
                         futureEvents.add(event);
                     }

@@ -34,6 +34,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
+import timber.log.Timber;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
 
@@ -71,9 +72,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         authenticationViewModel = ViewModelProviders.of(this, authenticationViewModelFactory).get(AuthenticationViewModel.class);
         userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
-        if (RemoteDataSource.loggedInUser != null){
-            userViewModel.observerUserAlive().observe(getViewLifecycleOwner(), this::updateUI);
-        }
+        userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), this::updateUI);
 
         _logoutText.setOnClickListener(v -> logUd());
 
@@ -97,7 +96,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void updateUI(User user) {
-        System.out.println(user);
+        Timber.e("UPDATE UI IS CALLED IN SETTINGS %s", user);
         _nameText.setText(user.getFirstname());
         _numberText.setText(user.getPhonenumber());
         ((EditText) _nameView.findViewById(R.id.settings_item_middle)).setText(user.getFirstname());

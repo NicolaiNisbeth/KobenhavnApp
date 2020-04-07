@@ -50,7 +50,16 @@ public class User implements Serializable {
     @ColumnInfo(name = "subscribed_playgrounds")
     private List<Playground> subscribedPlaygrounds = new ArrayList<>();
 
+    @ColumnInfo(name = "events")
+    private ArrayList<Event> events = new ArrayList<>();
 
+    public ArrayList<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(ArrayList<Event> events) {
+        this.events = events;
+    }
 
     public List<Playground> getSubscribedPlaygrounds() {
         return subscribedPlaygrounds;
@@ -159,7 +168,7 @@ public class User implements Serializable {
     }
 
 
-    public User(String id, String firstname, String lastname, String username, String password, String email, String imagepath, String phonenumber, boolean syncPending) {
+    public User(@NonNull String id, String firstname, String lastname, String username, String password, String email, String imagepath, String phonenumber, boolean syncPending, List<Playground> subscribedPlaygrounds, ArrayList<Event> events) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -169,8 +178,9 @@ public class User implements Serializable {
         this.imagepath = imagepath;
         this.phonenumber = phonenumber;
         this.syncPending = syncPending;
+        this.subscribedPlaygrounds = subscribedPlaygrounds;
+        this.events = events;
     }
-
 
     @Override
     public String toString() {

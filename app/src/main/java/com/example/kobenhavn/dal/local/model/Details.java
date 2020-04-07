@@ -1,8 +1,9 @@
 package com.example.kobenhavn.dal.local.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Details {
+public class Details implements Serializable {
     private Date date;
     private Date startTime;
     private Date endTime;

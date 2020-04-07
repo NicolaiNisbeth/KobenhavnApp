@@ -1,8 +1,9 @@
 package com.example.kobenhavn.dal.local.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Event {
+public class Event implements Serializable {
     private String id;
     private String name;
     private String imagepath;
