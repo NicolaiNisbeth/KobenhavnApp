@@ -22,21 +22,21 @@ public interface RemoteEndpoint {
      */
 
     // stationær
-    //String BASE_URL = "http://192.168.1.15:8088/";
+    //String BASE_URL = "http://192.168.1.15:8088/rest";
 
     // laptop
-    String BASE_URL = "http://192.168.1.62:8088/";
+    String BASE_URL = "http://192.168.1.62:8088/rest/";
 
     @GET("playgrounds")
     Call<List<Playground>> getPlaygrounds();
 
 
-    @PUT("rest/update_user")
+    @PUT("update_user")
     Call<User> updateUser(@Body User user);
 
 
     // if user is not fetched then call get user
-    @POST("rest/user_login")
+    @POST("user_login")
     Call<User> loginUser(@Body User user);
 
 

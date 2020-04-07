@@ -13,16 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.view.events.CardActivity;
-import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
-import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -57,8 +51,8 @@ public class EnrolledFragment extends Fragment {
         adapter.setOnItemClickListener(event -> {
             Intent intent = new Intent(getContext(), CardActivity.class);
             intent.putExtra(CardActivity.EXTRA_DATE, event.getDetails().getDate().toString());
-            intent.putExtra(CardActivity.EXTRA_TITLE, event.getName());
-            intent.putExtra(CardActivity.EXTRA_TIME, event.getDetails().getStartTime().toString());
+            intent.putExtra(CardActivity.EXTRA_NAME, event.getName());
+            intent.putExtra(CardActivity.EXTRA_STARTTIME, event.getDetails().getStartTime().toString());
             intent.putExtra(CardActivity.EXTRA_SUBTITLE, event.getSubtitle());
             intent.putExtra(CardActivity.EXTRA_DESCRIPTION, event.getDescription());
             intent.putExtra(CardActivity.EXTRA_INTERESTED, event.getParticipants());

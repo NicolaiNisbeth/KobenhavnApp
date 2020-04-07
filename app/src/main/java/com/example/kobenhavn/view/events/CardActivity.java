@@ -12,9 +12,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.kobenhavn.R;
+import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
-import com.example.kobenhavn.usecases.user.LogoutUserUseCase;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 
@@ -28,12 +28,13 @@ import dagger.android.AndroidInjection;
 public class CardActivity extends AppCompatActivity {
     public static final String EXTRA_DATE = "com.example.kobenhavn.EXTRA_DATE";
     public static final String EXTRA_SUBTITLE= "com.example.kobenhavn.EXTRA_SUBTITLE";
-    public static final String EXTRA_TITLE = "com.example.kobenhavn.EXTRA_TITLE";
-    public static final String EXTRA_TIME = "com.example.kobenhavn.EXTRA_TIME";
+    public static final String EXTRA_NAME = "com.example.kobenhavn.EXTRA_TITLE";
+    public static final String EXTRA_STARTTIME = "com.example.kobenhavn.EXTRA_TIME";
     public static final String EXTRA_DESCRIPTION = "com.example.kobenhavn.EXTRA_DESCRIPTION";
     public static final String EXTRA_INTERESTED = "com.example.kobenhavn.EXTRA_INTERESTED";
     public static final String EXTRA_PLAYGROUND_NAME = "com.example.kobenhavn.EXTRA_PLAYGROUND_NAME";
     public static final String EXTRA_EVENT_ID = "com.example.kobenhavn.EXTRA_EVENT_ID";
+    public static final String EXTRA_IMAGE_PATH = "com.example.kobenhavn.EXTRA_IMAGE_PATH";
 
     @BindView(R.id.future_date_text) TextView _dateText;
     @BindView(R.id.future_subtitle_text) TextView _subtitleText;
@@ -49,6 +50,7 @@ public class CardActivity extends AppCompatActivity {
     private UserViewModel userViewModel;
     private String playgroundName;
     private String eventID;
+    private Event event;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,12 +63,16 @@ public class CardActivity extends AppCompatActivity {
         Intent intent = getIntent();
         _dateText.setText(intent.getStringExtra(EXTRA_DATE));
         _subtitleText.setText(intent.getStringExtra(EXTRA_SUBTITLE));
-        _titleText.setText(intent.getStringExtra(EXTRA_TITLE));
-        _timeText.setText(intent.getStringExtra(EXTRA_TIME));
+        _titleText.setText(intent.getStringExtra(EXTRA_NAME));
+        _timeText.setText(intent.getStringExtra(EXTRA_STARTTIME));
         _descriptionText.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
-        _interestedText.setText(String.valueOf(intent.getStringExtra(EXTRA_INTERESTED)));
+        _interestedText.setText("" + intent.getStringExtra(EXTRA_INTERESTED));
         playgroundName = intent.getStringExtra(EXTRA_PLAYGROUND_NAME);
         eventID = intent.getStringExtra(EXTRA_EVENT_ID);
+
+        event = new Event(eventID, intent.getStringExtra(EXTRA_NAME), intent.getStringExtra(EXTRA_IMAGE_PATH), intent.getStringExtra(EXTRA_SUBTITLE)
+        ,intent.getStringExtra(EXTRA_DESCRIPTION), intent.getIntExtra(EXTRA_INTERESTED, 0), intent.getStringExtra(EXTRA_PLAYGROUND_NAME)
+        ,null);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,6 +88,7 @@ public class CardActivity extends AppCompatActivity {
     void onJoinEventClick(){
         Toast.makeText(this, "Du er nu tilmeldt", Toast.LENGTH_SHORT).show();
         User user = RemoteDataSource.loggedInUser;
+        user.getEvents().add(event);
         userViewModel.joinEvent(playgroundName, eventID, user.getUsername(), user.getEvents());
     }
 }
