@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="top|center"
-        android:text="Nicolai Nisbeth"
+        android:text=""
         style="@style/TextAppearance.AppCompat.Headline"
 
         />
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="top|center"
-        android:text="+45 28 77 19 95"
+        android:text=""
         />
 
     <TextView

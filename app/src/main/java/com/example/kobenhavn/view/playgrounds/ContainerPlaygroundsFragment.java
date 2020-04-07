@@ -73,9 +73,7 @@ public class ContainerPlaygroundsFragment extends Fragment {
         final TabLayout tabLayout = root.findViewById(R.id.playground_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
-        if (RemoteDataSource.loggedInUser.getSubscribedPlaygrounds() != null){
             viewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), sectionsPagerAdapter::onChange);
-        }
 
 
         return root;
@@ -127,7 +125,7 @@ public class ContainerPlaygroundsFragment extends Fragment {
 
         public void onChange(User user) {
             tabList.clear();
-            for (Playground model : RemoteDataSource.loggedInUser.getSubscribedPlaygrounds()){
+            for (Playground model : user.getSubscribedPlaygrounds()){
                 tabList.add(new Pair<>(model.getName(), PlaygroundsFragment.newInstance(model)));
             }
             tabList.sort((o1, o2) -> o1.first.compareTo(o2.first));

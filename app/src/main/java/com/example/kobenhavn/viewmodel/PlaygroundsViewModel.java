@@ -51,7 +51,6 @@ public class PlaygroundsViewModel extends ViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     Timber.e("Fetched playgrounds successfully");
-                    loadPlaygrounds();
                     }, t -> Timber.e(t, "Error in fetching playgrounds")));
     }
 

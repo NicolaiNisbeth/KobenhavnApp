@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.kobenhavn.R;
+import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 import com.example.kobenhavn.viewmodel.UserViewModel;
@@ -28,6 +29,7 @@ public class AddPlaygroundActivity extends AppCompatActivity {
 
     @Inject
     PlaygroundsViewModelFactory playgroundViewModelFactory;
+
 
     @Inject
     UserViewModelFactory userViewModelFactory;
@@ -54,7 +56,9 @@ public class AddPlaygroundActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recyclerViewAdapter);
 
+        // TODO: order should not matter!!!!!
         playgroundsViewModel = ViewModelProviders.of(this, playgroundViewModelFactory).get(PlaygroundsViewModel.class);
         playgroundsViewModel.playgroundsLive().observe(this, recyclerViewAdapter::updatePlaygroundList);
+        userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(this, recyclerViewAdapter::filterPlaygroundList);
     }
 }

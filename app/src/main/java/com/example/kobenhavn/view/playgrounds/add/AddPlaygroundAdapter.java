@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Playground;
+import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 
@@ -27,12 +28,14 @@ import timber.log.Timber;
 
 public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdapter.ViewHolder> {
 
-    private List<Playground> playgrounds;
+    private List<Playground> allPlaygrounds;
     private Context context;
     private UserViewModel userViewModel;
+    private User user;
+    private boolean isFilterCalled;
 
-    public AddPlaygroundAdapter(Context context, List<Playground> playgrounds, UserViewModel userViewModel) {
-        this.playgrounds = playgrounds;
+    public AddPlaygroundAdapter(Context context, List<Playground> allPlaygrounds, UserViewModel userViewModel) {
+        this.allPlaygrounds = allPlaygrounds;
         this.context = context;
         this.userViewModel = userViewModel;
     }
@@ -46,7 +49,7 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
 
     @Override
     public void onBindViewHolder(AddPlaygroundAdapter.ViewHolder holder, int position) {
-        Playground playground = playgrounds.get(position);
+        Playground playground = allPlaygrounds.get(position);
         if (playground.isSyncPending())
             holder._titleText.setTextColor(Color.LTGRAY);
         else
@@ -57,56 +60,55 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
 
     @Override
     public int getItemCount() {
-        return playgrounds.size();
+        return allPlaygrounds.size();
     }
 
-    public void addItem(int position, Playground playground){
-        playgrounds.remove(position);
-
-        Toast.makeText(context, "Legeplads er tilføjet", Toast.LENGTH_SHORT).show();
-        List<Playground> d = RemoteDataSource.loggedInUser.getSubscribedPlaygrounds();
-        d.add(playground);
-        RemoteDataSource.loggedInUser.setSubscribedPlaygrounds(d);
-        userViewModel.updateSubscriptions(RemoteDataSource.loggedInUser);
-        notifyDataSetChanged();
-    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+
         @BindView(R.id.add_item_title) TextView _titleText;
+
         @BindView(R.id.add_item_address) TextView _addressText;
         @BindView(R.id.add_item_button) ImageButton _imageButton;
-
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
             _imageButton.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
-                    addItem(position, playgrounds.get(position));
+                    subscribeToPlayground(position, allPlaygrounds.get(position));
                 }
             });
         }
-
         void bindTo(Playground playground) {
             _titleText.setText(playground.getName());
             _addressText.setText(String.format("%s %s", playground.getStreetName(), playground.getStreetNumber()));
         }
     }
 
-    public void updatePlaygroundList(List<Playground> playgroundList) {
-        this.playgrounds.clear();
+    public void subscribeToPlayground(int position, Playground playground){
+        Toast.makeText(context, "Legeplads er tilføjet", Toast.LENGTH_SHORT).show();
+        allPlaygrounds.remove(position);
+        userViewModel.updateSubscriptions(RemoteDataSource.loggedInUser, playground);
+    }
 
-        if (RemoteDataSource.loggedInUser.getSubscribedPlaygrounds() == null)
-            RemoteDataSource.loggedInUser.setSubscribedPlaygrounds(new ArrayList<>());
-
-        List<Playground> subscribed = RemoteDataSource.loggedInUser.getSubscribedPlaygrounds();
-        Timber.e("updateplaygroundlist %s", subscribed);
-        playgroundList.removeIf(subscribed::contains);
-
-        this.playgrounds.addAll(playgroundList);
+    public void filterPlaygroundList(User user) {
+        Timber.e("filterplaygroundlist");
+        allPlaygrounds.removeIf(user.getSubscribedPlaygrounds()::contains);
         notifyDataSetChanged();
+        isFilterCalled = true;
+        this.user = user;
+    }
 
+    public void updatePlaygroundList(List<Playground> playgroundList) {
+        Timber.e("updatePlaygroundList");
+        this.allPlaygrounds.clear();
+        this.allPlaygrounds.addAll(playgroundList);
+        if (isFilterCalled){
+            filterPlaygroundList(user);
+            isFilterCalled = false;
+        }
     }
 
 }

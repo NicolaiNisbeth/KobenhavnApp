@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
@@ -45,7 +46,8 @@ public class UserViewModel extends ViewModel {
 
     }
 
-    public void updateSubscriptions(User user){
+    public void updateSubscriptions(User user, Playground playgroundToBeAdded){
+        user.getSubscribedPlaygrounds().add(playgroundToBeAdded);
         disposables.add(updateUserSubscriptionInDbUseCase.updateUserSubscriptions(user.getUsername(), user.getSubscribedPlaygrounds())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -61,24 +63,13 @@ public class UserViewModel extends ViewModel {
                 t -> Timber.e("update user error")));
     }
 
-    /*
-    public void loadUser(String username){
-        if (username == null) return;
-
-        Timber.e("trying to get user");
-        disposables.add(getUserFromDbUseCase.getUser(username)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(u -> {
-            Timber.e("Got user success %s", u);
-            RemoteDataSource.loggedInUser = u;
-        }, t -> Timber.e("Got user error")));
-    }
-
-     */
-
     public LiveData<User> getUser(String username){
+        // https://developer.android.com/topic/libraries/architecture/livedata
         return getUserFromDbUseCase.getUserLive(username);
     }
+
+
+
+
 
 }
