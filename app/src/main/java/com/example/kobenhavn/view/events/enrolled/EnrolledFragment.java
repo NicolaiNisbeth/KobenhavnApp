@@ -23,6 +23,8 @@ import com.example.kobenhavn.view.events.CardActivity;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
