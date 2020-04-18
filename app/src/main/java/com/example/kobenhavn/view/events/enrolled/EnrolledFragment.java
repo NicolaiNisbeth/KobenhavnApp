@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,10 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Event;
+import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
+import com.example.kobenhavn.view.EmptyRecyclerView;
 import com.example.kobenhavn.view.events.CardActivity;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
@@ -26,14 +30,19 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 
 public class EnrolledFragment extends Fragment {
-    private RecyclerView recyclerView;
+    private EmptyRecyclerView recyclerView;
     private EnrolledAdapter adapter;
 
     @Inject
     UserViewModelFactory userViewModelFactory;
+
+    @BindView(R.id.events_enrolled_empty_msg)
+    TextView _emptyView;
 
     private UserViewModel userViewModel;
 
@@ -46,13 +55,16 @@ public class EnrolledFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         AndroidSupportInjection.inject(this);
         final View root = inflater.inflate(R.layout.events_enrolled_fragment, container, false);
+        ButterKnife.bind(this, root);
         recyclerView = root.findViewById(R.id.recycler_view_enrolled);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
-        adapter = new EnrolledAdapter(root.getContext());
+        adapter = new EnrolledAdapter(root.getContext(), new ArrayList<>());
         recyclerView.setAdapter(adapter);
+        recyclerView.setEmptyView(_emptyView);
 
         userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
-        userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), adapter::updateEnrolledList);
+        LiveData<User> liveDataUser = userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername());
+        liveDataUser.observe(getViewLifecycleOwner(), adapter::updateEnrolledList);
 
         adapter.setOnItemClickListener(event -> {
             Intent intent = new Intent(getContext(), CardActivity.class);

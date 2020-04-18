@@ -9,10 +9,20 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context=".view.events.enrolled.EnrolledFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.example.kobenhavn.view.EmptyRecyclerView
         android:id="@+id/recycler_view_enrolled"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <TextView
+        android:id="@+id/events_enrolled_empty_msg"
+        style="@style/TextAppearance.AppCompat.Headline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Ingen tilmeldte aktiviter"
+        />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

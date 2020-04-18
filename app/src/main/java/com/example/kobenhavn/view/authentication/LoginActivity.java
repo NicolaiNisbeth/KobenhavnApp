@@ -28,6 +28,8 @@ import com.example.kobenhavn.viewmodel.UserViewModel;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -109,7 +111,10 @@ public class LoginActivity extends AppCompatActivity {
             _loginButton.setEnabled(formState.isDataValid());
         });
 
-        //showLoginSuccess(new User("s175565","Nicolai", "Nisbeth", "s175565","","","","",true)); // TODO: to be removed
+        _usernameText.setText("s175565");
+        _passwordText.setText("kodeNWHN");
+
+        //showLoginSuccess(new User("s175565","Nicolai", "Nisbeth", "s175565","","","","",true, new ArrayList<>(), new ArrayList<>())); // TODO: to be removed
     }
 
     private void handleLoginResponse(LoginUserRxBus.LoginResponse response) {
@@ -125,7 +130,9 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Autentificere...");
         progressDialog.show();
+        //authViewModel.loginUser(_usernameText.getText().toString(), _passwordText.getText().toString());
         authViewModel.loginUser(_usernameText.getText().toString(), _passwordText.getText().toString());
+
     }
 
     private void startSignUp() {

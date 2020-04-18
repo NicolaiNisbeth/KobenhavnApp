@@ -64,7 +64,7 @@ public class CardActivity extends AppCompatActivity {
         _titleText.setText(intent.getStringExtra(EXTRA_TITLE));
         _timeText.setText(intent.getStringExtra(EXTRA_TIME));
         _descriptionText.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
-        _interestedText.setText(String.valueOf(intent.getStringExtra(EXTRA_INTERESTED)));
+        _interestedText.setText(String.valueOf(intent.getIntExtra(EXTRA_INTERESTED, -1)));
         playgroundName = intent.getStringExtra(EXTRA_PLAYGROUND_NAME);
         eventID = intent.getStringExtra(EXTRA_EVENT_ID);
 

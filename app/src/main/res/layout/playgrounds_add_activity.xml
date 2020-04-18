@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,10 +11,19 @@
         android:id="@+id/legepladser_tilfoj_toolbar"
         layout="@layout/toolbar"/>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.example.kobenhavn.view.EmptyRecyclerView
         android:id="@+id/recycler_view_tilfoj_legeplads"
+        android:layout_marginTop="?android:attr/actionBarSize"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/events_enrolled_empty_msg"
+        style="@style/TextAppearance.AppCompat.Headline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Ikke flere legepladser" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

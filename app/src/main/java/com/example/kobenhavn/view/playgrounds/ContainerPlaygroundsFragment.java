@@ -36,11 +36,16 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 
 public class ContainerPlaygroundsFragment extends Fragment {
     private Toolbar toolbar;
     private ArrayList<Pair<String, PlaygroundsFragment>> tabList;
+
+    @BindView(R.id.events_enrolled_empty_msg)
+    TextView _emptyView;
 
     @Inject
     UserViewModelFactory userViewModelFactory;
@@ -50,6 +55,7 @@ public class ContainerPlaygroundsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         AndroidSupportInjection.inject(this);
         View root = inflater.inflate(R.layout.playgrounds_container_fragment, container, false);
+        ButterKnife.bind(this, root);
 
         // setup toolbar
         setHasOptionsMenu(true);
@@ -67,13 +73,12 @@ public class ContainerPlaygroundsFragment extends Fragment {
 
 
         // setup table layout
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(root.getContext(), getChildFragmentManager(), tabList);
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(root.getContext(), getChildFragmentManager(), tabList, _emptyView);
         ViewPager viewPager = root.findViewById(R.id.playgrounds_view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         final TabLayout tabLayout = root.findViewById(R.id.playground_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-
-            viewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), sectionsPagerAdapter::onChange);
+        viewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), sectionsPagerAdapter::onChange);
 
 
         return root;
@@ -98,13 +103,15 @@ public class ContainerPlaygroundsFragment extends Fragment {
     }
 
     public static class SectionsPagerAdapter extends FragmentPagerAdapter {
+        private final TextView _emptyView;
         private Context context;
         private ArrayList<Pair<String, PlaygroundsFragment>> tabList;
 
-        public SectionsPagerAdapter(Context context, FragmentManager fm, ArrayList<Pair<String, PlaygroundsFragment>> tabList) {
+        public SectionsPagerAdapter(Context context, FragmentManager fm, ArrayList<Pair<String, PlaygroundsFragment>> tabList, TextView _emptyView) {
             super(fm);
             this.context = context;
             this.tabList = tabList;
+            this._emptyView = _emptyView;
         }
 
         @Override
@@ -129,8 +136,10 @@ public class ContainerPlaygroundsFragment extends Fragment {
                 tabList.add(new Pair<>(model.getName(), PlaygroundsFragment.newInstance(model)));
             }
             tabList.sort((o1, o2) -> o1.first.compareTo(o2.first));
-
             notifyDataSetChanged();
+
+            if (tabList != null && tabList.size() > 0) _emptyView.setVisibility(View.GONE);
+            else _emptyView.setVisibility(View.VISIBLE);
         }
     }
 }

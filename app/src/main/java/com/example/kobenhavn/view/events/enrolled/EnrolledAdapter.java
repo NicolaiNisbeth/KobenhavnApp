@@ -26,10 +26,11 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
 
     private Context context;
     private OnItemClickListener listener;
-    private List<Event> events = new ArrayList<>();
+    private List<Event> events;
 
-    public EnrolledAdapter(Context context) {
+    public EnrolledAdapter(Context context, ArrayList<Event> events) {
         this.context = context;
+        this.events = events;
     }
 
     @NotNull
@@ -38,17 +39,9 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
         return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.events_enrolled_item, parent, false));
     }
 
-
-    public void deleteItem(int position){
-        Toast.makeText(context, events.get(position).getName() + " blev fjernet.", Toast.LENGTH_SHORT).show();
-        events.remove(position);
-        notifyDataSetChanged();
-    }
-
     @Override
     public void onBindViewHolder(EnrolledAdapter.ViewHolder holder, int position) {
-        Event event = events.get(position);
-        holder.bindTo(event);
+        holder.bindTo(position);
     }
 
     @Override
@@ -56,7 +49,15 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
         return events.size();
     }
 
+    private void deleteItem(int position){
+        Toast.makeText(context, events.get(position).getName() + " blev fjernet.", Toast.LENGTH_SHORT).show();
+        events.remove(position);
+        notifyItemRemoved(position);
+    }
+
+
     public void updateEnrolledList(User user) {
+
         events.clear();
         events.addAll(user.getEvents());
         notifyDataSetChanged();
@@ -84,7 +85,8 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
             _deleteButton.setOnClickListener(v -> deleteItem(getAdapterPosition()));
         }
 
-        void bindTo(Event event) {
+        void bindTo(int position) {
+            final Event event = events.get(position);
             _dateText.setText(event.getDetails().getDate().toString());
             _subtitleText.setText(event.getSubtitle());
             _titleText.setText(event.getName());
