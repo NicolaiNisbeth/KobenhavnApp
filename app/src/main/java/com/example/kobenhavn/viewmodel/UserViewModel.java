@@ -16,6 +16,7 @@ import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionInDbUseCase;
 import com.example.kobenhavn.usecases.user.UpdateUserUseCase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -56,9 +57,8 @@ public class UserViewModel extends ViewModel {
 
     }
 
-    public void updateSubscriptions(User user, Playground playgroundToBeAdded){
-        user.getSubscribedPlaygrounds().add(playgroundToBeAdded);
-        disposables.add(updateUserSubscriptionInDbUseCase.updateUserSubscriptions(user.getUsername(), user.getSubscribedPlaygrounds())
+    public void updateSubscriptions(User user, List<Playground> updatedPlaygrounds){
+        disposables.add(updateUserSubscriptionInDbUseCase.updateUserSubscriptions(user.getUsername(), updatedPlaygrounds)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> Timber.e("Update user subscriptions success"),

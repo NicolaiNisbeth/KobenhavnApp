@@ -32,7 +32,7 @@ public interface RemoteEndpoint {
 
 
     @PUT("employee/update")
-    Call<User> updateUser(@Body User user);
+    Call<User> updateUserInfo(@Body User user);
 
 
     // if user is not fetched then call get user

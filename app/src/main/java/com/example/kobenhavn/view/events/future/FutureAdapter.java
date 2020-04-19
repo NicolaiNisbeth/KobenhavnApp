@@ -2,6 +2,7 @@ package com.example.kobenhavn.view.events.future;
 
 import android.content.Context;
 import android.text.format.DateUtils;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +41,7 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
     }
 
     public void onBindViewHolder(FutureAdapter.ViewHolder holder, int position) {
-        Event currentEvent = futureEvents.get(position);
-        holder.bindTo(currentEvent);
+        holder.bindTo(position);
     }
 
     @Override
@@ -85,7 +85,8 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
             });
         }
 
-        void bindTo(Event event) {
+        void bindTo(int position) {
+            Event event = futureEvents.get(position);
             _dateText.setText(event.getDetails().getDate().toString());
             _subtitleText.setText(event.getSubtitle());
             _titleText.setText(event.getName());

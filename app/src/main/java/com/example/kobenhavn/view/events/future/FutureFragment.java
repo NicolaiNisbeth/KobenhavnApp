@@ -59,7 +59,7 @@ public class FutureFragment extends Fragment {
 
         adapter.setOnItemClickListener(event -> {
             Intent intent = new Intent(getContext(), CardActivity.class);
-            intent.putExtra(CardActivity.EXTRA_DATE, event.getDetails().getDate().toString());
+            intent.putExtra(CardActivity.EXTRA_DATE, event.getDetails());
             intent.putExtra(CardActivity.EXTRA_NAME, event.getName());
             intent.putExtra(CardActivity.EXTRA_IMAGE_PATH, event.getImagepath());
             intent.putExtra(CardActivity.EXTRA_STARTTIME, event.getDetails().getStartTime().toString());

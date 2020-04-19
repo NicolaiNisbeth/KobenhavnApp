@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,19 +20,26 @@ import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.kobenhavn.R;
+import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
+import com.example.kobenhavn.view.events.enrolled.EnrolledAdapter;
 import com.example.kobenhavn.view.playgrounds.add.AddPlaygroundActivity;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 import com.google.android.material.tabs.TabLayout;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -39,6 +47,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
+import timber.log.Timber;
 
 public class ContainerPlaygroundsFragment extends Fragment {
     private Toolbar toolbar;
@@ -66,20 +75,20 @@ public class ContainerPlaygroundsFragment extends Fragment {
         TextView title = toolbar.findViewById(R.id.toolbar_title);
         title.setText("Legepladser");
 
-        viewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
 
         tabList = new ArrayList<>();
 
 
+        viewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
 
         // setup table layout
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(root.getContext(), getChildFragmentManager(), tabList, _emptyView);
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(root.getContext(), getChildFragmentManager(), tabList, _emptyView, viewModel);
         ViewPager viewPager = root.findViewById(R.id.playgrounds_view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         final TabLayout tabLayout = root.findViewById(R.id.playground_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-        viewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), sectionsPagerAdapter::onChange);
 
+        viewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), sectionsPagerAdapter::onChange);
 
         return root;
     }
@@ -102,16 +111,19 @@ public class ContainerPlaygroundsFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public static class SectionsPagerAdapter extends FragmentPagerAdapter {
+    static class SectionsPagerAdapter extends FragmentStatePagerAdapter {
         private final TextView _emptyView;
+        private final UserViewModel viewModel;
         private Context context;
         private ArrayList<Pair<String, PlaygroundsFragment>> tabList;
+        private User user;
 
-        public SectionsPagerAdapter(Context context, FragmentManager fm, ArrayList<Pair<String, PlaygroundsFragment>> tabList, TextView _emptyView) {
+        public SectionsPagerAdapter(Context context, FragmentManager fm, ArrayList<Pair<String, PlaygroundsFragment>> tabList, TextView _emptyView, UserViewModel viewModel) {
             super(fm);
             this.context = context;
             this.tabList = tabList;
             this._emptyView = _emptyView;
+            this.viewModel = viewModel;
         }
 
         @Override
@@ -122,15 +134,33 @@ public class ContainerPlaygroundsFragment extends Fragment {
         @Nullable
         @Override
         public CharSequence getPageTitle(int position) {
-            return (tabList.get(position).first);
+            return tabList.get(position).first;
         }
 
         @Override
+        public int getItemPosition(@NonNull Object object) {
+            return PagerAdapter.POSITION_NONE;
+        }
+
+        @NotNull
+        @Override
         public Fragment getItem(int i) {
+            PlaygroundsFragment fragment = tabList.get(i).second;
+            if (fragment != null){
+                fragment.setOnItemClickListener(playground -> {
+                    List<Playground> updatedPlaygrounds = user.getSubscribedPlaygrounds();
+                    updatedPlaygrounds.remove(playground);
+                    viewModel.updateSubscriptions(user, updatedPlaygrounds);
+                    Toast.makeText(context, "Legeplads blev fjernet", Toast.LENGTH_SHORT).show();
+                });
+            }
             return Objects.requireNonNull(tabList.get(i).second);
         }
 
+
+
         public void onChange(User user) {
+            this.user = user;
             tabList.clear();
             for (Playground model : user.getSubscribedPlaygrounds()){
                 tabList.add(new Pair<>(model.getName(), PlaygroundsFragment.newInstance(model)));

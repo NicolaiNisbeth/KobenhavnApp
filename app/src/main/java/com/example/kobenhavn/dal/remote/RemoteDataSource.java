@@ -13,12 +13,9 @@ import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import timber.log.Timber;
 
 public class RemoteDataSource {
 
@@ -120,7 +117,7 @@ public class RemoteDataSource {
 
     public void updateUser(User user) throws RemoteException, IOException {
         RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
-        Response<User> response = endpoint.updateUser(user).execute();
+        Response<User> response = endpoint.updateUserInfo(user).execute();
 
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);

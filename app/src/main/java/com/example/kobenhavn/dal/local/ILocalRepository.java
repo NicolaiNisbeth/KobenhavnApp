@@ -32,5 +32,5 @@ public interface ILocalRepository {
     Single<User> getUser(String username);
 
 
-    Single<User> joinEvent(String username, ArrayList<Event> enrolledEvents);
+    Completable joinEvent(String username, ArrayList<Event> enrolledEvents);
 }

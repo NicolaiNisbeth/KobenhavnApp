@@ -105,10 +105,10 @@ public class LocalRepository implements ILocalRepository {
     }
 
     @Override
-    public Single<User> joinEvent(String username, ArrayList<Event> enrolledEvents) {
-        return Single.fromCallable(() -> {
+    public Completable joinEvent(String username, ArrayList<Event> enrolledEvents) {
+        return Completable.fromAction(() -> {
             userDAO.UpdateEnrolledEvents(username, enrolledEvents);
-            return null;
+            Timber.e("Joined event");
         });
     }
 }

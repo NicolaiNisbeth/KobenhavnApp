@@ -57,7 +57,6 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
 
 
     public void updateEnrolledList(User user) {
-
         events.clear();
         events.addAll(user.getEvents());
         notifyDataSetChanged();
@@ -69,7 +68,7 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
         @BindView(R.id.ennrolled_title_text) TextView _titleText;
         @BindView(R.id.enrolled_time_text) TextView _timeText;
         @BindView(R.id.enrolled_interested_text) TextView _interestedText;
-        @BindView(R.id.enrolled_delete_btn) FloatingActionButton _deleteButton;
+        //@BindView(R.id.enrolled_delete_btn) FloatingActionButton _deleteButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -81,8 +80,7 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
                     listener.onItemClick(events.get(position));
                 }
             });
-
-            _deleteButton.setOnClickListener(v -> deleteItem(getAdapterPosition()));
+            //_deleteButton.setOnClickListener(v -> deleteItem(getAdapterPosition()));
         }
 
         void bindTo(int position) {

@@ -108,7 +108,9 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
     public void subscribeToPlayground(int position, Playground playground){
         Toast.makeText(context, "Legeplads er tilføjet", Toast.LENGTH_SHORT).show();
         allPlaygrounds.remove(position);
-        userViewModel.updateSubscriptions(user, playground);
+        List<Playground> updatedPlayground = user.getSubscribedPlaygrounds();
+        updatedPlayground.add(playground);
+        userViewModel.updateSubscriptions(user, updatedPlayground);
     }
 
 }

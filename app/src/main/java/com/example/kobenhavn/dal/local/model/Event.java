@@ -2,6 +2,7 @@ package com.example.kobenhavn.dal.local.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 public class Event implements Serializable {
     private String id;
@@ -100,5 +101,19 @@ public class Event implements Serializable {
 
     public void setDetails(Details details) {
         this.details = details;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Objects.equals(id, event.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, imagepath, subtitle, description, participants, playgroundName, details);
     }
 }
