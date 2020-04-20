@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Details implements Parcelable {
+public class Details implements Parcelable, Serializable {
     private Date date;
     private Date startTime;
     private Date endTime;

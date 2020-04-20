@@ -13,6 +13,7 @@ import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
+import com.example.kobenhavn.dal.remote.RemoteDataSource;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -48,6 +49,8 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
     }
 
     public void handleFutureEvents(User user) {
+        RemoteDataSource.loggedInUser = user;
+
         futureEvents.clear();
 
         for (Playground playground : user.getPlaygroundsIDs()){

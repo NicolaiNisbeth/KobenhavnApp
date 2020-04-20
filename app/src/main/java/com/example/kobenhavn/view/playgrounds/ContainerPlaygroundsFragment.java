@@ -156,6 +156,7 @@ public class ContainerPlaygroundsFragment extends Fragment {
 
 
         public void onChange(User user) {
+            RemoteDataSource.loggedInUser = user;
             this.user = user;
             tabList.clear();
             for (Playground model : user.getPlaygroundsIDs()){

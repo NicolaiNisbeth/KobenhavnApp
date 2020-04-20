@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.kobenhavn.R;
@@ -72,7 +73,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         authenticationViewModel = ViewModelProviders.of(this, authenticationViewModelFactory).get(AuthenticationViewModel.class);
         userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
-        userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), this::updateUI);
+        LiveData<User> liveData = userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername());
+        liveData.observe(getViewLifecycleOwner(), this::updateUI);
 
         _logoutText.setOnClickListener(v -> logUd());
 
@@ -96,6 +98,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void updateUI(User user) {
+        RemoteDataSource.loggedInUser = user;
         Timber.e("UPDATE UI IS CALLED IN SETTINGS %s", user);
         _nameText.setText(user.getFirstname());
         _numberText.setText(user.getPhoneNumber());
@@ -139,21 +142,27 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         if (id == R.id.save_settings) {
             EditText _nameEdit = _nameView.findViewById(R.id.settings_item_middle);
             EditText _emailEdit = _emailView.findViewById(R.id.settings_item_middle);
-            EditText _mobileEdit = _mobileNumberView.findViewById(R.id.settings_item_middle);
+            EditText _phoneNumberEdit = _mobileNumberView.findViewById(R.id.settings_item_middle);
             EditText _passwordEdit = _changePasswordView.findViewById(R.id.settings_item_middle);
 
             toogleEditText(_nameEdit, false, _nameView.findViewById(R.id.settings_item_right));
             toogleEditText(_emailEdit, false, _emailView.findViewById(R.id.settings_item_right));
-            toogleEditText(_mobileEdit, false, _mobileNumberView.findViewById(R.id.settings_item_right));
+            toogleEditText(_phoneNumberEdit, false, _mobileNumberView.findViewById(R.id.settings_item_right));
             toogleEditText(_passwordEdit, false, _changePasswordView.findViewById(R.id.settings_item_right));
             Toast.makeText(getContext(), "Saved changes.", Toast.LENGTH_SHORT).show();
 
-            RemoteDataSource.loggedInUser.setFirstname(_nameEdit.getText().toString());
-            RemoteDataSource.loggedInUser.setEmail(_emailEdit.getText().toString());
-            RemoteDataSource.loggedInUser.setPhoneNumber(_mobileEdit.getText().toString());
-            RemoteDataSource.loggedInUser.setPassword(_passwordEdit.getText().toString());
 
-            userViewModel.updateUser(RemoteDataSource.loggedInUser);
+
+            String firstName = _nameEdit.getText().toString();
+            String email = _emailEdit.getText().toString();
+            String phoneNumber = _phoneNumberEdit.getText().toString();
+            String password = _passwordEdit.getText().toString();
+            RemoteDataSource.loggedInUser.setFirstname(firstName);
+            RemoteDataSource.loggedInUser.setEmail(email);
+            RemoteDataSource.loggedInUser.setPhoneNumber(phoneNumber);
+            RemoteDataSource.loggedInUser.setPassword(password);
+
+            userViewModel.updateUserFields(RemoteDataSource.loggedInUser);
             return true;
         }
 

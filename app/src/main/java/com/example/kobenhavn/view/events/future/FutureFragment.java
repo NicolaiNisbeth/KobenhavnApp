@@ -2,6 +2,7 @@ package com.example.kobenhavn.view.events.future;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,7 @@ public class FutureFragment extends Fragment {
 
         adapter.setOnItemClickListener(event -> {
             Intent intent = new Intent(getContext(), CardActivity.class);
-            intent.putExtra(CardActivity.EXTRA_DATE, event.getDetails());
+            intent.putExtra(CardActivity.EXTRA_DATE, (Parcelable) event.getDetails());
             intent.putExtra(CardActivity.EXTRA_NAME, event.getName());
             intent.putExtra(CardActivity.EXTRA_IMAGE_PATH, event.getImagepath());
             intent.putExtra(CardActivity.EXTRA_STARTTIME, event.getDetails().getStartTime().toString());

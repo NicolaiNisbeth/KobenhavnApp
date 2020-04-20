@@ -1,13 +1,11 @@
 package com.example.kobenhavn.viewmodel;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
-import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.usecases.event.JoinEventUseCase;
 import com.example.kobenhavn.usecases.event.LeaveEventUseCase;
 import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
@@ -18,6 +16,7 @@ import com.example.kobenhavn.usecases.user.UpdateUserUseCase;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -65,17 +64,14 @@ public class UserViewModel extends ViewModel {
                         t -> Timber.e("Update user subscriptions error")));
     }
 
-    public void updateUser(User user){
-        disposables.add(updateUserUseCase.updateUser(user)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(() -> Timber.e("update user success"),
-                t -> Timber.e("update user error")));
-    }
 
     public LiveData<User> getUser(String username){
         // https://developer.android.com/topic/libraries/architecture/livedata
         return getUserFromDbUseCase.getUserLive(username);
+    }
+
+    public Single<User> getUserObject(String username){
+        return getUserFromDbUseCase.getUser(username);
     }
 
 
@@ -88,7 +84,11 @@ public class UserViewModel extends ViewModel {
     }
 
 
-
-
-
+    public void updateUserFields(User user) {
+        disposables.add(updateUserUseCase.updateUserFields(user)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> Timber.e("update user success"),
+                        t -> Timber.e("update user error")));
+    }
 }

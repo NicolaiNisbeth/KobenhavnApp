@@ -12,6 +12,7 @@ import io.reactivex.Single;
 public class UpdateUserSubscriptionInDbUseCase {
     private ILocalRepository localRepository;
 
+
     public UpdateUserSubscriptionInDbUseCase(ILocalRepository localRepository) {
         this.localRepository = localRepository;
     }

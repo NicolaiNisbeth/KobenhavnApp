@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
+import com.example.kobenhavn.dal.remote.RemoteDataSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,9 +77,9 @@ public class LocalRepository implements ILocalRepository {
     }
 
     @Override
-    public Single<User> update(User user) {
+    public Single<User> updateFields(User user) {
         return Single.fromCallable(() -> {
-            userDAO.updateUser(user);
+            userDAO.updateUserFields(user.getFirstname(), user.getEmail(), user.getPhoneNumber(), user.getPassword());
             Timber.e("User is updated locally");
             return LocaleUserUtils.clone(user, false);
         });

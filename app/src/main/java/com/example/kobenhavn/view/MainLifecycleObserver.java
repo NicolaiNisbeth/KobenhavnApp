@@ -66,9 +66,12 @@ public class MainLifecycleObserver implements LifecycleObserver {
 
     private void onSyncingSuccess(User user) {
         Timber.e("Successfully synced users");
+        // update subscriptions
+
     }
 
     private void onSyncingFailed(User user) {
+        // TODO: revert local update to ensure data integrity
         Timber.e("Failed to sync user");
     }
 

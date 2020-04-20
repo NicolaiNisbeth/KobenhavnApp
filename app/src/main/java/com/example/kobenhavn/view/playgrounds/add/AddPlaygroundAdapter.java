@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
+import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -86,6 +87,8 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
 
     }
     public void filterPlaygroundList(User user) {
+        RemoteDataSource.loggedInUser = user;
+
         Timber.e("filterplaygroundlist");
         allPlaygrounds.removeIf(user.getPlaygroundsIDs()::contains);
         notifyDataSetChanged();

@@ -23,7 +23,7 @@ public interface ILocalRepository {
 
     Single<User> add(User user);
 
-    Single<User> update(User user);
+    Single<User> updateFields(User user);
 
     Completable updateSubscription(String username, List<Playground> playgrounds);
 

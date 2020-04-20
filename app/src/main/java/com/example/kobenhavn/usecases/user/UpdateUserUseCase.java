@@ -5,6 +5,7 @@ import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 
 import io.reactivex.Completable;
+import io.reactivex.Single;
 
 public class UpdateUserUseCase {
     private final ILocalRepository localRepository;
@@ -15,7 +16,9 @@ public class UpdateUserUseCase {
         this.remoteRepository = remoteRepository;
     }
 
-    public Completable updateUser(User user){
-        return localRepository.update(user).flatMapCompletable(remoteRepository::sync);
+    public Completable updateUserFields(User user) {
+        Single<User> result = localRepository.updateFields(user);
+        return result.flatMapCompletable(remoteRepository::sync);
+
     }
 }

@@ -102,7 +102,7 @@ public class ContainerEventsFragment extends Fragment {
         }
 
         public void handleEnrolledEvents(User user) {
-
+            RemoteDataSource.loggedInUser = user;
         }
     }
 }
