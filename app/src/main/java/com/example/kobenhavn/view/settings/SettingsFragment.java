@@ -101,10 +101,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         RemoteDataSource.loggedInUser = user;
         Timber.e("UPDATE UI IS CALLED IN SETTINGS %s", user);
         _nameText.setText(user.getFirstname());
-        _numberText.setText(user.getPhoneNumber());
+        _numberText.setText(user.getPhonenumbers().get(0));
         ((EditText) _nameView.findViewById(R.id.settings_item_middle)).setText(user.getFirstname());
         ((EditText) _emailView.findViewById(R.id.settings_item_middle)).setText(user.getEmail());
-        ((EditText) _mobileNumberView.findViewById(R.id.settings_item_middle)).setText(user.getPhoneNumber());
+        ((EditText) _mobileNumberView.findViewById(R.id.settings_item_middle)).setText(user.getPhonenumbers().get(0));
         ((EditText) _changePasswordView.findViewById(R.id.settings_item_middle)).setText(user.getPassword());
     }
 
@@ -159,7 +159,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             String password = _passwordEdit.getText().toString();
             RemoteDataSource.loggedInUser.setFirstname(firstName);
             RemoteDataSource.loggedInUser.setEmail(email);
-            RemoteDataSource.loggedInUser.setPhoneNumber(phoneNumber);
+            RemoteDataSource.loggedInUser.getPhonenumbers().add(0, phoneNumber);
             RemoteDataSource.loggedInUser.setPassword(password);
 
             userViewModel.updateUserFields(RemoteDataSource.loggedInUser);

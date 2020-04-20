@@ -53,7 +53,7 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
 
         futureEvents.clear();
 
-        for (Playground playground : user.getPlaygroundsIDs()){
+        for (Playground playground : user.getPlaygrounds()){
             for (Event event : playground.getEvents()){
                 Date date = event.getDetails().getDate();
                 if (DateUtils.isToday(date.getTime()) || date.after(new Date(System.currentTimeMillis()))){

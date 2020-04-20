@@ -4,6 +4,7 @@ import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import com.example.kobenhavn.usecases.event.JoinEventUseCase;
 import com.example.kobenhavn.usecases.event.LeaveEventUseCase;
+import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionUseCase;
 import com.example.kobenhavn.view.MainLifecycleObserver;
 import com.example.kobenhavn.usecases.playground.InsertPlaygroundsInDbUseCase;
 import com.example.kobenhavn.usecases.playground.FetchPlaygroundsUseCase;
@@ -13,12 +14,9 @@ import com.example.kobenhavn.usecases.playground.UnsubscribeToPlaygroundUseCase;
 import com.example.kobenhavn.usecases.playground.UpdatePlaygroundsInDbUseCase;
 import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
 import com.example.kobenhavn.usecases.user.GetUserFromDbUseCase;
-import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionInDbUseCase;
 import com.example.kobenhavn.usecases.user.UpdateUserUseCase;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
-
-import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
@@ -41,8 +39,8 @@ class MenuModule {
     }
 
     @Provides
-    UserViewModelFactory provideUserViewModelFactory(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionInDbUseCase updateUserSubscriptionInDbUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase, JoinEventUseCase joinEventUseCase, LeaveEventUseCase leaveEventUseCase){
-        return new UserViewModelFactory(addUserToDbUseCase, updateUserSubscriptionInDbUseCase, getUserFromDbUseCase, updateUserUseCase, joinEventUseCase, leaveEventUseCase);
+    UserViewModelFactory provideUserViewModelFactory(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase, JoinEventUseCase joinEventUseCase, LeaveEventUseCase leaveEventUseCase){
+        return new UserViewModelFactory(addUserToDbUseCase, updateUserSubscriptionUseCase, getUserFromDbUseCase, updateUserUseCase, joinEventUseCase, leaveEventUseCase);
     }
 
     @Provides
@@ -66,8 +64,8 @@ class MenuModule {
     }
 
     @Provides
-    UpdateUserSubscriptionInDbUseCase provideUpdateUserInDbUseCase(ILocalRepository localRepository){
-        return new UpdateUserSubscriptionInDbUseCase(localRepository);
+    UpdateUserSubscriptionUseCase provideUpdateUserInDbUseCase(ILocalRepository localRepository, IRemoteRepository remoteRepository){
+        return new UpdateUserSubscriptionUseCase(localRepository, remoteRepository);
     }
 
     @Provides

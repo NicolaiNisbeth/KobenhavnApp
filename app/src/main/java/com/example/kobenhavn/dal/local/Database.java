@@ -8,12 +8,14 @@ import androidx.room.TypeConverters;
 
 import com.example.kobenhavn.dal.local.converter.DetailsTimeConverter;
 import com.example.kobenhavn.dal.local.converter.EventConverter;
+import com.example.kobenhavn.dal.local.converter.PhoneNumbersConverter;
 import com.example.kobenhavn.dal.local.converter.PlaygroundConverter;
+import com.example.kobenhavn.dal.local.converter.PlaygroundsIDConverter;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.local.model.Playground;
 
 @androidx.room.Database(entities = {Playground.class, User.class}, version = 1, exportSchema = false)
-@TypeConverters({PlaygroundConverter.class, EventConverter.class, DetailsTimeConverter.class})
+@TypeConverters({PlaygroundConverter.class, EventConverter.class, DetailsTimeConverter.class, PlaygroundsIDConverter.class, PhoneNumbersConverter.class})
 public abstract class Database extends RoomDatabase {
     private static Database instance;
     private static String DB_NAME = "offlinedb";

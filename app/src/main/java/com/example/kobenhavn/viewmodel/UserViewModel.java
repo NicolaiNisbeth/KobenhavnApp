@@ -10,7 +10,7 @@ import com.example.kobenhavn.usecases.event.JoinEventUseCase;
 import com.example.kobenhavn.usecases.event.LeaveEventUseCase;
 import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
 import com.example.kobenhavn.usecases.user.GetUserFromDbUseCase;
-import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionInDbUseCase;
+import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionUseCase;
 import com.example.kobenhavn.usecases.user.UpdateUserUseCase;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import timber.log.Timber;
 
 public class UserViewModel extends ViewModel {
     private final AddUserToDbUseCase addUserToDbUseCase;
-    private final UpdateUserSubscriptionInDbUseCase updateUserSubscriptionInDbUseCase;
+    private final UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase;
     private final GetUserFromDbUseCase getUserFromDbUseCase;
     private final UpdateUserUseCase updateUserUseCase;
     private final JoinEventUseCase joinEventUseCase;
@@ -32,9 +32,9 @@ public class UserViewModel extends ViewModel {
     private final CompositeDisposable disposables = new CompositeDisposable();
 
 
-    public UserViewModel(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionInDbUseCase updateUserSubscriptionInDbUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase, JoinEventUseCase joinEventUseCase, LeaveEventUseCase leaveEventUseCase) {
+    public UserViewModel(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase, JoinEventUseCase joinEventUseCase, LeaveEventUseCase leaveEventUseCase) {
         this.addUserToDbUseCase = addUserToDbUseCase;
-        this.updateUserSubscriptionInDbUseCase = updateUserSubscriptionInDbUseCase;
+        this.updateUserSubscriptionUseCase = updateUserSubscriptionUseCase;
         this.getUserFromDbUseCase = getUserFromDbUseCase;
         this.updateUserUseCase = updateUserUseCase;
         this.joinEventUseCase = joinEventUseCase;
@@ -57,7 +57,7 @@ public class UserViewModel extends ViewModel {
     }
 
     public void updateSubscriptions(User user, List<Playground> updatedPlaygrounds){
-        disposables.add(updateUserSubscriptionInDbUseCase.updateUserSubscriptions(user.getUsername(), updatedPlaygrounds)
+        disposables.add(updateUserSubscriptionUseCase.updateUserSubscriptions(user.getUsername(), updatedPlaygrounds)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> Timber.e("Update user subscriptions success"),

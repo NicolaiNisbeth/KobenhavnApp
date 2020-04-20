@@ -144,7 +144,7 @@ public class ContainerPlaygroundsFragment extends Fragment {
             PlaygroundsFragment fragment = tabList.get(i).second;
             if (fragment != null){
                 fragment.setOnItemClickListener(playground -> {
-                    List<Playground> updatedPlaygrounds = user.getPlaygroundsIDs();
+                    List<Playground> updatedPlaygrounds = user.getPlaygrounds();
                     updatedPlaygrounds.remove(playground);
                     viewModel.updateSubscriptions(user, updatedPlaygrounds);
                     Toast.makeText(context, "Legeplads blev fjernet", Toast.LENGTH_SHORT).show();
@@ -159,7 +159,7 @@ public class ContainerPlaygroundsFragment extends Fragment {
             RemoteDataSource.loggedInUser = user;
             this.user = user;
             tabList.clear();
-            for (Playground model : user.getPlaygroundsIDs()){
+            for (Playground model : user.getPlaygrounds()){
                 tabList.add(new Pair<>(model.getName(), PlaygroundsFragment.newInstance(model)));
             }
             tabList.sort((o1, o2) -> o1.first.compareTo(o2.first));

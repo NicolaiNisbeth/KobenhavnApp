@@ -20,8 +20,8 @@ public class JoinEventUseCase {
     }
 
     public Completable joinEvent(String playgroundName, String username, String eventID, ArrayList<Event> events){
-        //return remoteRepository.updateUserWithEvent(playgroundName, eventID, username);
-        return localRepository.joinEvent(username, events);
+        localRepository.joinEvent(username, events);
+        return remoteRepository.updateUserWithEvent(playgroundName, eventID, username);
     }
 
 }

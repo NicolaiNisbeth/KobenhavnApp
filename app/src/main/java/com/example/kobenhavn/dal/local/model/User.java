@@ -44,7 +44,7 @@ public class User implements Serializable {
     private String status = "user";
 
     @ColumnInfo(name = "phone_number")
-    private String phoneNumber;
+    private ArrayList<String> phonenumbers;
 
     @ColumnInfo(name = "sync_pending")
     private boolean syncPending;
@@ -53,7 +53,10 @@ public class User implements Serializable {
     private String website;
 
     @ColumnInfo(name = "subscribed_playgrounds")
-    private List<Playground> playgroundsIDs = new ArrayList<>();
+    private List<Playground> playgrounds = new ArrayList<>();
+
+    @ColumnInfo(name = "playgrounds_ID")
+    private List<String> playgroundsIDs = new ArrayList<>();
 
     @ColumnInfo(name = "events")
     private ArrayList<Event> events = new ArrayList<>();
@@ -66,12 +69,12 @@ public class User implements Serializable {
         this.events = events;
     }
 
-    public List<Playground> getPlaygroundsIDs() {
-        return playgroundsIDs;
+    public List<Playground> getPlaygrounds() {
+        return playgrounds;
     }
 
-    public void setPlaygroundsIDs(List<Playground> playgroundsIDs) {
-        this.playgroundsIDs = playgroundsIDs;
+    public void setPlaygrounds(List<Playground> playgrounds) {
+        this.playgrounds = playgrounds;
     }
 
 
@@ -104,8 +107,8 @@ public class User implements Serializable {
         return imagepath;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public ArrayList<String> getPhonenumbers() {
+        return phonenumbers;
     }
 
     public String getStatus() {
@@ -120,6 +123,13 @@ public class User implements Serializable {
         return syncPending;
     }
 
+    public List<String> getPlaygroundsIDs() {
+        return playgroundsIDs;
+    }
+
+    public void setPlaygroundsIDs(List<String> playgroundsIDs) {
+        this.playgroundsIDs = playgroundsIDs;
+    }
 
     //private Set<Event> events = new HashSet<>();
 
@@ -154,8 +164,8 @@ public class User implements Serializable {
         this.imagepath = imagepath;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhonenumbers(ArrayList<String> phonenumbers) {
+        this.phonenumbers = phonenumbers;
     }
 
     public void setSyncPending(boolean syncPending) {
@@ -169,21 +179,21 @@ public class User implements Serializable {
     }
 
     @Ignore
-    public User(String firstname, String lastname, String username, String password, String email, String imagepath, String status, String website, String phoneNumber) {
+    public User(String firstname, String lastname, String username, String password, String email, String imagepath, String status, String website, ArrayList<String> phonenumbers) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.username = username;
         this.password = password;
         this.email = email;
         this.imagepath = imagepath;
-        this.phoneNumber = phoneNumber;
+        this.phonenumbers = phonenumbers;
         this.status = status;
         this.website = website;
         this.syncPending = true;
     }
 
 
-    public User(@NonNull String id, String firstname, String lastname, String username, String password, String email, String imagepath, String status, String website, String phoneNumber, boolean syncPending, List<Playground> playgroundsIDs, ArrayList<Event> events) {
+    public User(@NonNull String id, String firstname, String lastname, String username, String password, String email, String imagepath, String status, String website, ArrayList<String> phonenumbers, boolean syncPending, List<Playground> playgrounds, ArrayList<Event> events, List<String> playgroundsIDs) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -193,10 +203,11 @@ public class User implements Serializable {
         this.imagepath = imagepath;
         this.status = status;
         this.website = website;
-        this.phoneNumber = phoneNumber;
+        this.phonenumbers = phonenumbers;
         this.syncPending = syncPending;
-        this.playgroundsIDs = playgroundsIDs;
+        this.playgrounds = playgrounds;
         this.events = events;
+        this.playgroundsIDs = playgroundsIDs;
     }
 
     @Override
@@ -210,10 +221,11 @@ public class User implements Serializable {
                 ", email='" + email + '\'' +
                 ", imagepath='" + imagepath + '\'' +
                 ", status='" + status + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
+                ", phonenumbers=" + phonenumbers +
                 ", syncPending=" + syncPending +
                 ", website='" + website + '\'' +
-                ", subscribedPlaygrounds=" + playgroundsIDs +
+                ", playgrounds=" + playgrounds +
+                ", playgroundsIDs=" + playgroundsIDs +
                 ", events=" + events +
                 '}';
     }

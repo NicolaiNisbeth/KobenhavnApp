@@ -17,12 +17,15 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RemoteDataSource {
 
-    private static RemoteDataSource instance;
-    private final Retrofit retrofit;
-    private static RemoteEndpoint API;
+/**
+ *
+ */
+public class RemoteDataSource {
     public static User loggedInUser;
+    private static RemoteDataSource instance;
+    private static RemoteEndpoint API;
+    private final Retrofit retrofit;
 
     public RemoteDataSource(){
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
@@ -43,7 +46,6 @@ public class RemoteDataSource {
                 .build();
 
         API = retrofit.create(RemoteEndpoint.class);
-
     }
 
     public static synchronized RemoteDataSource getInstance(){
@@ -67,68 +69,120 @@ public class RemoteDataSource {
          */
     }
 
+    /**
+     *
+     * @return
+     * @throws RemoteException
+     * @throws IOException
+     */
     public List<Playground> getPlaygrounds() throws RemoteException, IOException {
-        RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
-        Response<List<Playground>> response = endpoint.getPlaygrounds().execute();
+        Response<List<Playground>> response = API.getPlaygrounds().execute();
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
 
         return new ArrayList<>(response.body());
     }
 
+    /**
+     *
+     * @param playgroundName
+     * @return
+     * @throws RemoteException
+     * @throws IOException
+     */
     public List<Event> getEvents(int playgroundName) throws RemoteException, IOException {
-        RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
-
-        Response<List<Event>> response = endpoint.getEvents(playgroundName).execute();
-
+        Response<List<Event>> response =  API.getEvents(playgroundName).execute();
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
 
         return new ArrayList<>(response.body());
     }
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @return
+     * @throws RemoteException
+     * @throws IOException
+     */
     public static User loginUser(String username, String password) throws RemoteException, IOException {
         Response<User> response = API.loginUser(new User(username, password)).execute();
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
 
         loggedInUser = response.body();
-        if (loggedInUser.getPlaygroundsIDs() == null) loggedInUser.setPlaygroundsIDs(new ArrayList<>());
+        if (loggedInUser.getPlaygrounds() == null) loggedInUser.setPlaygrounds(new ArrayList<>());
         if (loggedInUser.getEvents() == null) loggedInUser.setEvents(new ArrayList<>());
         return loggedInUser;
     }
 
-
+    /**
+     *
+     * @param name
+     * @param username
+     * @param password
+     * @throws IOException
+     * @throws RemoteException
+     */
     public void signupUser(String name, String username, String password) throws IOException, RemoteException {
         Response<Boolean> response = API.signupUser(name, username, password).execute();
-
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
     }
 
-
+    /**
+     *
+     * @param eventID
+     * @param username
+     * @throws RemoteException
+     * @throws IOException
+     */
     public void removeUserFromPlaygroundEvent(int eventID, String username) throws RemoteException, IOException {
-        RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
-        Response<Event> response = endpoint.removeUserFromPlaygroundEvent(eventID, username).execute();
-
+        Response<Event> response = API.removeUserFromPlaygroundEvent(eventID, username).execute();
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
     }
 
+    /**
+     *
+     * @param user
+     * @throws RemoteException
+     * @throws IOException
+     */
     public void updateUser(User user) throws RemoteException, IOException {
-        RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
-
-        Response<User> response = endpoint.updateUserInfo(user).execute();
-
+        Response<User> response = API.updateUserInfo(user).execute();
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
     }
 
+    /**
+     *
+     * @param playgroundName
+     * @param eventID
+     * @param username
+     * @return
+     * @throws IOException
+     * @throws RemoteException
+     */
     public User updateUserWithEvent(String playgroundName, String eventID, String username) throws IOException, RemoteException {
         Response<User> response = API.updateUserWithEvent(playgroundName, eventID, username).execute();
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
 
         return response.body();
+    }
+
+    /**
+     *
+     * @param username
+     * @param playgrounds
+     * @throws RemoteException
+     */
+    public void updateUserWithSubscription(String username, List<Playground> playgrounds) throws RemoteException {
+        // how to do multiple calls
+        Response<User> response = API.updateUserWithSubscriptions(username, playgrounds.get(0).getId());
+        if (response == null || !response.isSuccessful() || response.errorBody() != null)
+            throw new RemoteException(response);
     }
 }

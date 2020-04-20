@@ -90,7 +90,7 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
         RemoteDataSource.loggedInUser = user;
 
         Timber.e("filterplaygroundlist");
-        allPlaygrounds.removeIf(user.getPlaygroundsIDs()::contains);
+        allPlaygrounds.removeIf(user.getPlaygrounds()::contains);
         notifyDataSetChanged();
         isFilterCalled = true;
         this.user = user;
@@ -109,7 +109,7 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
     public void subscribeToPlayground(int position, Playground playground){
         Toast.makeText(context, "Legeplads er tilføjet", Toast.LENGTH_SHORT).show();
         allPlaygrounds.remove(position);
-        List<Playground> updatedPlayground = user.getPlaygroundsIDs();
+        List<Playground> updatedPlayground = user.getPlaygrounds();
         updatedPlayground.add(playground);
         userViewModel.updateSubscriptions(user, updatedPlayground);
     }

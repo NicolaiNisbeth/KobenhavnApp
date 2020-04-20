@@ -7,6 +7,7 @@ import com.example.kobenhavn.dal.local.model.Playground;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -24,7 +25,7 @@ public interface RemoteEndpoint {
      */
 
     // stationær
-    String BASE_URL = "http://192.168.1.24:8088/rest/";
+    String BASE_URL = "http://192.168.1.12:8088/rest/";
 
     // laptop
     //String BASE_URL = "http://192.168.1.62:8088/";
@@ -68,6 +69,8 @@ public interface RemoteEndpoint {
     @PUT("posts") // eventID, username
     Call<Event> removeUserFromPlaygroundEvent(int eventID, String username);
 
+    @POST("playgrounds/{pID}/pedagogues/{uID}")
+    Response<User> updateUserWithSubscriptions(@Path("uID") String username, @Path("pID") String playgroundID);
 
 
 }

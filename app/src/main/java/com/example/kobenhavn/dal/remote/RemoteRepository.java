@@ -7,8 +7,11 @@ import com.example.kobenhavn.dal.sync.jobs.LoginUserJob;
 import com.example.kobenhavn.dal.sync.jobs.SignupUserJob;
 import com.example.kobenhavn.dal.sync.jobs.SyncPlaygroundJob;
 import com.example.kobenhavn.dal.sync.jobs.SyncUserJob;
+import com.example.kobenhavn.dal.sync.jobs.UpdateUserWithSubscriptionsJob;
 import com.example.kobenhavn.dal.sync.jobs.UserJoinEventJob;
 import com.example.kobenhavn.dal.sync.jobs.setup.JobManagerFactory;
+
+import java.util.List;
 
 import io.reactivex.Completable;
 
@@ -46,4 +49,11 @@ public class RemoteRepository implements IRemoteRepository {
     public Completable updateUserWithEvent(String playgroundName, String eventID, String username){
         return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new UserJoinEventJob(playgroundName, eventID, username)));
     }
+
+    @Override
+    public Completable updateUserWithSubscriptions(String username, List<Playground> playgrounds) {
+        return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new UpdateUserWithSubscriptionsJob(username, playgrounds)));
+    }
+
+
 }
