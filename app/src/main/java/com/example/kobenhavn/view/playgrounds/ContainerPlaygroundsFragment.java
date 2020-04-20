@@ -19,18 +19,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
-import com.example.kobenhavn.view.events.enrolled.EnrolledAdapter;
 import com.example.kobenhavn.view.playgrounds.add.AddPlaygroundActivity;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
@@ -47,7 +44,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
-import timber.log.Timber;
 
 public class ContainerPlaygroundsFragment extends Fragment {
     private Toolbar toolbar;
@@ -66,7 +62,7 @@ public class ContainerPlaygroundsFragment extends Fragment {
         View root = inflater.inflate(R.layout.playgrounds_container_fragment, container, false);
         ButterKnife.bind(this, root);
 
-        // setup toolbar
+        // setup toolbar_item
         setHasOptionsMenu(true);
         toolbar = root.findViewById(R.id.legeplads_toolbar);
         AppCompatActivity activity = ((AppCompatActivity)getActivity());
@@ -148,7 +144,7 @@ public class ContainerPlaygroundsFragment extends Fragment {
             PlaygroundsFragment fragment = tabList.get(i).second;
             if (fragment != null){
                 fragment.setOnItemClickListener(playground -> {
-                    List<Playground> updatedPlaygrounds = user.getSubscribedPlaygrounds();
+                    List<Playground> updatedPlaygrounds = user.getPlaygroundsIDs();
                     updatedPlaygrounds.remove(playground);
                     viewModel.updateSubscriptions(user, updatedPlaygrounds);
                     Toast.makeText(context, "Legeplads blev fjernet", Toast.LENGTH_SHORT).show();
@@ -162,7 +158,7 @@ public class ContainerPlaygroundsFragment extends Fragment {
         public void onChange(User user) {
             this.user = user;
             tabList.clear();
-            for (Playground model : user.getSubscribedPlaygrounds()){
+            for (Playground model : user.getPlaygroundsIDs()){
                 tabList.add(new Pair<>(model.getName(), PlaygroundsFragment.newInstance(model)));
             }
             tabList.sort((o1, o2) -> o1.first.compareTo(o2.first));

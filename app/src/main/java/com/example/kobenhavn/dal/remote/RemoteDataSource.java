@@ -93,7 +93,7 @@ public class RemoteDataSource {
             throw new RemoteException(response);
 
         loggedInUser = response.body();
-        if (loggedInUser.getSubscribedPlaygrounds() == null) loggedInUser.setSubscribedPlaygrounds(new ArrayList<>());
+        if (loggedInUser.getPlaygroundsIDs() == null) loggedInUser.setPlaygroundsIDs(new ArrayList<>());
         if (loggedInUser.getEvents() == null) loggedInUser.setEvents(new ArrayList<>());
         return loggedInUser;
     }
@@ -117,6 +117,7 @@ public class RemoteDataSource {
 
     public void updateUser(User user) throws RemoteException, IOException {
         RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
+
         Response<User> response = endpoint.updateUserInfo(user).execute();
 
         if (response == null || !response.isSuccessful() || response.errorBody() != null)

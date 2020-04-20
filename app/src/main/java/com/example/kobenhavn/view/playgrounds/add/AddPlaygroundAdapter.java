@@ -14,12 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
-import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -89,7 +87,7 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
     }
     public void filterPlaygroundList(User user) {
         Timber.e("filterplaygroundlist");
-        allPlaygrounds.removeIf(user.getSubscribedPlaygrounds()::contains);
+        allPlaygrounds.removeIf(user.getPlaygroundsIDs()::contains);
         notifyDataSetChanged();
         isFilterCalled = true;
         this.user = user;
@@ -108,7 +106,7 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
     public void subscribeToPlayground(int position, Playground playground){
         Toast.makeText(context, "Legeplads er tilføjet", Toast.LENGTH_SHORT).show();
         allPlaygrounds.remove(position);
-        List<Playground> updatedPlayground = user.getSubscribedPlaygrounds();
+        List<Playground> updatedPlayground = user.getPlaygroundsIDs();
         updatedPlayground.add(playground);
         userViewModel.updateSubscriptions(user, updatedPlayground);
     }

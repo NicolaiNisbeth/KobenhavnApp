@@ -22,4 +22,5 @@
         android:name="com.example.kobenhavn.view.settings.SettingsFragment"
         android:label="@string/title_indstillinger"
         tools:layout="@layout/settings_fragment" />
+
 </navigation>

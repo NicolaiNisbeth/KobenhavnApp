@@ -10,7 +10,7 @@
 
     <include
         android:id="@+id/indstillinger_toolbar"
-        layout="@layout/toolbar"
+        layout="@layout/toolbar_item"
          />
 
     <ImageView
@@ -53,16 +53,16 @@
 
     <include
         android:id="@+id/settings_name_and_address"
-        layout="@layout/settings_row" />
+        layout="@layout/settings_row_item" />
     <include
         android:id="@+id/settings_email"
-        layout="@layout/settings_row" />
+        layout="@layout/settings_row_item" />
     <include
         android:id="@+id/settings_mobile_number"
-        layout="@layout/settings_row" />
+        layout="@layout/settings_row_item" />
     <include
         android:id="@+id/settings_change_password"
-        layout="@layout/settings_row" />
+        layout="@layout/settings_row_item" />
 
     <TextView
         android:id="@+id/settings_logout"

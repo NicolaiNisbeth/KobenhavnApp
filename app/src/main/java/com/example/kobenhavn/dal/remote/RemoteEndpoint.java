@@ -8,6 +8,8 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -30,10 +32,14 @@ public interface RemoteEndpoint {
     @GET("playgrounds")
     Call<List<Playground>> getPlaygrounds();
 
+    /*
+    @FormUrlEncoded
+    @PUT("employee/update")
+    Call<User> updateUserInfo(@Field("usermodel" User user);
 
+     */
     @PUT("employee/update")
     Call<User> updateUserInfo(@Body User user);
-
 
     // if user is not fetched then call get user
     @POST("employee/login")

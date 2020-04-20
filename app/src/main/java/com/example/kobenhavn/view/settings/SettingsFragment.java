@@ -61,7 +61,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         View root = inflater.inflate(R.layout.settings_fragment, container, false);
         ButterKnife.bind(this, root);
 
-        // setup toolbar
+        // setup toolbar_item
         setHasOptionsMenu(true);
         toolbar = root.findViewById(R.id.indstillinger_toolbar);
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
@@ -98,10 +98,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private void updateUI(User user) {
         Timber.e("UPDATE UI IS CALLED IN SETTINGS %s", user);
         _nameText.setText(user.getFirstname());
-        _numberText.setText(user.getPhonenumber());
+        _numberText.setText(user.getPhoneNumber());
         ((EditText) _nameView.findViewById(R.id.settings_item_middle)).setText(user.getFirstname());
         ((EditText) _emailView.findViewById(R.id.settings_item_middle)).setText(user.getEmail());
-        ((EditText) _mobileNumberView.findViewById(R.id.settings_item_middle)).setText(user.getPhonenumber());
+        ((EditText) _mobileNumberView.findViewById(R.id.settings_item_middle)).setText(user.getPhoneNumber());
         ((EditText) _changePasswordView.findViewById(R.id.settings_item_middle)).setText(user.getPassword());
     }
 
@@ -150,7 +150,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
             RemoteDataSource.loggedInUser.setFirstname(_nameEdit.getText().toString());
             RemoteDataSource.loggedInUser.setEmail(_emailEdit.getText().toString());
-            RemoteDataSource.loggedInUser.setPhonenumber(_mobileEdit.getText().toString());
+            RemoteDataSource.loggedInUser.setPhoneNumber(_mobileEdit.getText().toString());
             RemoteDataSource.loggedInUser.setPassword(_passwordEdit.getText().toString());
 
             userViewModel.updateUser(RemoteDataSource.loggedInUser);

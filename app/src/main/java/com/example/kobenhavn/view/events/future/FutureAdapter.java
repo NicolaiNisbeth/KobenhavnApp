@@ -2,7 +2,6 @@ package com.example.kobenhavn.view.events.future;
 
 import android.content.Context;
 import android.text.format.DateUtils;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
-import com.example.kobenhavn.dal.remote.RemoteDataSource;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,7 +50,7 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
     public void handleFutureEvents(User user) {
         futureEvents.clear();
 
-        for (Playground playground : user.getSubscribedPlaygrounds()){
+        for (Playground playground : user.getPlaygroundsIDs()){
             for (Event event : playground.getEvents()){
                 Date date = event.getDetails().getDate();
                 if (DateUtils.isToday(date.getTime()) || date.after(new Date(System.currentTimeMillis()))){

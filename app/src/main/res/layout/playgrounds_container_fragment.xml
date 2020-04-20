@@ -13,7 +13,7 @@
 
     <include
         android:id="@+id/legeplads_toolbar"
-        layout="@layout/toolbar"/>
+        layout="@layout/toolbar_item"/>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/playground_tab_layout"
