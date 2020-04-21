@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.kobenhavn.usecases.event.JoinEventUseCase;
+import com.example.kobenhavn.usecases.event.JoinUserEventUseCase;
 import com.example.kobenhavn.usecases.event.LeaveEventUseCase;
 import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
 import com.example.kobenhavn.usecases.user.GetUserFromDbUseCase;
@@ -17,15 +17,15 @@ public class UserViewModelFactory implements ViewModelProvider.Factory {
     private UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase;
     private GetUserFromDbUseCase getUserFromDbUseCase;
     private UpdateUserUseCase updateUserUseCase;
-    private JoinEventUseCase joinEventUseCase;
+    private JoinUserEventUseCase joinUserEventUseCase;
     private LeaveEventUseCase leaveEventUseCase;
 
-    public UserViewModelFactory(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase, JoinEventUseCase joinEventUseCase, LeaveEventUseCase leaveEventUseCase) {
+    public UserViewModelFactory(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase, JoinUserEventUseCase joinUserEventUseCase, LeaveEventUseCase leaveEventUseCase) {
         this.addUserToDbUseCase = addUserToDbUseCase;
         this.updateUserSubscriptionUseCase = updateUserSubscriptionUseCase;
         this.getUserFromDbUseCase = getUserFromDbUseCase;
         this.updateUserUseCase = updateUserUseCase;
-        this.joinEventUseCase = joinEventUseCase;
+        this.joinUserEventUseCase = joinUserEventUseCase;
         this.leaveEventUseCase = leaveEventUseCase;
     }
 
@@ -33,7 +33,7 @@ public class UserViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(UserViewModel.class))
-            return (T) new UserViewModel(addUserToDbUseCase, updateUserSubscriptionUseCase, getUserFromDbUseCase, updateUserUseCase, joinEventUseCase, leaveEventUseCase);
+            return (T) new UserViewModel(addUserToDbUseCase, updateUserSubscriptionUseCase, getUserFromDbUseCase, updateUserUseCase, joinUserEventUseCase, leaveEventUseCase);
 
         throw new IllegalArgumentException("Unknown ViewmModel class");
 

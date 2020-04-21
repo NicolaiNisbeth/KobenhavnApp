@@ -32,4 +32,6 @@ public interface ILocalRepository {
 
 
     Completable joinEvent(String username, ArrayList<Event> enrolledEvents);
+
+    Completable removeEventFromUser(String username, ArrayList<Event> events);
 }

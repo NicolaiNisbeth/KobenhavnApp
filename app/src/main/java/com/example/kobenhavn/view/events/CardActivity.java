@@ -20,7 +20,6 @@ import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 
-import java.io.PushbackInputStream;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -116,13 +115,13 @@ public class CardActivity extends AppCompatActivity {
         if (enrolled){
             Toast.makeText(this, "Du er nu afmeldt", Toast.LENGTH_SHORT).show();
             user.getEvents().remove(event);
-            userViewModel.joinEvent(playgroundName, eventID, user.getUsername(), user.getEvents());
+            userViewModel.removeEventFromUser(playgroundName, eventID, user.getUsername(), user.getEvents());
             finish();
         }
         else {
             Toast.makeText(this, "Du er nu tilmeldt", Toast.LENGTH_SHORT).show();
             user.getEvents().add(event);
-            userViewModel.joinEvent(playgroundName, eventID, user.getUsername(), user.getEvents());
+            userViewModel.joinEventUser(playgroundName, eventID, user.getUsername(), user.getEvents());
             finish();
 
         }

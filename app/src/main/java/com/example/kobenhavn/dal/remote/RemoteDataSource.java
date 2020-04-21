@@ -165,8 +165,14 @@ public class RemoteDataSource {
      * @throws IOException
      * @throws RemoteException
      */
-    public void updateUserWithEvent(String playgroundName, String eventID, String username) throws IOException, RemoteException {
-        Response<User> response = API.updateUserWithEvent(playgroundName, eventID, username).execute();
+    public void joinUserWithEvent(String playgroundName, String eventID, String username) throws IOException, RemoteException {
+        Response<User> response = API.joinUserWithEvent(playgroundName, eventID, username).execute();
+        if (!response.isSuccessful())
+            throw new RemoteException(response);
+    }
+
+    public void removeUserFromEvent(String playgroundName, String eventID, String username) throws RemoteException, IOException {
+        Response<User> response = API.removeUserFromEvent(playgroundName, eventID, username).execute();
         if (!response.isSuccessful())
             throw new RemoteException(response);
     }

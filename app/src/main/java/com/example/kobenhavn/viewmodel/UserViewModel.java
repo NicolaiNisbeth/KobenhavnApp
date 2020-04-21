@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
-import com.example.kobenhavn.usecases.event.JoinEventUseCase;
+import com.example.kobenhavn.usecases.event.JoinUserEventUseCase;
 import com.example.kobenhavn.usecases.event.LeaveEventUseCase;
 import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
 import com.example.kobenhavn.usecases.user.GetUserFromDbUseCase;
@@ -27,17 +27,17 @@ public class UserViewModel extends ViewModel {
     private final UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase;
     private final GetUserFromDbUseCase getUserFromDbUseCase;
     private final UpdateUserUseCase updateUserUseCase;
-    private final JoinEventUseCase joinEventUseCase;
+    private final JoinUserEventUseCase joinUserEventUseCase;
     private final LeaveEventUseCase leaveEventUseCase;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
 
-    public UserViewModel(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase, JoinEventUseCase joinEventUseCase, LeaveEventUseCase leaveEventUseCase) {
+    public UserViewModel(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase, JoinUserEventUseCase joinUserEventUseCase, LeaveEventUseCase leaveEventUseCase) {
         this.addUserToDbUseCase = addUserToDbUseCase;
         this.updateUserSubscriptionUseCase = updateUserSubscriptionUseCase;
         this.getUserFromDbUseCase = getUserFromDbUseCase;
         this.updateUserUseCase = updateUserUseCase;
-        this.joinEventUseCase = joinEventUseCase;
+        this.joinUserEventUseCase = joinUserEventUseCase;
         this.leaveEventUseCase = leaveEventUseCase;
     }
 
@@ -83,12 +83,20 @@ public class UserViewModel extends ViewModel {
     }
 
 
-    public void joinEvent(String playgroundName, String eventID, String username, ArrayList<Event> events){
-        disposables.add(joinEventUseCase.joinEvent(playgroundName, username, eventID, events)
+    public void joinEventUser(String playgroundName, String eventID, String username, ArrayList<Event> events){
+        disposables.add(joinUserEventUseCase.joinEventForUser(playgroundName, username, eventID, events)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> Timber.e("User joined event successfully"),
                         t -> Timber.e("Error in user joining event")));
+    }
+
+    public void removeEventFromUser(String playgroundName, String eventID, String username, ArrayList<Event> events){
+        disposables.add(leaveEventUseCase.RemoveEventFromUser(playgroundName, username, eventID, events)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> Timber.e("User is removed from event successfully"),
+                        t -> Timber.e("Error in removing user from event")));
     }
 
 

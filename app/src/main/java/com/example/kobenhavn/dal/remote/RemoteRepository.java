@@ -4,6 +4,7 @@ import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.sync.jobs.FetchPlaygroundsJob;
 import com.example.kobenhavn.dal.sync.jobs.LoginUserJob;
+import com.example.kobenhavn.dal.sync.jobs.RemoveEventFromUserJob;
 import com.example.kobenhavn.dal.sync.jobs.SignupUserJob;
 import com.example.kobenhavn.dal.sync.jobs.SyncPlaygroundJob;
 import com.example.kobenhavn.dal.sync.jobs.SyncUserJob;
@@ -46,8 +47,13 @@ public class RemoteRepository implements IRemoteRepository {
     }
 
     @Override
-    public Completable updateUserWithEvent(String playgroundName, String eventID, String username){
+    public Completable joinUserWithEvent(String playgroundName, String eventID, String username){
         return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new UserJoinEventJob(playgroundName, eventID, username)));
+    }
+
+    @Override
+    public Completable removeEventFromUser(String playgroundName, String eventID, String username) {
+        return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new RemoveEventFromUserJob(playgroundName, eventID, username)));
     }
 
     @Override

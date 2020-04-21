@@ -9,6 +9,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -47,14 +48,19 @@ public interface RemoteEndpoint {
     Call<User> loginUser(@Body User user);
 
 
-    @PUT("playgrounds/{pID}/events/{eID}/participants/{uID}")
-    Call<User> updateUserWithEvent(@Path("pID") String playgroundName,
+    @POST("playgrounds/{pID}/events/{eID}/participants/{uID}")
+    Call<User> joinUserWithEvent(@Path("pID") String playgroundName,
+                                 @Path("eID") String eventID,
+                                 @Path("uID") String username);
+
+    @DELETE("playgrounds/{pID}/events/{eID}/participants/{uID}")
+    Call<User> removeUserFromEvent(@Path("pID") String playgroundName,
                                    @Path("eID") String eventID,
                                    @Path("uID") String username);
 
-
     // call for each subscribed playground
     // separate in future and enrolled
+
     @GET("post/{id}")
     Call<List<Event>> getEvents(@Path("id") long playgroundName);
 
@@ -67,6 +73,5 @@ public interface RemoteEndpoint {
 
     @POST("playgrounds/{pID}/pedagogues/{uID}")
     Call<Boolean> updateUserWithSubscriptions(@Path("uID") String username, @Path("pID") String playgroundID);
-
 
 }

@@ -19,7 +19,9 @@ public interface IRemoteRepository {
 
     Completable signupUser(String name, String username, String password);
 
-    Completable updateUserWithEvent(String playgroundName, String eventID, String username);
+    Completable joinUserWithEvent(String playgroundName, String eventID, String username);
 
     Completable updateUserWithSubscriptions(String username, List<Playground> playgrounds);
+
+    Completable removeEventFromUser(String playgroundName, String eventID, String username);
 }

@@ -14,7 +14,7 @@ import com.example.kobenhavn.dal.local.converter.PlaygroundsIDConverter;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.local.model.Playground;
 
-@androidx.room.Database(entities = {Playground.class, User.class}, version = 2, exportSchema = false)
+@androidx.room.Database(entities = {Playground.class, User.class}, version = 1, exportSchema = false)
 @TypeConverters({PlaygroundConverter.class, EventConverter.class, DetailsTimeConverter.class, PlaygroundsIDConverter.class, PhoneNumbersConverter.class})
 public abstract class Database extends RoomDatabase {
     private static Database instance;
@@ -22,8 +22,7 @@ public abstract class Database extends RoomDatabase {
 
     public static synchronized Database getInstance(Context context) {
         if (instance == null) {
-            instance = Room
-                    .databaseBuilder(context.getApplicationContext(), Database.class, DB_NAME)
+            instance = Room.databaseBuilder(context.getApplicationContext(), Database.class, DB_NAME)
                     .fallbackToDestructiveMigration()
                     .build();
         }

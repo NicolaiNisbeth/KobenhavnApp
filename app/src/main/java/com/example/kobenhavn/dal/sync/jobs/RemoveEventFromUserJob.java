@@ -8,21 +8,20 @@ import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.dal.remote.RemoteException;
-import com.example.kobenhavn.dal.sync.JoinEventUserRxBus;
+import com.example.kobenhavn.dal.sync.RemoveUserFromEventRxBus;
 import com.example.kobenhavn.dal.sync.SyncResponseType;
 import com.example.kobenhavn.dal.sync.SyncUserRxBus;
 import com.example.kobenhavn.dal.sync.jobs.setup.JobPriority;
 
 import timber.log.Timber;
 
-public class UserJoinEventJob extends Job {
-
-    private static final String TAG = UserJoinEventJob.class.getCanonicalName();
+public class RemoveEventFromUserJob extends Job {
+    private static final String TAG = RemoveEventFromUserJob.class.getCanonicalName();
     private final String playgroundName;
     private final String eventID;
     private final String username;
 
-    public UserJoinEventJob(String playgroundName, String eventID, String username) {
+    public RemoveEventFromUserJob(String playgroundName, String eventID, String username) {
         super(new Params(JobPriority.MID)
                 .requireNetwork()
                 .groupBy(TAG)
@@ -35,15 +34,15 @@ public class UserJoinEventJob extends Job {
 
     @Override
     public void onAdded() {
-        Timber.e("User join event job was added to priority queue");
+        Timber.e("User leave event job was added to priority queue");
     }
 
     @Override
     public void onRun() throws Throwable {
-        Timber.e("Executing user join event job");
+        Timber.e("Executing remove user from event job");
 
-        RemoteDataSource.getInstance().joinUserWithEvent(playgroundName, eventID, username);
-        JoinEventUserRxBus.getInstance().post(SyncResponseType.SUCCESS, true);
+        RemoteDataSource.getInstance().removeUserFromEvent(playgroundName, eventID, username);
+        RemoveUserFromEventRxBus.getInstance().post(SyncResponseType.SUCCESS, true);
     }
 
     @Override

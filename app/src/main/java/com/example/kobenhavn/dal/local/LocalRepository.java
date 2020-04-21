@@ -106,4 +106,12 @@ public class LocalRepository implements ILocalRepository {
             Timber.e("Joined event");
         });
     }
+
+    @Override
+    public Completable removeEventFromUser(String username, ArrayList<Event> events) {
+        return Completable.fromAction(() -> {
+            userDAO.UpdateEnrolledEvents(username, events);
+            Timber.e("removed event");
+        });
+    }
 }
