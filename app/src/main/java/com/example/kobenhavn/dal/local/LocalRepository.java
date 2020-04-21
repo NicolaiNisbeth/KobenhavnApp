@@ -26,12 +26,6 @@ public class LocalRepository implements ILocalRepository {
         this.userDAO = userDAO;
     }
 
-    @Override
-    public Completable subscribeTo(Playground playground) {
-
-
-        return null;
-    }
 
     @Override
     public Completable add(List<Playground> playgrounds) {

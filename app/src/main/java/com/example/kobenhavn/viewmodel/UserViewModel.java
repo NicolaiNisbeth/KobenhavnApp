@@ -56,6 +56,14 @@ public class UserViewModel extends ViewModel {
 
     }
 
+    public void updateSubscriptionsLocally(User user, List<Playground> updatedPlaygrounds){
+        disposables.add(updateUserSubscriptionUseCase.updateUserSubscriptionsLocally(user.getUsername(), updatedPlaygrounds)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> Timber.e("Update user subscriptions success"),
+                        t -> Timber.e("Update user subscriptions error")));
+    }
+
     public void updateSubscriptions(User user, List<Playground> updatedPlaygrounds){
         disposables.add(updateUserSubscriptionUseCase.updateUserSubscriptions(user.getUsername(), updatedPlaygrounds)
                 .subscribeOn(Schedulers.io())

@@ -20,8 +20,13 @@ public class UpdateUserSubscriptionUseCase {
         this.remoteRepository = remoteRepository;
     }
 
+    public Completable updateUserSubscriptionsLocally(String username, List<Playground> playgrounds){
+        return localRepository.updateSubscription(username, playgrounds);
+    }
+
     public Completable updateUserSubscriptions(String username, List<Playground> playgrounds){
         localRepository.updateSubscription(username, playgrounds);
         return remoteRepository.updateUserWithSubscriptions(username, playgrounds);
     }
+
 }

@@ -21,7 +21,7 @@ import retrofit2.http.DELETE;
 @Dao
 public interface UserDAO {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     long add(User user);
 
     @Query("UPDATE user_table set firstname = :firstName, email = :email, phone_number = :phoneNumber, password = :password")

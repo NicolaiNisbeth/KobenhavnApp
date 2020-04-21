@@ -14,7 +14,6 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 public interface ILocalRepository {
-    Completable subscribeTo(Playground playground);
     Completable add(List<Playground> playgrounds);
     Completable update(List<Playground> playground);
     Completable delete(Playground playground);

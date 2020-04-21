@@ -58,10 +58,6 @@ public interface RemoteEndpoint {
     @GET("post/{id}")
     Call<List<Event>> getEvents(@Path("id") long playgroundName);
 
-
-
-
-
     @POST("posts")
     Call<Boolean> signupUser(String name, String username, String password);
 
@@ -70,7 +66,7 @@ public interface RemoteEndpoint {
     Call<Event> removeUserFromPlaygroundEvent(int eventID, String username);
 
     @POST("playgrounds/{pID}/pedagogues/{uID}")
-    Response<User> updateUserWithSubscriptions(@Path("uID") String username, @Path("pID") String playgroundID);
+    Call<Boolean> updateUserWithSubscriptions(@Path("uID") String username, @Path("pID") String playgroundID);
 
 
 }

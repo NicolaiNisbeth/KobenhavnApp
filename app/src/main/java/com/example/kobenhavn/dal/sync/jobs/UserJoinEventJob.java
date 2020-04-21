@@ -43,8 +43,8 @@ public class UserJoinEventJob extends Job {
     public void onRun() throws Throwable {
         Timber.e("Executing login user job");
 
-        User user = RemoteDataSource.getInstance().updateUserWithEvent(playgroundName, eventID, username);
-        JoinEventUserRxBus.getInstance().post(SyncResponseType.SUCCESS, user);
+        RemoteDataSource.getInstance().updateUserWithEvent(playgroundName, eventID, username);
+        JoinEventUserRxBus.getInstance().post(SyncResponseType.SUCCESS, true);
     }
 
     @Override

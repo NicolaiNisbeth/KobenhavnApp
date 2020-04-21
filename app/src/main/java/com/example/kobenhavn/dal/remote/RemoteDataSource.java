@@ -165,12 +165,10 @@ public class RemoteDataSource {
      * @throws IOException
      * @throws RemoteException
      */
-    public User updateUserWithEvent(String playgroundName, String eventID, String username) throws IOException, RemoteException {
+    public void updateUserWithEvent(String playgroundName, String eventID, String username) throws IOException, RemoteException {
         Response<User> response = API.updateUserWithEvent(playgroundName, eventID, username).execute();
-        if (response == null || !response.isSuccessful() || response.errorBody() != null)
+        if (!response.isSuccessful())
             throw new RemoteException(response);
-
-        return response.body();
     }
 
     /**
@@ -179,9 +177,9 @@ public class RemoteDataSource {
      * @param playgrounds
      * @throws RemoteException
      */
-    public void updateUserWithSubscription(String username, List<Playground> playgrounds) throws RemoteException {
+    public void updateUserWithSubscription(String username, List<Playground> playgrounds) throws RemoteException, IOException {
         // how to do multiple calls
-        Response<User> response = API.updateUserWithSubscriptions(username, playgrounds.get(0).getId());
+        Response<Boolean> response = API.updateUserWithSubscriptions(username, playgrounds.get(0).getId()).execute();
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
     }

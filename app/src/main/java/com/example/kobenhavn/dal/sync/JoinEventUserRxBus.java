@@ -22,7 +22,7 @@ public class JoinEventUserRxBus {
         relay = PublishRelay.create();
     }
 
-    public void post(SyncResponseType eventType, User user){
+    public void post(SyncResponseType eventType, Boolean user){
         relay.accept(new JoinEventResponse(eventType, user));
     }
 
@@ -33,9 +33,9 @@ public class JoinEventUserRxBus {
 
     public static class JoinEventResponse  {
         private final SyncResponseType eventType;
-        private final User user;
+        private final Boolean user;
 
-        public JoinEventResponse(SyncResponseType eventType, User user) {
+        public JoinEventResponse(SyncResponseType eventType, Boolean user) {
 
             this.eventType = eventType;
             this.user = user;

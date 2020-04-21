@@ -14,7 +14,7 @@ import com.example.kobenhavn.dal.local.converter.PlaygroundsIDConverter;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.local.model.Playground;
 
-@androidx.room.Database(entities = {Playground.class, User.class}, version = 1, exportSchema = false)
+@androidx.room.Database(entities = {Playground.class, User.class}, version = 2, exportSchema = false)
 @TypeConverters({PlaygroundConverter.class, EventConverter.class, DetailsTimeConverter.class, PlaygroundsIDConverter.class, PhoneNumbersConverter.class})
 public abstract class Database extends RoomDatabase {
     private static Database instance;

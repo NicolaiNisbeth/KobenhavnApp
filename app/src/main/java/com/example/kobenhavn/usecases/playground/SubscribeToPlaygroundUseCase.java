@@ -19,6 +19,7 @@ public class SubscribeToPlaygroundUseCase {
     }
 
     public Completable subscribeTo(Playground playground){
-        return localRepository.subscribeTo(playground);
+        //return localRepository.subscribeTo(playground);
+        return null;
     }
 }

@@ -111,7 +111,7 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
         allPlaygrounds.remove(position);
         List<Playground> updatedPlayground = user.getPlaygrounds();
         updatedPlayground.add(playground);
-        userViewModel.updateSubscriptions(user, updatedPlayground);
+        userViewModel.updateSubscriptionsLocally(user, updatedPlayground);
     }
 
 }
