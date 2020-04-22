@@ -1,12 +1,11 @@
 package com.example.kobenhavn.dal.remote;
 
-import com.example.kobenhavn.dal.local.model.Playground;
+import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.User;
 
-import java.util.List;
-
 import io.reactivex.Completable;
-import io.reactivex.Single;
+import io.reactivex.CompletableSource;
+import io.reactivex.functions.Function;
 
 public interface IRemoteRepository {
 
@@ -16,6 +15,6 @@ public interface IRemoteRepository {
 
     Completable fetchPlaygrounds();
 
-    Completable joinUserWithEvent(String playgroundName, String eventID, String username);
+    Completable joinEvent(String playgroundName, Event event, User user);
     Completable removeEventFromUser(String playgroundName, String eventID, String username);
 }

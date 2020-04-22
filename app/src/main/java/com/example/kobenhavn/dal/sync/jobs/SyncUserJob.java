@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
-import com.example.kobenhavn.dal.local.LocaleUserUtils;
+import com.example.kobenhavn.dal.local.LocaleUtils;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.dal.remote.RemoteException;
@@ -42,7 +42,7 @@ public class SyncUserJob extends Job {
         RemoteDataSource.getInstance().updateUser(user);
 
         // remote call was successful--the Comment will be updated locally to reflect that sync is no longer pending
-        User updatedUser = LocaleUserUtils.clone(user, false);
+        User updatedUser = LocaleUtils.cloneUser(user, false);
         SyncUserRxBus.getInstance().post(RemoteResponseType.SUCCESS, updatedUser);
     }
 

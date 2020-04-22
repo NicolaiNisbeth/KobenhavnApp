@@ -18,8 +18,6 @@ import io.reactivex.Single;
  *
  */
 public interface ILocalRepository {
-    Completable updatePlaygrounds(List<Playground> playground);
-    Completable deletePlayground(Playground playground);
     Flowable<List<Playground>> getPlaygrounds();
     Completable insertPlaygrounds(List<Playground> playgrounds);
 
@@ -31,9 +29,15 @@ public interface ILocalRepository {
 
     LiveData<User> getUserLiveData(String username);
 
-    Completable joinEvents(String username, ArrayList<Event> enrolledEvents);
+    Completable joinEvent(String username, ArrayList<Event> enrolledEvents);
 
     Completable removeEvent(String username, ArrayList<Event> events);
 
     LiveData<Subscriptions> getSubscriptionsLiveData(String username);
+
+    Completable joinEvent(Event event, User user);
+
+    Completable updateEvent(Event event, User user);
+
+    Completable deleteEvent(Event event, User user);
 }

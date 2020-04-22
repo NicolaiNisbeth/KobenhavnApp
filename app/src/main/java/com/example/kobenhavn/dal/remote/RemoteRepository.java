@@ -1,5 +1,6 @@
 package com.example.kobenhavn.dal.remote;
 
+import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.sync.jobs.FetchPlaygroundsJob;
 import com.example.kobenhavn.dal.sync.jobs.LoginUserJob;
@@ -9,6 +10,8 @@ import com.example.kobenhavn.dal.sync.jobs.SyncUserJob;
 import com.example.kobenhavn.dal.sync.jobs.JoinEventJob;
 import com.example.kobenhavn.dal.sync.jobs.setup.JobManagerFactory;
 import io.reactivex.Completable;
+import io.reactivex.CompletableSource;
+import io.reactivex.functions.Function;
 
 /**
  * Adds a new job in background thread to be fired at remote REST API
@@ -36,8 +39,8 @@ public class RemoteRepository implements IRemoteRepository {
     }
 
     @Override
-    public Completable joinUserWithEvent(String playgroundName, String eventID, String username){
-        return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new JoinEventJob(playgroundName, eventID, username)));
+    public Completable joinEvent(String playgroundName, Event event, User user){
+        return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new JoinEventJob(playgroundName, event, user)));
     }
 
     @Override

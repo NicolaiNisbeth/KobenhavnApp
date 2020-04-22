@@ -13,7 +13,22 @@ public class Event implements Serializable {
     private int participants;
     private String playgroundName;
     private Details details;
+    private boolean syncPending;
 
+    // constructor for when syncing is successful
+    public Event(String id, String name, String imagepath, String subtitle, String description, int participants, String playgroundName, Details details, boolean syncPending) {
+        this.id = id;
+        this.name = name;
+        this.imagepath = imagepath;
+        this.subtitle = subtitle;
+        this.description = description;
+        this.participants = participants;
+        this.playgroundName = playgroundName;
+        this.details = details;
+        this.syncPending = syncPending;
+    }
+
+    // constructor
     public Event(String id, String name, String imagepath, String subtitle, String description, int participants, String playgroundName, Details details) {
         this.id = id;
         this.name = name;
@@ -23,6 +38,7 @@ public class Event implements Serializable {
         this.participants = participants;
         this.playgroundName = playgroundName;
         this.details = details;
+        this.syncPending = true;
     }
 
     @Override
@@ -36,6 +52,7 @@ public class Event implements Serializable {
                 ", participants=" + participants +
                 ", playgroundName='" + playgroundName + '\'' +
                 ", details=" + details +
+                ", syncPending=" + syncPending +
                 '}';
     }
 
@@ -43,64 +60,36 @@ public class Event implements Serializable {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getImagepath() {
         return imagepath;
     }
 
-    public void setImagepath(String imagepath) {
-        this.imagepath = imagepath;
-    }
-
     public String getSubtitle() {
         return subtitle;
-    }
-
-    public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public int getParticipants() {
         return participants;
-    }
-
-    public void setParticipants(int participants) {
-        this.participants = participants;
     }
 
     public String getPlaygroundName() {
         return playgroundName;
     }
 
-    public void setPlaygroundName(String playgroundName) {
-        this.playgroundName = playgroundName;
-    }
-
     public Details getDetails() {
         return details;
     }
 
-    public void setDetails(Details details) {
-        this.details = details;
+    public boolean isSyncPending() {
+        return syncPending;
     }
 
     @Override

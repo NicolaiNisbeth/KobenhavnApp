@@ -12,7 +12,7 @@ import com.example.kobenhavn.usecases.event.LeaveEventUC;
 import com.example.kobenhavn.usecases.user.GetSubscriptionsInDbUC;
 import com.example.kobenhavn.usecases.user.InsertUserInDbUC;
 import com.example.kobenhavn.usecases.user.GetUserInDbUC;
-import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionUC;
+import com.example.kobenhavn.usecases.user.UpdateSubscriptionUC;
 import com.example.kobenhavn.usecases.user.UpdateUserUC;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import timber.log.Timber;
 
 public class UserViewModel extends ViewModel {
     private final InsertUserInDbUC insertUserInDbUC;
-    private final UpdateUserSubscriptionUC updateUserSubscriptionUC;
+    private final UpdateSubscriptionUC updateSubscriptionUC;
     private final GetUserInDbUC getUserInDbUC;
     private final UpdateUserUC updateUserUC;
     private final JoinEventUC joinEventUC;
@@ -34,9 +34,9 @@ public class UserViewModel extends ViewModel {
     private final GetSubscriptionsInDbUC getSubscriptionsInDbUC;
 
 
-    public UserViewModel(InsertUserInDbUC insertUserInDbUC, UpdateUserSubscriptionUC updateUserSubscriptionUC, GetUserInDbUC getUserInDbUC, UpdateUserUC updateUserUC, JoinEventUC joinEventUC, LeaveEventUC leaveEventUC, GetSubscriptionsInDbUC getSubscriptionsInDbUC) {
+    public UserViewModel(InsertUserInDbUC insertUserInDbUC, UpdateSubscriptionUC updateSubscriptionUC, GetUserInDbUC getUserInDbUC, UpdateUserUC updateUserUC, JoinEventUC joinEventUC, LeaveEventUC leaveEventUC, GetSubscriptionsInDbUC getSubscriptionsInDbUC) {
         this.insertUserInDbUC = insertUserInDbUC;
-        this.updateUserSubscriptionUC = updateUserSubscriptionUC;
+        this.updateSubscriptionUC = updateSubscriptionUC;
         this.getUserInDbUC = getUserInDbUC;
         this.updateUserUC = updateUserUC;
         this.joinEventUC = joinEventUC;
@@ -70,8 +70,8 @@ public class UserViewModel extends ViewModel {
                         t -> Timber.e("update user error")));
     }
 
-    public void joinEventUser(String playgroundName, String eventID, String username, ArrayList<Event> events){
-        disposables.add(joinEventUC.joinEventForUser(playgroundName, username, eventID, events)
+    public void joinEvent(Event event, User user, String playgroundName){
+        disposables.add(joinEventUC.joinEventForUser(event, user, playgroundName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> Timber.e("User joined event successfully"),
@@ -87,7 +87,7 @@ public class UserViewModel extends ViewModel {
     }
 
     public void updateSubscriptionsLocally(User user, List<Playground> updatedPlaygrounds){
-        disposables.add(updateUserSubscriptionUC.updateUserSubscriptionsLocally(user.getUsername(), updatedPlaygrounds)
+        disposables.add(updateSubscriptionUC.updateUserSubscriptionsLocally(user.getUsername(), updatedPlaygrounds)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> Timber.e("Update user subscriptions success"),

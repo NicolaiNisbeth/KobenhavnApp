@@ -1,5 +1,7 @@
 package com.example.kobenhavn.dal.sync;
 
+import com.example.kobenhavn.dal.local.model.Event;
+import com.example.kobenhavn.dal.local.model.User;
 import com.jakewharton.rxrelay2.PublishRelay;
 
 import io.reactivex.Observable;
@@ -19,8 +21,8 @@ public class JoinEventRxBus {
         relay = PublishRelay.create();
     }
 
-    public void post(RemoteResponseType eventType, Boolean user){
-        relay.accept(new JoinEventResponse(eventType, user));
+    public void post(RemoteResponseType eventType, Event event, User user){
+        relay.accept(new JoinEventResponse(eventType, event, user));
     }
 
     public Observable<JoinEventResponse> toObservable() {
@@ -29,12 +31,13 @@ public class JoinEventRxBus {
 
 
     public static class JoinEventResponse  {
-        private final RemoteResponseType eventType;
-        private final Boolean user;
+        public final RemoteResponseType type;
+        public final Event event;
+        public final User user;
 
-        public JoinEventResponse(RemoteResponseType eventType, Boolean user) {
-
-            this.eventType = eventType;
+        public JoinEventResponse(RemoteResponseType type, Event event, User user) {
+            this.type = type;
+            this.event = event;
             this.user = user;
         }
     }

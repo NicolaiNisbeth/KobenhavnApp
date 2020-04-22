@@ -121,8 +121,7 @@ public class CardActivity extends AppCompatActivity {
         }
         else {
             Toast.makeText(this, "Du er nu tilmeldt", Toast.LENGTH_SHORT).show();
-            user.getEvents().add(event);
-            userViewModel.joinEventUser(playgroundName, eventID, user.getUsername(), user.getEvents());
+            userViewModel.joinEvent(event, user, playgroundName);
             finish();
 
         }

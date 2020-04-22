@@ -42,6 +42,8 @@ public class EnrolledFragment extends Fragment {
     @BindView(R.id.events_enrolled_empty_msg)
     TextView _emptyView;
 
+    EnrolledAdapter adapter;
+
     public EnrolledFragment() { }
     public static EnrolledFragment newInstance() {
         return new EnrolledFragment();
@@ -51,12 +53,10 @@ public class EnrolledFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.events_enrolled_fragment, container, false);
         ButterKnife.bind(this, root);
-        EmptyRecyclerView recyclerView = root.findViewById(R.id.recycler_view_enrolled);
-        recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
-        EnrolledAdapter adapter = new EnrolledAdapter(root.getContext(), new ArrayList<>());
-        recyclerView.setAdapter(adapter);
-        recyclerView.setEmptyView(_emptyView);
 
+        initRecyclerView(root);
+
+        // setup observer
         UserViewModel userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
         LiveData<User> liveDataUser = userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername());
         liveDataUser.observe(getViewLifecycleOwner(), adapter::updateEnrolledList);
@@ -82,5 +82,13 @@ public class EnrolledFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
+    }
+
+    private void initRecyclerView(View root) {
+        EmptyRecyclerView recyclerView = root.findViewById(R.id.recycler_view_enrolled);
+        recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
+        adapter = new EnrolledAdapter(root.getContext(), new ArrayList<>());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setEmptyView(_emptyView);
     }
 }

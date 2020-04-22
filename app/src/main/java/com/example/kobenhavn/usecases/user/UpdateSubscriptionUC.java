@@ -8,12 +8,12 @@ import java.util.List;
 
 import io.reactivex.Completable;
 
-public class UpdateUserSubscriptionUC {
+public class UpdateSubscriptionUC {
     private ILocalRepository localRepository;
     private IRemoteRepository remoteRepository;
 
 
-    public UpdateUserSubscriptionUC(ILocalRepository localRepository, IRemoteRepository remoteRepository) {
+    public UpdateSubscriptionUC(ILocalRepository localRepository, IRemoteRepository remoteRepository) {
         this.localRepository = localRepository;
         this.remoteRepository = remoteRepository;
     }

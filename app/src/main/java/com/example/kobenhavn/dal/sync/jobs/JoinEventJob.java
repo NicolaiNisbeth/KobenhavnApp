@@ -6,6 +6,9 @@ import androidx.annotation.Nullable;
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
+import com.example.kobenhavn.dal.local.LocaleUtils;
+import com.example.kobenhavn.dal.local.model.Event;
+import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.dal.remote.RemoteException;
 import com.example.kobenhavn.dal.sync.JoinEventRxBus;
@@ -19,18 +22,18 @@ public class JoinEventJob extends Job {
 
     private static final String TAG = JoinEventJob.class.getCanonicalName();
     private final String playgroundName;
-    private final String eventID;
-    private final String username;
+    private final Event event;
+    private final User user;
 
-    public JoinEventJob(String playgroundName, String eventID, String username) {
+    public JoinEventJob(String playgroundName, Event event, User user) {
         super(new Params(JobPriority.MID)
                 .requireNetwork()
                 .groupBy(TAG)
                 .persist());
 
         this.playgroundName = playgroundName;
-        this.eventID = eventID;
-        this.username = username;
+        this.event = event;
+        this.user = user;
     }
 
     @Override
@@ -42,15 +45,20 @@ public class JoinEventJob extends Job {
     public void onRun() throws Throwable {
         Timber.e("Executing user join event job");
 
-        RemoteDataSource.getInstance().joinUserWithEvent(playgroundName, eventID, username);
-        JoinEventRxBus.getInstance().post(RemoteResponseType.SUCCESS, true);
+        // if any exception is thrown, it will be handled by shouldReRunOnThrowable()
+        RemoteDataSource.getInstance().joinUserWithEvent(playgroundName, event.getId(), user.getUsername());
+
+        // remote call was successful--the Comment will be updated locally to reflect that sync is no longer pending
+
+        Event joinedEvent = LocaleUtils.cloneEvent(event, false);
+        JoinEventRxBus.getInstance().post(RemoteResponseType.SUCCESS, joinedEvent, user);
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
         // sync to remote failed
         Timber.e("Canceling job. reason: %d, throwable: %s", cancelReason, throwable);
-        SyncUserRxBus.getInstance().post(RemoteResponseType.FAILED, null);
+        JoinEventRxBus.getInstance().post(RemoteResponseType.SUCCESS, event, user);
     }
 
     @Override

@@ -28,25 +28,6 @@ public class LocalRepository implements ILocalRepository {
         this.subscriptionsDAO = subscriptionsDAO;
     }
 
-    /**
-     *
-     * @param playground
-     * @return
-     */
-    @Override
-    public Completable updatePlaygrounds(List<Playground> playground) {
-        return Completable.fromAction(() -> playgroundDAO.update(playground));
-    }
-
-    /**
-     *
-     * @param playground
-     * @return
-     */
-    @Override
-    public Completable deletePlayground(Playground playground) {
-        return Completable.fromAction(() -> playgroundDAO.delete(playground));
-    }
 
     /**
      *
@@ -77,7 +58,7 @@ public class LocalRepository implements ILocalRepository {
         return Single.fromCallable(() -> {
             userDAO.add(user);
             Timber.e("Saved user locally");
-            return LocaleUserUtils.clone(user, false);
+            return LocaleUtils.cloneUser(user, false);
         });
     }
 
@@ -91,7 +72,7 @@ public class LocalRepository implements ILocalRepository {
         return Single.fromCallable(() -> {
             userDAO.updateUserFields(user.getFirstname(), user.getEmail(), user.getPhonenumbers().get(0), user.getPassword());
             Timber.e("User is updated locally");
-            return LocaleUserUtils.clone(user, false);
+            return LocaleUtils.cloneUser(user, false);
         });
     }
 
@@ -111,12 +92,43 @@ public class LocalRepository implements ILocalRepository {
      * @param enrolledEvents
      * @return
      */
+
     @Override
-    public Completable joinEvents(String username, ArrayList<Event> enrolledEvents) {
+    public Completable joinEvent(String username, ArrayList<Event> enrolledEvents) {
         return Completable.fromAction(() -> {
             userDAO.updateEventParticipation(username, enrolledEvents);
-            Timber.e("Joined event");
         });
+    }
+
+
+
+    @Override
+    public Completable joinEvent(Event event, User user) {
+        ArrayList<Event> enrolledEvents = user.getEvents();
+        Event joinedEvent = LocaleUtils.cloneEvent(event, event.getId());
+        enrolledEvents.add(joinedEvent);
+
+        return Completable.fromAction(() -> {
+            userDAO.updateEventParticipation(user.getUsername(), enrolledEvents);
+            Timber.e("event stored %s", joinedEvent);
+        });
+    }
+
+    @Override
+    public Completable updateEvent(Event event, User user) {
+        Timber.d("updating event sync status for event id %s", event.getId());
+        ArrayList<Event> enrolledEvents = user.getEvents();
+        enrolledEvents.remove(event);
+        enrolledEvents.add(event);
+        return Completable.fromAction(() -> userDAO.updateEventParticipation(user.getUsername(), enrolledEvents));
+    }
+
+    @Override
+    public Completable deleteEvent(Event event, User user) {
+        Timber.d("deleting event with id %s", event.getId());
+        ArrayList<Event> enrolledEvents = user.getEvents();
+        enrolledEvents.remove(event);
+        return Completable.fromAction(() -> userDAO.updateEventParticipation(user.getUsername(), enrolledEvents));
     }
 
     /**

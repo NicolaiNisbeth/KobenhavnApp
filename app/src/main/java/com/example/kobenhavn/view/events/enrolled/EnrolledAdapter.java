@@ -1,6 +1,7 @@
 package com.example.kobenhavn.view.events.enrolled;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
 
     private Context context;
     private OnItemClickListener listener;
-    private List<Event> events;
+    private ArrayList<Event> events;
 
     EnrolledAdapter(Context context, ArrayList<Event> events) {
         this.context = context;
@@ -80,11 +81,13 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
 
         void bindTo(int position) {
             final Event event = events.get(position);
+            System.out.println("bindTo " + event);
             _dateText.setText(event.getDetails().getDate().toString());
             _subtitleText.setText(event.getSubtitle());
             _titleText.setText(event.getName());
             _timeText.setText(event.getDetails().getStartTime().toString());
             _interestedText.setText(String.valueOf(event.getParticipants()));
+            _titleText.setTextColor(event.isSyncPending() ? Color.LTGRAY : Color.BLACK);
         }
     }
 
