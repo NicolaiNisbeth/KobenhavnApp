@@ -12,15 +12,15 @@ import com.example.kobenhavn.R;
  * Data validation state of the login form.
  */
 class FormHandler {
+
     private MutableLiveData<State> formStateLive = new MutableLiveData<>();
+    LiveData<State> getFormStateLive() {
+        return formStateLive;
+    }
 
     void loginDataChanged(String username, String password) {
         if (!username.isEmpty() && !password.isEmpty())
             formStateLive.setValue(new State(true));
-    }
-
-    LiveData<State> getFormStateLive() {
-        return formStateLive;
     }
 
     void signupDataChanged(String name, String username, String password) {
@@ -49,7 +49,6 @@ class FormHandler {
     private boolean isPasswordValid(String password) {
         return password != null && password.trim().length() > 5;
     }
-
 
     public static class State {
         @Nullable
@@ -89,7 +88,6 @@ class FormHandler {
             return passwordError;
         }
 
-        @Nullable
         boolean isDataValid() {
             return isDataValid;
         }

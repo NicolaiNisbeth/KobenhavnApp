@@ -17,7 +17,7 @@ import io.reactivex.Flowable;
 public interface PlaygroundDAO  {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void add(Playground playground);
+    long add(Playground playground);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAllPlaygrounds(List<Playground> playgrounds);
@@ -30,6 +30,4 @@ public interface PlaygroundDAO  {
 
     @Query("SELECT * FROM playground_table")
     Flowable<List<Playground>> getPlaygrounds();
-
-
 }

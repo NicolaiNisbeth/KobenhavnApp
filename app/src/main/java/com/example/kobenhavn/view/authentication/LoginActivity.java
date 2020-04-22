@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.kobenhavn.dal.sync.LoginUserRxBus;
-import com.example.kobenhavn.dal.sync.SyncResponseType;
+import com.example.kobenhavn.dal.sync.RemoteResponseType;
 import com.example.kobenhavn.view.MainActivity;
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.User;
@@ -27,8 +27,6 @@ import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -119,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void handleLoginResponse(LoginUserRxBus.LoginResponse response) {
         progressDialog.dismiss();
-        if (response.type == SyncResponseType.SUCCESS) {
+        if (response.type == RemoteResponseType.SUCCESS) {
             showLoginSuccess(response.user);
         } else {
             showLoginFailed();
@@ -130,9 +128,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Autentificere...");
         progressDialog.show();
-        //authViewModel.loginUser(_usernameText.getText().toString(), _passwordText.getText().toString());
         authViewModel.loginUser(_usernameText.getText().toString(), _passwordText.getText().toString());
-
     }
 
     private void startSignUp() {
@@ -146,11 +142,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void showLoginSuccess(User user) {
-        userViewModel.addUser(user);
+        userViewModel.insertUser(user);
         playgroundsViewModel.fetchPlaygrounds();
-        Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();
-        //String welcome = getString(R.string.welcome) + user.getFirstname();
-        //Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();
+        String welcome = getString(R.string.welcome) + user.getFirstname();
+        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, MainActivity.class);
         setResult(Activity.RESULT_OK);
         startActivity(intent);

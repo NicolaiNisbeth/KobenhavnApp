@@ -17,61 +17,34 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
+/**
+ *
+ */
 public interface RemoteEndpoint {
-
-    /*
-    String BASE_URL = "http://jsonplaceholder.typicode.com/";
-    @GET("posts/1")
-    Call<Playground> testResource();
-     */
-
-    // stationær
+    // computer locale ip
     String BASE_URL = "http://192.168.1.12:8088/rest/";
-
-    // laptop
-    //String BASE_URL = "http://192.168.1.62:8088/";
 
     @GET("playgrounds")
     Call<List<Playground>> getPlaygrounds();
 
-    /*
-    @FormUrlEncoded
-    @PUT("employee/update")
-    Call<User> updateUserInfo(@Field("usermodel" User user);
+    @GET("post/{id}")
+    Call<List<Event>> getEvents(@Path("id") long playgroundName);
 
-     */
-    @PUT("employee/update")
-    Call<User> updateUserInfo(@Body User user);
-
-    // if user is not fetched then call get user
     @POST("employee/login")
     Call<User> loginUser(@Body User user);
 
+    @POST("posts")
+    Call<Boolean> signupUser(String name, String username, String password);
 
     @POST("playgrounds/{pID}/events/{eID}/participants/{uID}")
     Call<User> joinUserWithEvent(@Path("pID") String playgroundName,
                                  @Path("eID") String eventID,
                                  @Path("uID") String username);
+    @PUT("employee/update")
+    Call<User> updateUserInfo(@Body User user);
 
     @DELETE("playgrounds/{pID}/events/{eID}/participants/{uID}")
     Call<User> removeUserFromEvent(@Path("pID") String playgroundName,
                                    @Path("eID") String eventID,
                                    @Path("uID") String username);
-
-    // call for each subscribed playground
-    // separate in future and enrolled
-
-    @GET("post/{id}")
-    Call<List<Event>> getEvents(@Path("id") long playgroundName);
-
-    @POST("posts")
-    Call<Boolean> signupUser(String name, String username, String password);
-
-
-    @PUT("posts") // eventID, username
-    Call<Event> removeUserFromPlaygroundEvent(int eventID, String username);
-
-    @POST("playgrounds/{pID}/pedagogues/{uID}")
-    Call<Boolean> updateUserWithSubscriptions(@Path("uID") String username, @Path("pID") String playgroundID);
-
 }

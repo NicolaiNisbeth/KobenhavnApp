@@ -55,20 +55,6 @@ public class RemoteDataSource {
         return instance;
     }
 
-    public void getPlayground(String name) throws RemoteException, IOException {
-        /*
-        RemoteEndpoint endpoint = retrofit.create(RemoteEndpoint.class);
-        // Remote call can be executed synchronously since the job calling it is already backgrounded
-        Response<Playground> response = endpoint.testResource().execute();
-
-        if (response == null || !response.isSuccessful() || response.errorBody() != null)
-            throw new RemoteException(response);
-
-        Timber.e("Playground is fetched successfully");
-
-         */
-    }
-
     /**
      *
      * @return
@@ -112,7 +98,6 @@ public class RemoteDataSource {
             throw new RemoteException(response);
 
         loggedInUser = response.body();
-        if (loggedInUser.getPlaygrounds() == null) loggedInUser.setPlaygrounds(new ArrayList<>());
         if (loggedInUser.getEvents() == null) loggedInUser.setEvents(new ArrayList<>());
         if (loggedInUser.getPhonenumbers() == null) loggedInUser.setPhonenumbers(new ArrayList<>());
         return loggedInUser;
@@ -128,19 +113,6 @@ public class RemoteDataSource {
      */
     public void signupUser(String name, String username, String password) throws IOException, RemoteException {
         Response<Boolean> response = API.signupUser(name, username, password).execute();
-        if (response == null || !response.isSuccessful() || response.errorBody() != null)
-            throw new RemoteException(response);
-    }
-
-    /**
-     *
-     * @param eventID
-     * @param username
-     * @throws RemoteException
-     * @throws IOException
-     */
-    public void removeUserFromPlaygroundEvent(int eventID, String username) throws RemoteException, IOException {
-        Response<Event> response = API.removeUserFromPlaygroundEvent(eventID, username).execute();
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
     }
@@ -172,22 +144,17 @@ public class RemoteDataSource {
             throw new RemoteException(response);
     }
 
+    /**
+     *
+     * @param playgroundName
+     * @param eventID
+     * @param username
+     * @throws RemoteException
+     * @throws IOException
+     */
     public void removeUserFromEvent(String playgroundName, String eventID, String username) throws RemoteException, IOException {
         Response<User> response = API.removeUserFromEvent(playgroundName, eventID, username).execute();
         if (!response.isSuccessful())
-            throw new RemoteException(response);
-    }
-
-    /**
-     *
-     * @param username
-     * @param playgrounds
-     * @throws RemoteException
-     */
-    public void updateUserWithSubscription(String username, List<Playground> playgrounds) throws RemoteException, IOException {
-        // how to do multiple calls
-        Response<Boolean> response = API.updateUserWithSubscriptions(username, playgrounds.get(0).getId()).execute();
-        if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
     }
 }

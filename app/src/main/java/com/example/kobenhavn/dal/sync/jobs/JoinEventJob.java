@@ -8,20 +8,21 @@ import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.dal.remote.RemoteException;
-import com.example.kobenhavn.dal.sync.RemoveUserFromEventRxBus;
-import com.example.kobenhavn.dal.sync.SyncResponseType;
+import com.example.kobenhavn.dal.sync.JoinEventRxBus;
+import com.example.kobenhavn.dal.sync.RemoteResponseType;
 import com.example.kobenhavn.dal.sync.SyncUserRxBus;
 import com.example.kobenhavn.dal.sync.jobs.setup.JobPriority;
 
 import timber.log.Timber;
 
-public class RemoveEventFromUserJob extends Job {
-    private static final String TAG = RemoveEventFromUserJob.class.getCanonicalName();
+public class JoinEventJob extends Job {
+
+    private static final String TAG = JoinEventJob.class.getCanonicalName();
     private final String playgroundName;
     private final String eventID;
     private final String username;
 
-    public RemoveEventFromUserJob(String playgroundName, String eventID, String username) {
+    public JoinEventJob(String playgroundName, String eventID, String username) {
         super(new Params(JobPriority.MID)
                 .requireNetwork()
                 .groupBy(TAG)
@@ -34,22 +35,22 @@ public class RemoveEventFromUserJob extends Job {
 
     @Override
     public void onAdded() {
-        Timber.e("User leave event job was added to priority queue");
+        Timber.e("User join event job was added to priority queue");
     }
 
     @Override
     public void onRun() throws Throwable {
-        Timber.e("Executing remove user from event job");
+        Timber.e("Executing user join event job");
 
-        RemoteDataSource.getInstance().removeUserFromEvent(playgroundName, eventID, username);
-        RemoveUserFromEventRxBus.getInstance().post(SyncResponseType.SUCCESS, true);
+        RemoteDataSource.getInstance().joinUserWithEvent(playgroundName, eventID, username);
+        JoinEventRxBus.getInstance().post(RemoteResponseType.SUCCESS, true);
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
         // sync to remote failed
         Timber.e("Canceling job. reason: %d, throwable: %s", cancelReason, throwable);
-        SyncUserRxBus.getInstance().post(SyncResponseType.FAILED, null);
+        SyncUserRxBus.getInstance().post(RemoteResponseType.FAILED, null);
     }
 
     @Override

@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.Subscriptions;
-import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 
@@ -29,14 +28,14 @@ import timber.log.Timber;
 
 public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdapter.ViewHolder> {
 
-    private List<Playground> allPlaygrounds;
+    private List<Playground> playgrounds;
     private Context context;
     private UserViewModel userViewModel;
     private boolean isFilterCalled;
     private Subscriptions subscriptions ;
 
-    public AddPlaygroundAdapter(Context context, List<Playground> allPlaygrounds, UserViewModel userViewModel) {
-        this.allPlaygrounds = allPlaygrounds;
+    AddPlaygroundAdapter(Context context, List<Playground> playgrounds, UserViewModel userViewModel) {
+        this.playgrounds = playgrounds;
         this.context = context;
         this.userViewModel = userViewModel;
     }
@@ -50,7 +49,9 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
 
     @Override
     public void onBindViewHolder(AddPlaygroundAdapter.ViewHolder holder, int position) {
-        Playground playground = allPlaygrounds.get(position);
+        if (playgrounds == null || playgrounds.isEmpty()) return;
+
+        Playground playground = playgrounds.get(position);
         if (playground.isSyncPending())
             holder._titleText.setTextColor(Color.LTGRAY);
         else
@@ -61,16 +62,14 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
 
     @Override
     public int getItemCount() {
-        return allPlaygrounds.size();
+        return playgrounds.size();
     }
 
-
     class ViewHolder extends RecyclerView.ViewHolder {
-
         @BindView(R.id.add_item_title) TextView _titleText;
-
         @BindView(R.id.add_item_address) TextView _addressText;
         @BindView(R.id.add_item_button) ImageButton _imageButton;
+
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -78,44 +77,48 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
             _imageButton.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
-                    subscribeToPlayground(position, allPlaygrounds.get(position));
+                    subscribeToPlayground(position, playgrounds.get(position));
                 }
             });
         }
+
         void bindTo(Playground playground) {
             _titleText.setText(playground.getName());
             _addressText.setText(String.format("%s %s", playground.getStreetName(), playground.getStreetNumber()));
         }
-
     }
-    public void filterSubscribedPlaygrounds(Subscriptions subscriptions) {
+
+    void filterSubscribedPlaygrounds(Subscriptions subscriptions) {
         if (subscriptions == null || subscriptions.getSubscriptions().isEmpty()) return;
 
         Timber.e("filterplaygroundlist");
-        allPlaygrounds.removeIf(subscriptions.getSubscriptions()::contains);
+        playgrounds.removeIf(subscriptions.getSubscriptions()::contains);
         notifyDataSetChanged();
         isFilterCalled = true;
         this.subscriptions = subscriptions;
     }
 
-    public void updatePlaygroundList(List<Playground> playgroundList) {
+    void updatePlaygroundList(List<Playground> playgroundList) {
         if (playgroundList == null || playgroundList.isEmpty()) return;
 
         Timber.e("updatePlaygroundList");
-        this.allPlaygrounds.clear();
-        this.allPlaygrounds.addAll(playgroundList);
-
+        this.playgrounds.clear();
+        this.playgrounds.addAll(playgroundList);
         if (isFilterCalled){
             filterSubscribedPlaygrounds(subscriptions);
             isFilterCalled = false;
         }
-        else
+        else {
             notifyDataSetChanged();
+        }
     }
 
-    public void subscribeToPlayground(int position, Playground playground){
+    private void subscribeToPlayground(int position, Playground playground){
+        if (playgrounds == null || playgrounds.isEmpty()) return;
+
         Toast.makeText(context, "Legeplads er tilføjet", Toast.LENGTH_SHORT).show();
-        allPlaygrounds.remove(position);
+        playgrounds.remove(position);
+
         if (subscriptions == null)
             subscriptions = new Subscriptions(RemoteDataSource.loggedInUser.getUsername(), new ArrayList<>());
 

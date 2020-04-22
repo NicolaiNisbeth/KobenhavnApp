@@ -23,7 +23,7 @@ public class FetchPlaygroundsRxBus {
         relay = PublishRelay.create();
     }
 
-    public void publishFetchingResponse(SyncResponseType eventType, List<Playground> playgrounds) {
+    public void publishFetchingResponse(RemoteResponseType eventType, List<Playground> playgrounds) {
         relay.accept(new FetchPlaygroundResponse(eventType, playgrounds));
     }
 
@@ -34,10 +34,10 @@ public class FetchPlaygroundsRxBus {
 
 
     public static class FetchPlaygroundResponse {
-        public final SyncResponseType type;
+        public final RemoteResponseType type;
         public final List<Playground> playgrounds;
 
-        public FetchPlaygroundResponse(SyncResponseType type, List<Playground> playgrounds) {
+        public FetchPlaygroundResponse(RemoteResponseType type, List<Playground> playgrounds) {
             this.type = type;
             this.playgrounds = playgrounds;
         }

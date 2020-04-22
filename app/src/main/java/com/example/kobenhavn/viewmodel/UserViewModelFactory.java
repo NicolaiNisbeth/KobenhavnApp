@@ -4,42 +4,40 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.kobenhavn.usecases.event.JoinUserEventUseCase;
-import com.example.kobenhavn.usecases.event.LeaveEventUseCase;
-import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
-import com.example.kobenhavn.usecases.user.GetSubscriptionsFromDbUseCase;
-import com.example.kobenhavn.usecases.user.GetUserFromDbUseCase;
-import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionUseCase;
-import com.example.kobenhavn.usecases.user.UpdateUserUseCase;
+import com.example.kobenhavn.usecases.event.JoinEventUC;
+import com.example.kobenhavn.usecases.event.LeaveEventUC;
+import com.example.kobenhavn.usecases.user.GetSubscriptionsInDbUC;
+import com.example.kobenhavn.usecases.user.GetUserInDbUC;
+import com.example.kobenhavn.usecases.user.InsertUserInDbUC;
+import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionUC;
+import com.example.kobenhavn.usecases.user.UpdateUserUC;
 
 public class UserViewModelFactory implements ViewModelProvider.Factory {
 
-    private AddUserToDbUseCase addUserToDbUseCase;
-    private UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase;
-    private GetUserFromDbUseCase getUserFromDbUseCase;
-    private UpdateUserUseCase updateUserUseCase;
-    private JoinUserEventUseCase joinUserEventUseCase;
-    private LeaveEventUseCase leaveEventUseCase;
-    private GetSubscriptionsFromDbUseCase getSubscriptionsFromDbUseCase;
+    private InsertUserInDbUC insertUserInDbUC;
+    private UpdateUserSubscriptionUC updateUserSubscriptionUC;
+    private GetUserInDbUC getUserInDbUC;
+    private UpdateUserUC updateUserUC;
+    private JoinEventUC joinEventUC;
+    private LeaveEventUC leaveEventUC;
+    private GetSubscriptionsInDbUC getSubscriptionsInDbUC;
 
-    public UserViewModelFactory(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase, JoinUserEventUseCase joinUserEventUseCase, LeaveEventUseCase leaveEventUseCase, GetSubscriptionsFromDbUseCase getSubscriptionsFromDbUseCase) {
-        this.addUserToDbUseCase = addUserToDbUseCase;
-        this.updateUserSubscriptionUseCase = updateUserSubscriptionUseCase;
-        this.getUserFromDbUseCase = getUserFromDbUseCase;
-        this.updateUserUseCase = updateUserUseCase;
-        this.joinUserEventUseCase = joinUserEventUseCase;
-        this.leaveEventUseCase = leaveEventUseCase;
-        this.getSubscriptionsFromDbUseCase = getSubscriptionsFromDbUseCase;
+    public UserViewModelFactory(InsertUserInDbUC insertUserInDbUC, UpdateUserSubscriptionUC updateUserSubscriptionUC, GetUserInDbUC getUserInDbUC, UpdateUserUC updateUserUC, JoinEventUC joinEventUC, LeaveEventUC leaveEventUC, GetSubscriptionsInDbUC getSubscriptionsInDbUC) {
+        this.insertUserInDbUC = insertUserInDbUC;
+        this.updateUserSubscriptionUC = updateUserSubscriptionUC;
+        this.getUserInDbUC = getUserInDbUC;
+        this.updateUserUC = updateUserUC;
+        this.joinEventUC = joinEventUC;
+        this.leaveEventUC = leaveEventUC;
+        this.getSubscriptionsInDbUC = getSubscriptionsInDbUC;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(UserViewModel.class))
-            return (T) new UserViewModel(addUserToDbUseCase, updateUserSubscriptionUseCase, getUserFromDbUseCase, updateUserUseCase, joinUserEventUseCase, leaveEventUseCase, getSubscriptionsFromDbUseCase);
+            return (T) new UserViewModel(insertUserInDbUC, updateUserSubscriptionUC, getUserInDbUC, updateUserUC, joinEventUC, leaveEventUC, getSubscriptionsInDbUC);
 
         throw new IllegalArgumentException("Unknown ViewmModel class");
-
-
     }
 }

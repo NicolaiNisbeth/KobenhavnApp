@@ -19,7 +19,7 @@ public class LoginUserRxBus {
         relay = PublishRelay.create();
     }
 
-    public void post(SyncResponseType eventType, User user) {
+    public void post(RemoteResponseType eventType, User user) {
         relay.accept(new LoginResponse(eventType, user));
     }
 
@@ -29,10 +29,10 @@ public class LoginUserRxBus {
 
 
     public static class LoginResponse {
-        public final SyncResponseType type;
+        public final RemoteResponseType type;
         public final User user;
 
-        public LoginResponse(SyncResponseType type, User user) {
+        public LoginResponse(RemoteResponseType type, User user) {
             this.type = type;
             this.user = user;
         }

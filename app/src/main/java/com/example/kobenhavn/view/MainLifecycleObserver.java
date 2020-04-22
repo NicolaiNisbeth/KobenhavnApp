@@ -7,10 +7,10 @@ import androidx.lifecycle.OnLifecycleEvent;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.sync.FetchPlaygroundsRxBus;
-import com.example.kobenhavn.dal.sync.SyncResponseType;
+import com.example.kobenhavn.dal.sync.RemoteResponseType;
 import com.example.kobenhavn.dal.sync.SyncUserRxBus;
-import com.example.kobenhavn.usecases.playground.GetPlaygroundsInDbUseCase;
-import com.example.kobenhavn.usecases.playground.InsertPlaygroundsInDbUseCase;
+import com.example.kobenhavn.usecases.playground.GetPlaygroundsInDbUC;
+import com.example.kobenhavn.usecases.playground.InsertPlaygroundsInDbUC;
 
 import java.util.List;
 
@@ -23,11 +23,11 @@ import timber.log.Timber;
  * Updates local database after remote comment sync requests
  */
 public class MainLifecycleObserver implements LifecycleObserver {
-    private final InsertPlaygroundsInDbUseCase insertPlaygroundsInDbUseCase;
+    private final InsertPlaygroundsInDbUC insertPlaygroundsInDbUC;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
-    public MainLifecycleObserver(InsertPlaygroundsInDbUseCase insertPlaygrounds, GetPlaygroundsInDbUseCase getPlaygrounds) {
-        this.insertPlaygroundsInDbUseCase = insertPlaygrounds;
+    public MainLifecycleObserver(InsertPlaygroundsInDbUC insertPlaygrounds, GetPlaygroundsInDbUC getPlaygrounds) {
+        this.insertPlaygroundsInDbUC = insertPlaygrounds;
         disposables.add(FetchPlaygroundsRxBus.getInstance()
                 .toObservable()
                 .subscribe(this::handleFetchResponse, t -> Timber.e(t, "error handling playground fetch response")));
@@ -38,13 +38,13 @@ public class MainLifecycleObserver implements LifecycleObserver {
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    public void onPause() {
+    void onPause() {
         Timber.e("onPause lifecycle event.");
         disposables.clear();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    public void onResume() {
+    void onResume() {
         Timber.e("onResume lifecycle event.");
 
         disposables.add(FetchPlaygroundsRxBus.getInstance()
@@ -57,7 +57,7 @@ public class MainLifecycleObserver implements LifecycleObserver {
     }
 
     private void handleUserResponse(SyncUserRxBus.SyncUserResponse response) {
-        if (response.type == SyncResponseType.SUCCESS){
+        if (response.type == RemoteResponseType.SUCCESS){
             onSyncingSuccess(response.user);
         } else {
             onSyncingFailed(response.user);
@@ -76,7 +76,7 @@ public class MainLifecycleObserver implements LifecycleObserver {
     }
 
     private void handleFetchResponse(FetchPlaygroundsRxBus.FetchPlaygroundResponse response) {
-        if (response.type == SyncResponseType.SUCCESS) {
+        if (response.type == RemoteResponseType.SUCCESS) {
             onFetchingSuccess(response.playgrounds);
         } else {
             onFetchingFailed(response.playgrounds);
@@ -85,7 +85,7 @@ public class MainLifecycleObserver implements LifecycleObserver {
 
     private void onFetchingSuccess(List<Playground> playgrounds) {
         Timber.e("Successfully fetched playgrounds");
-        disposables.add(insertPlaygroundsInDbUseCase.insertPlaygrounds(playgrounds)
+        disposables.add(insertPlaygroundsInDbUC.insertPlaygrounds(playgrounds)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> Timber.e("successfully inserted playgrounds in locale db"),
@@ -93,7 +93,5 @@ public class MainLifecycleObserver implements LifecycleObserver {
 
     }
 
-    private void onFetchingFailed(List<Playground> playground) {
-
-    }
+    private void onFetchingFailed(List<Playground> playground) { }
 }

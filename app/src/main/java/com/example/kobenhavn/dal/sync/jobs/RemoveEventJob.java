@@ -1,56 +1,55 @@
 package com.example.kobenhavn.dal.sync.jobs;
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
-import com.example.kobenhavn.dal.local.LocalePlaygroundUtils;
-import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.dal.remote.RemoteException;
+import com.example.kobenhavn.dal.sync.RemoveEventRxBus;
+import com.example.kobenhavn.dal.sync.RemoteResponseType;
+import com.example.kobenhavn.dal.sync.SyncUserRxBus;
 import com.example.kobenhavn.dal.sync.jobs.setup.JobPriority;
 
 import timber.log.Timber;
 
-public class SyncPlaygroundJob extends Job {
+public class RemoveEventJob extends Job {
+    private static final String TAG = RemoveEventJob.class.getCanonicalName();
+    private final String playgroundName;
+    private final String eventID;
+    private final String username;
 
-    private static final String TAG = SyncPlaygroundJob.class.getCanonicalName();
-    private final Playground playground;
-
-    public SyncPlaygroundJob(Playground playground) {
+    public RemoveEventJob(String playgroundName, String eventID, String username) {
         super(new Params(JobPriority.MID)
                 .requireNetwork()
                 .groupBy(TAG)
                 .persist());
 
-        this.playground = playground;
+        this.playgroundName = playgroundName;
+        this.eventID = eventID;
+        this.username = username;
     }
 
     @Override
     public void onAdded() {
-        Timber.e("Added playground job to priority queue");
+        Timber.e("User leave event job was added to priority queue");
     }
 
     @Override
     public void onRun() throws Throwable {
-        Timber.e("Executing job for %s", playground);
+        Timber.e("Executing remove user from event job");
 
-        // if any exception is thrown, it will be handled by shouldReRunOnThrowable()
-        RemoteDataSource.getInstance().getPlayground(playground.getName());
-
-        // remote call was successful--the Comment will be updated locally to reflect that sync is no longer pending
-        Playground updatedPlayground = LocalePlaygroundUtils.clone(playground, false);
-        //SyncPlaygroundRxBus.getInstance().post(SyncResponseType.SUCCESS , updatedPlayground);
+        RemoteDataSource.getInstance().removeUserFromEvent(playgroundName, eventID, username);
+        RemoveEventRxBus.getInstance().post(RemoteResponseType.SUCCESS, true);
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
-        Timber.e("Canceling job. reason: %d, throwable: %s", cancelReason, throwable);
         // sync to remote failed
-        //SyncPlaygroundRxBus.getInstance().post(SyncResponseType.FAILED, playground);
+        Timber.e("Canceling job. reason: %d, throwable: %s", cancelReason, throwable);
+        SyncUserRxBus.getInstance().post(RemoteResponseType.FAILED, null);
     }
 
     @Override

@@ -25,21 +25,16 @@ import dagger.Provides;
 @Module
 class AppModule {
 
+    @Singleton
     @Provides
-    Context provideContext(App application) {
-        return application.getApplicationContext();
+    ILocalRepository provideLocalRepository(PlaygroundDAO playgroundDAO, UserDAO userDAO, SubscriptionsDAO subscriptionsDAO) {
+        return new LocalRepository(playgroundDAO, userDAO, subscriptionsDAO);
     }
 
     @Singleton
     @Provides
-    SchedulerJobService provideSchedulerJobService() {
-        return new SchedulerJobService();
-    }
-
-    @Singleton
-    @Provides
-    GCMJobService provideGcmJobService() {
-        return new GCMJobService();
+    IRemoteRepository provideRemoteRepository() {
+        return new RemoteRepository();
     }
 
     @Singleton
@@ -60,15 +55,20 @@ class AppModule {
         return Database.getInstance(context).subscriptionsDAO();
     }
 
-    @Singleton
     @Provides
-    ILocalRepository provideLocalRepository(PlaygroundDAO playgroundDAO, UserDAO userDAO, SubscriptionsDAO subscriptionsDAO) {
-        return new LocalRepository(playgroundDAO, userDAO, subscriptionsDAO);
+    Context provideContext(App application) {
+        return application.getApplicationContext();
     }
 
     @Singleton
     @Provides
-    IRemoteRepository provideRemoteRepository() {
-        return new RemoteRepository();
+    SchedulerJobService provideSchedulerJobService() {
+        return new SchedulerJobService();
+    }
+
+    @Singleton
+    @Provides
+    GCMJobService provideGcmJobService() {
+        return new GCMJobService();
     }
 }

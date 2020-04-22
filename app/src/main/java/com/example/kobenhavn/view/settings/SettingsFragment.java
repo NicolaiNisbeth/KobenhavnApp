@@ -30,6 +30,8 @@ import com.example.kobenhavn.viewmodel.AuthenticationViewModelFactory;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -48,7 +50,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.settings_profile_name) TextView _nameText;
     @BindView(R.id.settings_profile_number) TextView _numberText;
     @BindView(R.id.settings_logout) TextView _logoutText;
-
     @BindView(R.id.settings_name_and_address) View _nameView;
     @BindView(R.id.settings_email) View _emailView;
     @BindView(R.id.settings_mobile_number) View _mobileNumberView;
@@ -57,6 +58,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private Toolbar toolbar;
     private AuthenticationViewModel authenticationViewModel;
     private UserViewModel userViewModel;
+
+    public SettingsFragment(){}
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.settings_fragment, container, false);
@@ -139,7 +142,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NotNull MenuItem item) {
         if (RemoteDataSource.loggedInUser == null) return true;
 
         int id = item.getItemId();
@@ -155,8 +158,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             toogleEditText(_passwordEdit, false, _changePasswordView.findViewById(R.id.settings_item_right));
             Toast.makeText(getContext(), "Saved changes.", Toast.LENGTH_SHORT).show();
 
-
-
             String firstName = _nameEdit.getText().toString();
             String email = _emailEdit.getText().toString();
             String phoneNumber = _phoneNumberEdit.getText().toString();
@@ -167,6 +168,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             RemoteDataSource.loggedInUser.setPassword(password);
 
             userViewModel.updateUserFields(RemoteDataSource.loggedInUser);
+
             return true;
         }
 

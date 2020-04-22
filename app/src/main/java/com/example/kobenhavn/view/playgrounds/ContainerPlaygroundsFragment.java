@@ -27,10 +27,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.Subscriptions;
-import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.view.playgrounds.add.AddPlaygroundActivity;
-import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
@@ -50,7 +48,6 @@ import dagger.android.support.AndroidSupportInjection;
 
 public class ContainerPlaygroundsFragment extends Fragment {
     private Toolbar toolbar;
-    private ArrayList<Pair<String, PlaygroundsFragment>> tabList;
 
     @BindView(R.id.events_enrolled_empty_msg)
     TextView _emptyView;
@@ -62,10 +59,10 @@ public class ContainerPlaygroundsFragment extends Fragment {
     PlaygroundsViewModelFactory playgroundsViewModelFactory;
 
     private UserViewModel userViewModel;
-    private PlaygroundsViewModel playgroundsViewModel;
+
+    public ContainerPlaygroundsFragment(){}
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        AndroidSupportInjection.inject(this);
         View root = inflater.inflate(R.layout.playgrounds_container_fragment, container, false);
         ButterKnife.bind(this, root);
 
@@ -78,26 +75,22 @@ public class ContainerPlaygroundsFragment extends Fragment {
         TextView title = toolbar.findViewById(R.id.toolbar_title);
         title.setText("Legepladser");
 
-
-        tabList = new ArrayList<>();
-
-
         userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
-
-        // setup table layout
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(root.getContext(), getChildFragmentManager(), tabList, _emptyView, userViewModel);
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(root.getContext(), getChildFragmentManager(), new ArrayList<>(), _emptyView, userViewModel);
         ViewPager viewPager = root.findViewById(R.id.playgrounds_view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         final TabLayout tabLayout = root.findViewById(R.id.playground_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-
-        //userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), sectionsPagerAdapter::onUserChange);
-        userViewModel.getSubscriptionsLive(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), sectionsPagerAdapter::onUserChange);
-
+        userViewModel.getSubscriptionsLive(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), sectionsPagerAdapter::onSubscriptionChange);
 
         return root;
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
+    }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -122,7 +115,7 @@ public class ContainerPlaygroundsFragment extends Fragment {
         private final UserViewModel viewModel;
         private Context context;
         private ArrayList<Pair<String, PlaygroundsFragment>> tabList;
-        private User user;
+        private Subscriptions subscriptions;
 
         public SectionsPagerAdapter(Context context, FragmentManager fm, ArrayList<Pair<String, PlaygroundsFragment>> tabList, TextView _emptyView, UserViewModel viewModel) {
             super(fm);
@@ -160,42 +153,29 @@ public class ContainerPlaygroundsFragment extends Fragment {
             if (fragment != null){
                 // remove playground
                 fragment.setOnItemClickListener(playground -> {
-                    List<Playground> updatedPlaygrounds = user.getPlaygrounds();
+                    List<Playground> updatedPlaygrounds = subscriptions.getSubscriptions();
                     updatedPlaygrounds.remove(playground);
-                    viewModel.updateSubscriptionsLocally(user, updatedPlaygrounds);
+                    viewModel.updateSubscriptionsLocally(RemoteDataSource.loggedInUser, updatedPlaygrounds);
                     Toast.makeText(context, "Legeplads blev fjernet", Toast.LENGTH_SHORT).show();
                 });
             }
             return Objects.requireNonNull(tabList.get(i).second);
         }
 
-
-
-        public void onUserChange(Subscriptions subscriptions) {
+        void onSubscriptionChange(Subscriptions subscriptions) {
             if (subscriptions == null) return;
+
+            this.subscriptions = subscriptions;
             tabList.clear();
             for (Playground playground : subscriptions.getSubscriptions()){
                 tabList.add(new Pair<>(playground.getName(), PlaygroundsFragment.newInstance(playground)));
             }
             tabList.sort((o1, o2) -> o1.first.compareTo(o2.first));
-            notifyDataSetChanged();
 
             if (tabList != null && tabList.size() > 0) _emptyView.setVisibility(View.GONE);
             else _emptyView.setVisibility(View.VISIBLE);
-        }
 
-        // TODO: remove method to mainLifecycleObserver so tab doesn't have to be clicked
-        /*
-        public void syncWithRemotePlaygrounds(List<Playground> playgrounds) {
-            List<Playground> remoteListOfPlaygrounds = new ArrayList<>();
-            for (Playground model : playgrounds){
-                if (RemoteDataSource.loggedInUser.getPlaygroundsIDs().contains(model.getName())){
-                    remoteListOfPlaygrounds.add(model);
-                }
-            }
-            viewModel.updateSubscriptionsLocally(RemoteDataSource.loggedInUser, remoteListOfPlaygrounds);
+            notifyDataSetChanged();
         }
-
-         */
     }
 }

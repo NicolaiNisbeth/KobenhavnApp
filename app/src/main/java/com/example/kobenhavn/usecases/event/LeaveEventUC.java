@@ -8,18 +8,18 @@ import java.util.ArrayList;
 
 import io.reactivex.Completable;
 
-public class LeaveEventUseCase {
+public class LeaveEventUC {
     private final ILocalRepository localRepository;
     private final IRemoteRepository remoteRepository;
 
-    public LeaveEventUseCase(ILocalRepository localRepository, IRemoteRepository remoteRepository) {
+    public LeaveEventUC(ILocalRepository localRepository, IRemoteRepository remoteRepository) {
 
         this.localRepository = localRepository;
         this.remoteRepository = remoteRepository;
     }
 
     public Completable RemoveEventFromUser(String playgroundName, String username, String eventID, ArrayList<Event> events){
-        return localRepository.removeEventFromUser(username, events)
+        return localRepository.removeEvent(username, events)
                 .andThen(remoteRepository.removeEventFromUser(playgroundName, eventID, username));
     }
 }

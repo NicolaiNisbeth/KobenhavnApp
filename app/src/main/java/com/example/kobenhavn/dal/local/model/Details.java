@@ -23,15 +23,6 @@ public class Details implements Parcelable, Serializable {
         this.endTime = new Date(in.readLong());
     }
 
-    @Override
-    public String toString() {
-        return "Details{" +
-                "date=" + date +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                '}';
-    }
-
     public Date getDate() {
         return date;
     }
@@ -56,12 +47,19 @@ public class Details implements Parcelable, Serializable {
         this.endTime = endTime;
     }
 
+    @Override
+    public String toString() {
+        return "Details{" +
+                "date=" + date +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                '}';
+    }
+
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator(){
         public Details createFromParcel(Parcel in){return new Details(in);}
         public Details[] newArray(int size){return new Details[size];}
     };
-
-
 
     @Override
     public int describeContents() {
@@ -74,7 +72,4 @@ public class Details implements Parcelable, Serializable {
         dest.writeLong(startTime.getTime());
         dest.writeLong(endTime.getTime());
     }
-
-
-
 }

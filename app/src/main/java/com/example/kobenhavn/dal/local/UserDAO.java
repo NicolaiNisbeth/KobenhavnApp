@@ -6,17 +6,10 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Update;
-
 import com.example.kobenhavn.dal.local.model.Event;
-import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
-
 import java.util.ArrayList;
-import java.util.List;
-
 import io.reactivex.Single;
-import retrofit2.http.DELETE;
 
 @Dao
 public interface UserDAO {
@@ -28,15 +21,8 @@ public interface UserDAO {
     void updateUserFields(String firstName, String email, String phoneNumber, String password);
 
     @Query("UPDATE user_table SET events = :enrolledEvents WHERE username = :username")
-    void joinEvents(String username, ArrayList<Event> enrolledEvents);
-
-    @Delete
-    void delete(User user);
+    void updateEventParticipation(String username, ArrayList<Event> enrolledEvents);
 
     @Query("SELECT * FROM user_table WHERE username = :username")
     LiveData<User> getUserLive(String username);
-
-    @Query("SELECT * FROM user_table WHERE username = :username")
-    Single<User> getUser(String username);
-
 }

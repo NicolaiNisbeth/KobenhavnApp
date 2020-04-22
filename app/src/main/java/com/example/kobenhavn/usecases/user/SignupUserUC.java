@@ -4,10 +4,10 @@ import com.example.kobenhavn.dal.remote.IRemoteRepository;
 
 import io.reactivex.Completable;
 
-public class SignupUserUseCase {
+public class SignupUserUC {
     private final IRemoteRepository remoteRepository;
 
-    public SignupUserUseCase(IRemoteRepository remoteRepository) {
+    public SignupUserUC(IRemoteRepository remoteRepository) {
         this.remoteRepository = remoteRepository;
     }
 

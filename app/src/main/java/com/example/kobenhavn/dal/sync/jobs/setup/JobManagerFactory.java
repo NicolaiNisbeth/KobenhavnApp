@@ -10,6 +10,9 @@ import com.birbit.android.jobqueue.scheduling.GcmJobSchedulerService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+/**
+ * Taken from https://proandroiddev.com/offline-apps-its-easier-than-you-think-9ff97701a73f
+ */
 public class JobManagerFactory {
     private static JobManager jobManager;
 

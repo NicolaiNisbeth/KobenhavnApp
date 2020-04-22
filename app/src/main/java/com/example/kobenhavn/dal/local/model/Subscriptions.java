@@ -21,7 +21,7 @@ public class Subscriptions implements Serializable {
     private String userID;
 
     @ColumnInfo(name = "subscriptions")
-    private List<Playground> subscriptions = new ArrayList<>();
+    private List<Playground> subscriptions;
 
     public String getUserID() {
         return userID;

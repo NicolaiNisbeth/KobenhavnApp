@@ -10,7 +10,7 @@ import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.dal.remote.RemoteException;
 import com.example.kobenhavn.dal.sync.LoginUserRxBus;
-import com.example.kobenhavn.dal.sync.SyncResponseType;
+import com.example.kobenhavn.dal.sync.RemoteResponseType;
 import com.example.kobenhavn.dal.sync.jobs.setup.JobPriority;
 
 import timber.log.Timber;
@@ -39,13 +39,13 @@ public class LoginUserJob extends Job {
         Timber.e("Executing login user job");
 
         User user = RemoteDataSource.getInstance().loginUser(username, password);
-        LoginUserRxBus.getInstance().post(SyncResponseType.SUCCESS, user);
+        LoginUserRxBus.getInstance().post(RemoteResponseType.SUCCESS, user);
 
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
-        LoginUserRxBus.getInstance().post(SyncResponseType.FAILED, null);
+        LoginUserRxBus.getInstance().post(RemoteResponseType.FAILED, null);
     }
 
     @Override

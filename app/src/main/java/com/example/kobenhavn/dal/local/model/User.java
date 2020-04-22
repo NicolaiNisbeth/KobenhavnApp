@@ -43,20 +43,14 @@ public class User implements Serializable {
     @ColumnInfo(name = "status")
     private String status = "user";
 
-    @ColumnInfo(name = "phone_number")
-    private ArrayList<String> phonenumbers;
-
     @ColumnInfo(name = "sync_pending")
     private boolean syncPending;
 
     @ColumnInfo(name = "website")
     private String website;
 
-    @ColumnInfo(name = "subscribed_playgrounds")
-    private List<Playground> playgrounds = new ArrayList<>();
-
-    @ColumnInfo(name = "playgrounds_ID")
-    private List<String> playgroundsIDs = new ArrayList<>();
+    @ColumnInfo(name = "phone_number")
+    private List<String> phonenumbers;
 
     @ColumnInfo(name = "events")
     private ArrayList<Event> events = new ArrayList<>();
@@ -68,16 +62,6 @@ public class User implements Serializable {
     public void setEvents(ArrayList<Event> events) {
         this.events = events;
     }
-
-    public List<Playground> getPlaygrounds() {
-        return playgrounds;
-    }
-
-    public void setPlaygrounds(List<Playground> playgrounds) {
-        this.playgrounds = playgrounds;
-    }
-
-
 
     public String getId() {
         return id;
@@ -107,7 +91,7 @@ public class User implements Serializable {
         return imagepath;
     }
 
-    public ArrayList<String> getPhonenumbers() {
+    public List<String> getPhonenumbers() {
         return phonenumbers;
     }
 
@@ -122,19 +106,6 @@ public class User implements Serializable {
     public boolean isSyncPending() {
         return syncPending;
     }
-
-    public List<String> getPlaygroundsIDs() {
-        return playgroundsIDs;
-    }
-
-    public void setPlaygroundsIDs(List<String> playgroundsIDs) {
-        this.playgroundsIDs = playgroundsIDs;
-    }
-
-    //private Set<Event> events = new HashSet<>();
-
-    //private Set<String> playgroundIDs = new HashSet<>();
-
 
     public void setId(@NonNull String id) {
         this.id = id;
@@ -164,7 +135,7 @@ public class User implements Serializable {
         this.imagepath = imagepath;
     }
 
-    public void setPhonenumbers(ArrayList<String> phonenumbers) {
+    public void setPhonenumbers(List<String> phonenumbers) {
         this.phonenumbers = phonenumbers;
     }
 
@@ -179,7 +150,7 @@ public class User implements Serializable {
     }
 
     @Ignore
-    public User(String firstname, String lastname, String username, String password, String email, String imagepath, String status, String website, ArrayList<String> phonenumbers) {
+    public User(String firstname, String lastname, String username, String password, String email, String imagepath, String status, String website, List<String> phonenumbers) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.username = username;
@@ -193,7 +164,7 @@ public class User implements Serializable {
     }
 
 
-    public User(@NonNull String id, String firstname, String lastname, String username, String password, String email, String imagepath, String status, String website, ArrayList<String> phonenumbers, boolean syncPending, List<Playground> playgrounds, ArrayList<Event> events, List<String> playgroundsIDs) {
+    public User(@NonNull String id, String firstname, String lastname, String username, String password, String email, String imagepath, String status, String website, List<String> phonenumbers, boolean syncPending, ArrayList<Event> events) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -205,9 +176,7 @@ public class User implements Serializable {
         this.website = website;
         this.phonenumbers = phonenumbers;
         this.syncPending = syncPending;
-        this.playgrounds = playgrounds;
         this.events = events;
-        this.playgroundsIDs = playgroundsIDs;
     }
 
     @Override
@@ -224,8 +193,6 @@ public class User implements Serializable {
                 ", phonenumbers=" + phonenumbers +
                 ", syncPending=" + syncPending +
                 ", website='" + website + '\'' +
-                ", playgrounds=" + playgrounds +
-                ", playgroundsIDs=" + playgroundsIDs +
                 ", events=" + events +
                 '}';
     }

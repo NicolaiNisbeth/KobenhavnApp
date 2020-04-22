@@ -1,8 +1,10 @@
 package com.example.kobenhavn.view.events.enrolled;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
@@ -33,16 +35,12 @@ import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 
 public class EnrolledFragment extends Fragment {
-    private EmptyRecyclerView recyclerView;
-    private EnrolledAdapter adapter;
 
     @Inject
     UserViewModelFactory userViewModelFactory;
 
     @BindView(R.id.events_enrolled_empty_msg)
     TextView _emptyView;
-
-    private UserViewModel userViewModel;
 
     public EnrolledFragment() { }
     public static EnrolledFragment newInstance() {
@@ -51,19 +49,19 @@ public class EnrolledFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        AndroidSupportInjection.inject(this);
         final View root = inflater.inflate(R.layout.events_enrolled_fragment, container, false);
         ButterKnife.bind(this, root);
-        recyclerView = root.findViewById(R.id.recycler_view_enrolled);
+        EmptyRecyclerView recyclerView = root.findViewById(R.id.recycler_view_enrolled);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
-        adapter = new EnrolledAdapter(root.getContext(), new ArrayList<>());
+        EnrolledAdapter adapter = new EnrolledAdapter(root.getContext(), new ArrayList<>());
         recyclerView.setAdapter(adapter);
         recyclerView.setEmptyView(_emptyView);
 
-        userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
+        UserViewModel userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
         LiveData<User> liveDataUser = userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername());
         liveDataUser.observe(getViewLifecycleOwner(), adapter::updateEnrolledList);
 
+        // TODO: pass object instead of fields
         adapter.setOnItemClickListener(event -> {
             Intent intent = new Intent(getContext(), CardActivity.class);
             intent.putExtra(CardActivity.EXTRA_DATE, (Parcelable) event.getDetails());
@@ -78,5 +76,11 @@ public class EnrolledFragment extends Fragment {
         });
 
         return root;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
     }
 }

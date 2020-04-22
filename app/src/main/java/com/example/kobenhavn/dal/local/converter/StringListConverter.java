@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaygroundsIDConverter {
+public class StringListConverter {
     @TypeConverter
     public List<String> gettingListFromString(String genreIds) {
         List<String> list = new ArrayList<>();

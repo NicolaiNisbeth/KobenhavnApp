@@ -2,20 +2,17 @@ package com.example.kobenhavn.di;
 
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
-import com.example.kobenhavn.usecases.event.JoinUserEventUseCase;
-import com.example.kobenhavn.usecases.event.LeaveEventUseCase;
-import com.example.kobenhavn.usecases.user.GetSubscriptionsFromDbUseCase;
-import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionUseCase;
+import com.example.kobenhavn.usecases.event.JoinEventUC;
+import com.example.kobenhavn.usecases.event.LeaveEventUC;
+import com.example.kobenhavn.usecases.playground.FetchPlaygroundUC;
+import com.example.kobenhavn.usecases.playground.GetPlaygroundsInDbUC;
+import com.example.kobenhavn.usecases.playground.InsertPlaygroundsInDbUC;
+import com.example.kobenhavn.usecases.user.GetSubscriptionsInDbUC;
+import com.example.kobenhavn.usecases.user.GetUserInDbUC;
+import com.example.kobenhavn.usecases.user.InsertUserInDbUC;
+import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionUC;
+import com.example.kobenhavn.usecases.user.UpdateUserUC;
 import com.example.kobenhavn.view.MainLifecycleObserver;
-import com.example.kobenhavn.usecases.playground.InsertPlaygroundsInDbUseCase;
-import com.example.kobenhavn.usecases.playground.FetchPlaygroundsUseCase;
-import com.example.kobenhavn.usecases.playground.GetPlaygroundsInDbUseCase;
-import com.example.kobenhavn.usecases.playground.SubscribeToPlaygroundUseCase;
-import com.example.kobenhavn.usecases.playground.UnsubscribeToPlaygroundUseCase;
-import com.example.kobenhavn.usecases.playground.UpdatePlaygroundsInDbUseCase;
-import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
-import com.example.kobenhavn.usecases.user.GetUserFromDbUseCase;
-import com.example.kobenhavn.usecases.user.UpdateUserUseCase;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 
@@ -29,86 +26,68 @@ import dagger.Provides;
 class MenuModule {
 
     @Provides
-    MainLifecycleObserver providePlaygroundLifecycleObserver(InsertPlaygroundsInDbUseCase insertPlaygroundsInDbUseCase, GetPlaygroundsInDbUseCase getPlaygroundsInDbUseCase) {
-        return new MainLifecycleObserver(insertPlaygroundsInDbUseCase, getPlaygroundsInDbUseCase);
+    MainLifecycleObserver providePlaygroundLifecycleObserver(InsertPlaygroundsInDbUC insertPlaygroundsInDbUC, GetPlaygroundsInDbUC getPlaygroundsInDbUC) {
+        return new MainLifecycleObserver(insertPlaygroundsInDbUC, getPlaygroundsInDbUC);
     }
 
     @Provides
-    PlaygroundsViewModelFactory providePlaygroundViewModelFactory(GetPlaygroundsInDbUseCase getPlayground,
-                                                                  FetchPlaygroundsUseCase fetchPlaygrounds){
+    PlaygroundsViewModelFactory providePlaygroundViewModelFactory(GetPlaygroundsInDbUC getPlayground,
+                                                                  FetchPlaygroundUC fetchPlaygrounds){
         return new PlaygroundsViewModelFactory(getPlayground, fetchPlaygrounds);
     }
 
     @Provides
-    UserViewModelFactory provideUserViewModelFactory(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase, JoinUserEventUseCase joinUserEventUseCase, LeaveEventUseCase leaveEventUseCase, GetSubscriptionsFromDbUseCase getSubscriptionsFromDbUseCase){
-        return new UserViewModelFactory(addUserToDbUseCase, updateUserSubscriptionUseCase, getUserFromDbUseCase, updateUserUseCase, joinUserEventUseCase, leaveEventUseCase, getSubscriptionsFromDbUseCase);
+    UserViewModelFactory provideUserViewModelFactory(InsertUserInDbUC insertUserInDbUC, UpdateUserSubscriptionUC updateUserSubscriptionUC, GetUserInDbUC getUserInDbUC, UpdateUserUC updateUserUC, JoinEventUC joinEventUC, LeaveEventUC leaveEventUC, GetSubscriptionsInDbUC getSubscriptionsInDbUC){
+        return new UserViewModelFactory(insertUserInDbUC, updateUserSubscriptionUC, getUserInDbUC, updateUserUC, joinEventUC, leaveEventUC, getSubscriptionsInDbUC);
     }
 
     @Provides
-    GetSubscriptionsFromDbUseCase provideGetSubscriptions(ILocalRepository localRepository){
-        return new GetSubscriptionsFromDbUseCase(localRepository);
+    GetSubscriptionsInDbUC provideGetSubscriptions(ILocalRepository localRepository){
+        return new GetSubscriptionsInDbUC(localRepository);
     }
 
     @Provides
-    JoinUserEventUseCase provideJoinEvent(ILocalRepository localRepository, IRemoteRepository remoteRepository){
-        return new JoinUserEventUseCase(localRepository, remoteRepository);
+    JoinEventUC provideJoinEvent(ILocalRepository localRepository, IRemoteRepository remoteRepository){
+        return new JoinEventUC(localRepository, remoteRepository);
     }
 
     @Provides
-    LeaveEventUseCase provideLeaveEvent(ILocalRepository localRepository, IRemoteRepository remoteRepository){
-        return new LeaveEventUseCase(localRepository, remoteRepository);
+    LeaveEventUC provideLeaveEvent(ILocalRepository localRepository, IRemoteRepository remoteRepository){
+        return new LeaveEventUC(localRepository, remoteRepository);
     }
 
     @Provides
-    UpdateUserUseCase provideUpdateUser(ILocalRepository localRepository, IRemoteRepository remoteRepository){
-        return new UpdateUserUseCase(localRepository, remoteRepository);
+    UpdateUserUC provideUpdateUser(ILocalRepository localRepository, IRemoteRepository remoteRepository){
+        return new UpdateUserUC(localRepository, remoteRepository);
     }
 
     @Provides
-    AddUserToDbUseCase provideAddUSerToDbUseCase(ILocalRepository localRepository){
-        return new AddUserToDbUseCase(localRepository);
+    InsertUserInDbUC provideAddUSerToDbUseCase(ILocalRepository localRepository){
+        return new InsertUserInDbUC(localRepository);
     }
 
     @Provides
-    UpdateUserSubscriptionUseCase provideUpdateUserInDbUseCase(ILocalRepository localRepository, IRemoteRepository remoteRepository){
-        return new UpdateUserSubscriptionUseCase(localRepository, remoteRepository);
+    UpdateUserSubscriptionUC provideUpdateUserInDbUseCase(ILocalRepository localRepository, IRemoteRepository remoteRepository){
+        return new UpdateUserSubscriptionUC(localRepository, remoteRepository);
     }
 
     @Provides
-    GetUserFromDbUseCase provideGetUserFromDbUseCase(ILocalRepository localRepository){
-        return new GetUserFromDbUseCase(localRepository);
+    GetUserInDbUC provideGetUserFromDbUseCase(ILocalRepository localRepository){
+        return new GetUserInDbUC(localRepository);
     }
 
     @Provides
-    SubscribeToPlaygroundUseCase provideAddPlaygroundUseCase(ILocalRepository localRepository, IRemoteRepository remoteRepository) {
-        return new SubscribeToPlaygroundUseCase(localRepository, remoteRepository);
+    InsertPlaygroundsInDbUC provideAddPlaygroundsToDbUseCase(ILocalRepository localRepository){
+        return new InsertPlaygroundsInDbUC(localRepository);
     }
 
     @Provides
-    InsertPlaygroundsInDbUseCase provideAddPlaygroundsToDbUseCase(ILocalRepository localRepository){
-        return new InsertPlaygroundsInDbUseCase(localRepository);
+    GetPlaygroundsInDbUC provideGetPlaygroundsUseCase(ILocalRepository localRepository) {
+        return new GetPlaygroundsInDbUC(localRepository);
     }
 
     @Provides
-    GetPlaygroundsInDbUseCase provideGetPlaygroundsUseCase(ILocalRepository localRepository) {
-        return new GetPlaygroundsInDbUseCase(localRepository);
+    FetchPlaygroundUC provideFetchPlaygroundsUseCase(ILocalRepository localRepository, IRemoteRepository remoteRepository){
+        return new FetchPlaygroundUC(localRepository, remoteRepository);
     }
-
-    @Provides
-    FetchPlaygroundsUseCase provideFetchPlaygroundsUseCase(ILocalRepository localRepository, IRemoteRepository remoteRepository){
-        return new FetchPlaygroundsUseCase(localRepository, remoteRepository);
-    }
-
-    @Provides
-    UpdatePlaygroundsInDbUseCase provideUpdatePlaygroundUseCase(ILocalRepository localRepository) {
-        return new UpdatePlaygroundsInDbUseCase(localRepository);
-    }
-
-    @Provides
-    UnsubscribeToPlaygroundUseCase provideDeletePlaygroundUseCase(ILocalRepository localRepository) {
-        return new UnsubscribeToPlaygroundUseCase(localRepository);
-    }
-
-
-
 }

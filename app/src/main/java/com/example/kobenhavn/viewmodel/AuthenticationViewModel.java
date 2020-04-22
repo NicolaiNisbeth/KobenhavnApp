@@ -2,9 +2,9 @@ package com.example.kobenhavn.viewmodel;
 
 import androidx.lifecycle.ViewModel;
 
-import com.example.kobenhavn.usecases.user.LoginUserUseCase;
-import com.example.kobenhavn.usecases.user.LogoutUserUseCase;
-import com.example.kobenhavn.usecases.user.SignupUserUseCase;
+import com.example.kobenhavn.usecases.user.LoginUserUC;
+import com.example.kobenhavn.usecases.user.LogoutUserUC;
+import com.example.kobenhavn.usecases.user.SignupUserUC;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -12,14 +12,14 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class AuthenticationViewModel extends ViewModel {
-    private final LoginUserUseCase loginUser;
-    private final SignupUserUseCase signupUser;
-    private final LogoutUserUseCase logoutUser;
+    private final LoginUserUC loginUser;
+    private final SignupUserUC signupUser;
+    private final LogoutUserUC logoutUser;
 
     private final CompositeDisposable disposables = new CompositeDisposable();
 
 
-    public AuthenticationViewModel(LoginUserUseCase loginUser, SignupUserUseCase signupUser, LogoutUserUseCase logoutUser) {
+    AuthenticationViewModel(LoginUserUC loginUser, SignupUserUC signupUser, LogoutUserUC logoutUser) {
         this.loginUser = loginUser;
         this.signupUser = signupUser;
         this.logoutUser = logoutUser;

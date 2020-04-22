@@ -1,19 +1,20 @@
 package com.example.kobenhavn.usecases.playground;
 
-
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.local.model.Playground;
 
+import java.util.List;
+
 import io.reactivex.Completable;
 
-public class UnsubscribeToPlaygroundUseCase {
+public class InsertPlaygroundsInDbUC {
     private final ILocalRepository localRepository;
 
-    public UnsubscribeToPlaygroundUseCase(ILocalRepository localRepository) {
+    public InsertPlaygroundsInDbUC(ILocalRepository localRepository) {
         this.localRepository = localRepository;
     }
 
-    public Completable deletePlayground(Playground playground){
-        return localRepository.delete(playground);
+    public Completable insertPlaygrounds(List<Playground> playgrounds){
+        return localRepository.insertPlaygrounds(playgrounds);
     }
 }

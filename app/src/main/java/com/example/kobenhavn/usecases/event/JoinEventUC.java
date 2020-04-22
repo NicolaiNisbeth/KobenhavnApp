@@ -5,14 +5,15 @@ import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Completable;
 
-public class JoinUserEventUseCase {
+public class JoinEventUC {
     private final ILocalRepository localRepository;
     private final IRemoteRepository remoteRepository;
 
-    public JoinUserEventUseCase(ILocalRepository localRepository, IRemoteRepository remoteRepository) {
+    public JoinEventUC(ILocalRepository localRepository, IRemoteRepository remoteRepository) {
         this.localRepository = localRepository;
         this.remoteRepository = remoteRepository;
     }

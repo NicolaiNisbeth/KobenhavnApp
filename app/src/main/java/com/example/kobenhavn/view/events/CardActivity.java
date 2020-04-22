@@ -65,7 +65,6 @@ public class CardActivity extends AppCompatActivity {
         setContentView(R.layout.events_card_activity);
         ButterKnife.bind(this);
 
-
         Intent intent = getIntent();
         Details details = intent.getParcelableExtra(EXTRA_DATE);
         _dateText.setText(details.getStartTime().toString());
@@ -110,6 +109,7 @@ public class CardActivity extends AppCompatActivity {
             _enrollButton.setText("Tilmeld");
         }
     }
+
 
     @OnClick(R.id.deltag)
     void onBtnClick(){

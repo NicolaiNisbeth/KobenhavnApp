@@ -10,7 +10,7 @@ import com.example.kobenhavn.dal.local.LocaleUserUtils;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.dal.remote.RemoteException;
-import com.example.kobenhavn.dal.sync.SyncResponseType;
+import com.example.kobenhavn.dal.sync.RemoteResponseType;
 import com.example.kobenhavn.dal.sync.SyncUserRxBus;
 import com.example.kobenhavn.dal.sync.jobs.setup.JobPriority;
 
@@ -43,14 +43,14 @@ public class SyncUserJob extends Job {
 
         // remote call was successful--the Comment will be updated locally to reflect that sync is no longer pending
         User updatedUser = LocaleUserUtils.clone(user, false);
-        SyncUserRxBus.getInstance().post(SyncResponseType.SUCCESS, updatedUser);
+        SyncUserRxBus.getInstance().post(RemoteResponseType.SUCCESS, updatedUser);
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
         // sync to remote failed
         Timber.e("Canceling job. reason: %d, throwable: %s", cancelReason, throwable);
-        SyncUserRxBus.getInstance().post(SyncResponseType.FAILED, user);
+        SyncUserRxBus.getInstance().post(RemoteResponseType.FAILED, user);
     }
 
     @Override

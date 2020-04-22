@@ -29,7 +29,7 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
     private OnItemClickListener listener;
     private List<Event> events;
 
-    public EnrolledAdapter(Context context, ArrayList<Event> events) {
+    EnrolledAdapter(Context context, ArrayList<Event> events) {
         this.context = context;
         this.events = events;
     }
@@ -50,14 +50,7 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
         return events.size();
     }
 
-    private void deleteItem(int position){
-        Toast.makeText(context, events.get(position).getName() + " blev fjernet.", Toast.LENGTH_SHORT).show();
-        events.remove(position);
-        notifyItemRemoved(position);
-    }
-
-
-    public void updateEnrolledList(User user) {
+    void updateEnrolledList(User user) {
         if (user == null) return;
 
         RemoteDataSource.loggedInUser = user;
@@ -72,9 +65,8 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
         @BindView(R.id.ennrolled_title_text) TextView _titleText;
         @BindView(R.id.enrolled_time_text) TextView _timeText;
         @BindView(R.id.enrolled_interested_text) TextView _interestedText;
-        //@BindView(R.id.enrolled_delete_btn) FloatingActionButton _deleteButton;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
@@ -84,7 +76,6 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
                     listener.onItemClick(events.get(position));
                 }
             });
-            //_deleteButton.setOnClickListener(v -> deleteItem(getAdapterPosition()));
         }
 
         void bindTo(int position) {
@@ -101,7 +92,7 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
         void onItemClick(Event eventModel);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 }

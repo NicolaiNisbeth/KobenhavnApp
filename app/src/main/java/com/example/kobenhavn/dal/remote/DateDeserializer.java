@@ -15,26 +15,14 @@ import java.util.TimeZone;
 import java.util.logging.Logger;
 
 public class DateDeserializer implements JsonDeserializer<Date> {
+
     private static final String EASY_DECODE_TIMESTAMP = ("yyyy-MM-dd-HH-mm-ss-SSS");
     private static final SimpleDateFormat formatter = new SimpleDateFormat(EASY_DECODE_TIMESTAMP);
 
-    // 2020-04-05T18:42:31.266+00:00
     @Override
     public Date deserialize(JsonElement element, Type arg1, JsonDeserializationContext arg2) throws JsonParseException {
         String date = element.getAsString().trim();
         formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-        /*
-        try {
-            return formatter.parse(date);
-        } catch (ParseException e) {
-            System.err.println("Failed to parse Date due to:" +  e);
-            return null;
-        }
-
-         */
-
         return new Date(new BigDecimal(date).multiply(new BigDecimal(1000)).longValue());
-
     }
 }

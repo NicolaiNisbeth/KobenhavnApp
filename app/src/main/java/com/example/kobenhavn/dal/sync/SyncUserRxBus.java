@@ -16,7 +16,7 @@ public class SyncUserRxBus {
 
     private SyncUserRxBus(){relay = PublishRelay.create();}
 
-    public void post(SyncResponseType eventType, User user){
+    public void post(RemoteResponseType eventType, User user){
         relay.accept(new SyncUserResponse(eventType, user));
     }
 
@@ -25,10 +25,10 @@ public class SyncUserRxBus {
     }
 
     public static class SyncUserResponse {
-        public final SyncResponseType type;
+        public final RemoteResponseType type;
         public final User user;
 
-        public SyncUserResponse(SyncResponseType type, User user) {
+        public SyncUserResponse(RemoteResponseType type, User user) {
             this.type = type;
             this.user = user;
         }

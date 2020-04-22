@@ -1,6 +1,6 @@
 package com.example.kobenhavn.dal.sync;
 
-public enum SyncResponseType {
+public enum RemoteResponseType {
     SUCCESS,
     FAILED
 }

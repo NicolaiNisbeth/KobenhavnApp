@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.sync.SignupUserRxBus;
-import com.example.kobenhavn.dal.sync.SyncResponseType;
+import com.example.kobenhavn.dal.sync.RemoteResponseType;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModelFactory;
 import com.google.android.material.textfield.TextInputEditText;
@@ -70,7 +70,6 @@ public class SignUpActivity extends AppCompatActivity {
                 .subscribe(this::handleSignupResponse, t -> Timber.e(t, "error handling login response"))
         );
 
-
         // On every key press will username and password be reported to loginViewModel and the
         // loginFormState will be changed accordingly
         TextWatcher textChangedListener = new TextWatcher() {
@@ -114,7 +113,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void handleSignupResponse(SignupUserRxBus.SignupResponse response) {
         progressDialog.dismiss();
-        if (response.type == SyncResponseType.SUCCESS) {
+        if (response.type == RemoteResponseType.SUCCESS) {
             showSignupSuccess();
         } else {
             showSignupFailed();

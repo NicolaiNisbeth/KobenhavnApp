@@ -7,18 +7,15 @@ import com.example.kobenhavn.dal.local.model.User;
 
 import io.reactivex.Single;
 
-public class GetUserFromDbUseCase {
+public class GetUserInDbUC {
     private final ILocalRepository localRepository;
 
-    public GetUserFromDbUseCase(ILocalRepository localRepository) {
+    public GetUserInDbUC(ILocalRepository localRepository) {
         this.localRepository = localRepository;
     }
 
     public LiveData<User> getUserLive(String username){
-        return localRepository.getUserLive(username);
+        return localRepository.getUserLiveData(username);
     }
 
-    public Single<User> getUser(String username){
-        return localRepository.getUser(username);
-    }
 }

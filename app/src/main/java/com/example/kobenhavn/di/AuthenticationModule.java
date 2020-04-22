@@ -1,9 +1,9 @@
 package com.example.kobenhavn.di;
 
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
-import com.example.kobenhavn.usecases.user.LoginUserUseCase;
-import com.example.kobenhavn.usecases.user.LogoutUserUseCase;
-import com.example.kobenhavn.usecases.user.SignupUserUseCase;
+import com.example.kobenhavn.usecases.user.LoginUserUC;
+import com.example.kobenhavn.usecases.user.LogoutUserUC;
+import com.example.kobenhavn.usecases.user.SignupUserUC;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModelFactory;
 import dagger.Module;
 import dagger.Provides;
@@ -15,24 +15,24 @@ import dagger.Provides;
 class AuthenticationModule {
 
     @Provides
-    AuthenticationViewModelFactory provideAuthenticationViewModelFactory(LoginUserUseCase loginUser,
-                                                                          SignupUserUseCase signupUser,
-                                                                          LogoutUserUseCase logoutUser){
+    AuthenticationViewModelFactory provideAuthenticationViewModelFactory(LoginUserUC loginUser,
+                                                                         SignupUserUC signupUser,
+                                                                         LogoutUserUC logoutUser){
         return new AuthenticationViewModelFactory(loginUser, signupUser, logoutUser);
     }
 
     @Provides
-    LoginUserUseCase provideLoginUserUseCase(IRemoteRepository remoteRepository){
-        return new LoginUserUseCase(remoteRepository);
+    LoginUserUC provideLoginUserUseCase(IRemoteRepository remoteRepository){
+        return new LoginUserUC(remoteRepository);
     }
 
     @Provides
-    SignupUserUseCase provideSignupUserUseCase(IRemoteRepository remoteRepository){
-        return new SignupUserUseCase(remoteRepository);
+    SignupUserUC provideSignupUserUseCase(IRemoteRepository remoteRepository){
+        return new SignupUserUC(remoteRepository);
     }
 
     @Provides
-    LogoutUserUseCase provideLogoutUserUseCase(){
-        return new LogoutUserUseCase();
+    LogoutUserUC provideLogoutUserUseCase(){
+        return new LogoutUserUC();
     }
 }

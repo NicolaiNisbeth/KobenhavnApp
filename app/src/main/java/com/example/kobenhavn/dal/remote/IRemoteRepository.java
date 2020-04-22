@@ -9,19 +9,13 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public interface IRemoteRepository {
-    Completable sync(Playground playground);
-    Completable sync(User user);
 
+    Completable loginUser(String username, String password);
+    Completable signupUser(String name, String username, String password);
+    Completable syncUser(User user);
 
     Completable fetchPlaygrounds();
 
-    Completable loginUser(String username, String password);
-
-    Completable signupUser(String name, String username, String password);
-
     Completable joinUserWithEvent(String playgroundName, String eventID, String username);
-
-    Completable updateUserWithSubscriptions(String username, List<Playground> playgrounds);
-
     Completable removeEventFromUser(String playgroundName, String eventID, String username);
 }

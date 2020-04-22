@@ -8,7 +8,7 @@ import com.birbit.android.jobqueue.RetryConstraint;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.dal.remote.RemoteException;
 import com.example.kobenhavn.dal.sync.SignupUserRxBus;
-import com.example.kobenhavn.dal.sync.SyncResponseType;
+import com.example.kobenhavn.dal.sync.RemoteResponseType;
 import com.example.kobenhavn.dal.sync.jobs.setup.JobPriority;
 import timber.log.Timber;
 
@@ -39,12 +39,12 @@ public class SignupUserJob extends Job {
         Timber.e("Executing login user job");
 
         RemoteDataSource.getInstance().signupUser(name, username, password);
-        SignupUserRxBus.getInstance().post(SyncResponseType.SUCCESS);
+        SignupUserRxBus.getInstance().post(RemoteResponseType.SUCCESS);
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
-        SignupUserRxBus.getInstance().post(SyncResponseType.FAILED);
+        SignupUserRxBus.getInstance().post(RemoteResponseType.FAILED);
     }
 
     @Override

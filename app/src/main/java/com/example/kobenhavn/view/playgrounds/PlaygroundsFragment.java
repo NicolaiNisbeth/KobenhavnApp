@@ -1,7 +1,9 @@
 package com.example.kobenhavn.view.playgrounds;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -26,12 +28,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dagger.android.support.AndroidSupportInjection;
 import timber.log.Timber;
 
 public class PlaygroundsFragment extends Fragment {
-    private static final String LEGEPLADS_MODEL = "com.example.kobenhavn.ui.legepladser.playgroundsModel";
-    private Playground playground;
-    private OnItemClickListener listener;
 
     @BindView(R.id.future_date_text) TextView _titleText;
     @BindView(R.id.future_subtitle_text) TextView _addresseText;
@@ -39,10 +39,13 @@ public class PlaygroundsFragment extends Fragment {
     @BindView(R.id.future_time_text) TextView _assignedPedagoguesText;
     @BindView(R.id.legepladser_info_img_url) ImageView _imageView;
 
+    private static final String LEGEPLADS_MODEL = "com.example.kobenhavn.ui.legepladser.playgroundsModel";
+    private Playground playground;
+    private OnItemClickListener listener;
 
     public PlaygroundsFragment() { }
 
-    public static PlaygroundsFragment newInstance(Playground model) {
+    static PlaygroundsFragment newInstance(Playground model) {
         PlaygroundsFragment fragment = new PlaygroundsFragment();
         Bundle args = new Bundle();
         args.putParcelable(LEGEPLADS_MODEL, model);
@@ -65,7 +68,6 @@ public class PlaygroundsFragment extends Fragment {
         _titleText.setText(playground.getName());
         _addresseText.setText(String.format("%s %s", playground.getStreetName(), playground.getStreetNumber()));
         _descriptionText.setText(playground.getCommune());
-
         return root;
     }
 
@@ -74,10 +76,9 @@ public class PlaygroundsFragment extends Fragment {
         if (listener != null){
             listener.onItemClick(playground);
         }
-
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         listener = onItemClickListener;
     }
 

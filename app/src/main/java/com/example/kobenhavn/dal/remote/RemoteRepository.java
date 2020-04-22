@@ -1,19 +1,13 @@
 package com.example.kobenhavn.dal.remote;
 
-import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.sync.jobs.FetchPlaygroundsJob;
 import com.example.kobenhavn.dal.sync.jobs.LoginUserJob;
-import com.example.kobenhavn.dal.sync.jobs.RemoveEventFromUserJob;
+import com.example.kobenhavn.dal.sync.jobs.RemoveEventJob;
 import com.example.kobenhavn.dal.sync.jobs.SignupUserJob;
-import com.example.kobenhavn.dal.sync.jobs.SyncPlaygroundJob;
 import com.example.kobenhavn.dal.sync.jobs.SyncUserJob;
-import com.example.kobenhavn.dal.sync.jobs.UpdateUserWithSubscriptionsJob;
-import com.example.kobenhavn.dal.sync.jobs.UserJoinEventJob;
+import com.example.kobenhavn.dal.sync.jobs.JoinEventJob;
 import com.example.kobenhavn.dal.sync.jobs.setup.JobManagerFactory;
-
-import java.util.List;
-
 import io.reactivex.Completable;
 
 /**
@@ -22,12 +16,7 @@ import io.reactivex.Completable;
 public class RemoteRepository implements IRemoteRepository {
 
     @Override
-    public Completable sync(Playground playground) {
-        return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new SyncPlaygroundJob(playground)));
-    }
-
-    @Override
-    public Completable sync(User user) {
+    public Completable syncUser(User user) {
         return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new SyncUserJob(user)));
     }
 
@@ -48,18 +37,12 @@ public class RemoteRepository implements IRemoteRepository {
 
     @Override
     public Completable joinUserWithEvent(String playgroundName, String eventID, String username){
-        return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new UserJoinEventJob(playgroundName, eventID, username)));
+        return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new JoinEventJob(playgroundName, eventID, username)));
     }
 
     @Override
     public Completable removeEventFromUser(String playgroundName, String eventID, String username) {
-        return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new RemoveEventFromUserJob(playgroundName, eventID, username)));
+        return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new RemoveEventJob(playgroundName, eventID, username)));
     }
-
-    @Override
-    public Completable updateUserWithSubscriptions(String username, List<Playground> playgrounds) {
-        return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new UpdateUserWithSubscriptionsJob(username, playgrounds)));
-    }
-
 
 }

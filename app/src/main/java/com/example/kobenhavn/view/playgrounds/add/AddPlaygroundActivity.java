@@ -26,18 +26,13 @@ import dagger.android.AndroidInjection;
 
 public class AddPlaygroundActivity extends AppCompatActivity {
 
+    @Inject PlaygroundsViewModelFactory playgroundViewModelFactory;
+    @Inject UserViewModelFactory userViewModelFactory;
+
+    @BindView(R.id.events_enrolled_empty_msg) TextView _emptyView;
+
     private EmptyRecyclerView recyclerView;
     private AddPlaygroundAdapter recyclerViewAdapter;
-
-    @Inject
-    PlaygroundsViewModelFactory playgroundViewModelFactory;
-
-    @BindView(R.id.events_enrolled_empty_msg)
-    TextView _emptyView;
-
-    @Inject
-    UserViewModelFactory userViewModelFactory;
-
     private PlaygroundsViewModel playgroundsViewModel;
     private UserViewModel userViewModel;
 
@@ -64,7 +59,6 @@ public class AddPlaygroundActivity extends AppCompatActivity {
 
         playgroundsViewModel = ViewModelProviders.of(this, playgroundViewModelFactory).get(PlaygroundsViewModel.class);
         playgroundsViewModel.playgroundsLive().observe(this, recyclerViewAdapter::updatePlaygroundList);
-        //userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(this, recyclerViewAdapter::filterPlaygroundList);
         userViewModel.getSubscriptionsLive(RemoteDataSource.loggedInUser.getUsername()).observe(this, recyclerViewAdapter::filterSubscribedPlaygrounds);
     }
 

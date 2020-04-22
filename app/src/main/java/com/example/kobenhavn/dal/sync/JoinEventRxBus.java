@@ -1,28 +1,25 @@
 package com.example.kobenhavn.dal.sync;
 
-import android.net.wifi.aware.PublishConfig;
-
-import com.example.kobenhavn.dal.local.model.User;
 import com.jakewharton.rxrelay2.PublishRelay;
 
 import io.reactivex.Observable;
 
-public class JoinEventUserRxBus {
-    private static JoinEventUserRxBus instance;
+public class JoinEventRxBus {
+    private static JoinEventRxBus instance;
     private final PublishRelay<JoinEventResponse> relay;
 
-    public static synchronized JoinEventUserRxBus getInstance(){
+    public static synchronized JoinEventRxBus getInstance(){
         if (instance == null)
-            instance = new JoinEventUserRxBus();
+            instance = new JoinEventRxBus();
 
         return instance;
     }
 
-    private JoinEventUserRxBus(){
+    private JoinEventRxBus(){
         relay = PublishRelay.create();
     }
 
-    public void post(SyncResponseType eventType, Boolean user){
+    public void post(RemoteResponseType eventType, Boolean user){
         relay.accept(new JoinEventResponse(eventType, user));
     }
 
@@ -32,10 +29,10 @@ public class JoinEventUserRxBus {
 
 
     public static class JoinEventResponse  {
-        private final SyncResponseType eventType;
+        private final RemoteResponseType eventType;
         private final Boolean user;
 
-        public JoinEventResponse(SyncResponseType eventType, Boolean user) {
+        public JoinEventResponse(RemoteResponseType eventType, Boolean user) {
 
             this.eventType = eventType;
             this.user = user;

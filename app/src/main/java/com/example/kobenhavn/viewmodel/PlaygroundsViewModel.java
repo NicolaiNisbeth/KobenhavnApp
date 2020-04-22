@@ -5,12 +5,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 
-import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
-import com.example.kobenhavn.usecases.playground.FetchPlaygroundsUseCase;
-import com.example.kobenhavn.usecases.playground.GetPlaygroundsInDbUseCase;
-import com.example.kobenhavn.usecases.playground.SubscribeToPlaygroundUseCase;
-import com.example.kobenhavn.usecases.playground.UnsubscribeToPlaygroundUseCase;
+import com.example.kobenhavn.usecases.playground.FetchPlaygroundUC;
+import com.example.kobenhavn.usecases.playground.GetPlaygroundsInDbUC;
 
 import java.util.List;
 
@@ -20,16 +17,16 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class PlaygroundsViewModel extends ViewModel {
-    private final GetPlaygroundsInDbUseCase getPlaygroundsInDbUseCase;
-    private final FetchPlaygroundsUseCase fetchPlaygroundsUseCase;
+    private final GetPlaygroundsInDbUC getPlaygroundsInDbUC;
+    private final FetchPlaygroundUC fetchPlaygroundUC;
     private final CompositeDisposable disposables = new CompositeDisposable();
     private MutableLiveData<List<Playground>> playgroundsLiveData = new MutableLiveData<>();
 
-    public PlaygroundsViewModel(GetPlaygroundsInDbUseCase getPlaygroundsInDbUseCase,
-                                FetchPlaygroundsUseCase fetchPlaygroundsUseCase){
+    PlaygroundsViewModel(GetPlaygroundsInDbUC getPlaygroundsInDbUC,
+                         FetchPlaygroundUC fetchPlaygroundUC){
 
-        this.getPlaygroundsInDbUseCase = getPlaygroundsInDbUseCase;
-        this.fetchPlaygroundsUseCase = fetchPlaygroundsUseCase;
+        this.getPlaygroundsInDbUC = getPlaygroundsInDbUC;
+        this.fetchPlaygroundUC = fetchPlaygroundUC;
 
         loadPlaygrounds();
     }
@@ -44,7 +41,7 @@ public class PlaygroundsViewModel extends ViewModel {
     }
 
     public void fetchPlaygrounds() {
-        disposables.add(fetchPlaygroundsUseCase.fetchPlaygrounds()
+        disposables.add(fetchPlaygroundUC.fetchPlaygrounds()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
@@ -52,8 +49,8 @@ public class PlaygroundsViewModel extends ViewModel {
                     }, t -> Timber.e(t, "Error in fetching playgrounds")));
     }
 
-    public void loadPlaygrounds(){
-        disposables.add(getPlaygroundsInDbUseCase.getPlaygrounds()
+    private void loadPlaygrounds(){
+        disposables.add(getPlaygroundsInDbUC.getPlaygrounds()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(playgroundsLiveData::setValue,

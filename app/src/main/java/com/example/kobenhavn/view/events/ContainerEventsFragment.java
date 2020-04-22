@@ -41,24 +41,23 @@ import dagger.android.support.AndroidSupportInjection;
 
 public class ContainerEventsFragment extends Fragment {
 
-    @Inject UserViewModelFactory userViewModelFactory;
-
-    private UserViewModel userViewModel;
-
-
+    public ContainerEventsFragment(){}
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         AndroidSupportInjection.inject(this);
         final View root = inflater.inflate(R.layout.events_container_fragment, container, false);
-        userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
-
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(root.getContext(), getChildFragmentManager());
         ViewPager viewPager = root.findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = root.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
-
         return root;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
     }
 
     public static class SectionsPagerAdapter extends FragmentPagerAdapter {

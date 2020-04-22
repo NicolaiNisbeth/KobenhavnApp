@@ -1,8 +1,8 @@
 package com.example.kobenhavn.usecases.user;
 
-public class LogoutUserUseCase {
+public class LogoutUserUC {
 
-    public LogoutUserUseCase() {
+    public LogoutUserUC() {
     }
 
     public void logoutUser(){

@@ -4,16 +4,15 @@ import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.local.model.User;
 
 import io.reactivex.Single;
-import timber.log.Timber;
 
-public class AddUserToDbUseCase {
+public class InsertUserInDbUC {
     private ILocalRepository localRepository;
 
-    public AddUserToDbUseCase(ILocalRepository localRepository) {
+    public InsertUserInDbUC(ILocalRepository localRepository) {
         this.localRepository = localRepository;
     }
 
     public Single<User> addUser(User user){
-        return localRepository.add(user);
+        return localRepository.insertUser(user);
     }
 }

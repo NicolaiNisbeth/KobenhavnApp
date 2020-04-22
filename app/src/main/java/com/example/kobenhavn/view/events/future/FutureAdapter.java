@@ -30,7 +30,7 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
     private Context context;
     private OnItemClickListener listener;
 
-    public FutureAdapter(Context context) {
+    FutureAdapter(Context context) {
         this.context = context;
     }
 
@@ -49,7 +49,7 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
         return futureEvents.size();
     }
 
-    public void handleFutureEvents(Subscriptions subscriptions) {
+    void handleFutureEvents(Subscriptions subscriptions) {
         if (subscriptions == null || subscriptions.getSubscriptions().isEmpty()) return;
 
         futureEvents.clear();

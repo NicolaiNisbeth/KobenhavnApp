@@ -3,16 +3,16 @@ package com.example.kobenhavn.viewmodel;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.kobenhavn.usecases.user.LoginUserUseCase;
-import com.example.kobenhavn.usecases.user.LogoutUserUseCase;
-import com.example.kobenhavn.usecases.user.SignupUserUseCase;
+import com.example.kobenhavn.usecases.user.LoginUserUC;
+import com.example.kobenhavn.usecases.user.LogoutUserUC;
+import com.example.kobenhavn.usecases.user.SignupUserUC;
 
 public class AuthenticationViewModelFactory implements ViewModelProvider.Factory {
-    private final LoginUserUseCase loginUser;
-    private final SignupUserUseCase signupUser;
-    private final LogoutUserUseCase logoutUser;
+    private final LoginUserUC loginUser;
+    private final SignupUserUC signupUser;
+    private final LogoutUserUC logoutUser;
 
-    public AuthenticationViewModelFactory(LoginUserUseCase loginUser, SignupUserUseCase signupUser, LogoutUserUseCase logoutUser) {
+    public AuthenticationViewModelFactory(LoginUserUC loginUser, SignupUserUC signupUser, LogoutUserUC logoutUser) {
         this.loginUser = loginUser;
         this.signupUser = signupUser;
         this.logoutUser = logoutUser;

@@ -7,42 +7,41 @@ import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.Subscriptions;
 import com.example.kobenhavn.dal.local.model.User;
-import com.example.kobenhavn.usecases.event.JoinUserEventUseCase;
-import com.example.kobenhavn.usecases.event.LeaveEventUseCase;
-import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
-import com.example.kobenhavn.usecases.user.GetSubscriptionsFromDbUseCase;
-import com.example.kobenhavn.usecases.user.GetUserFromDbUseCase;
-import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionUseCase;
-import com.example.kobenhavn.usecases.user.UpdateUserUseCase;
+import com.example.kobenhavn.usecases.event.JoinEventUC;
+import com.example.kobenhavn.usecases.event.LeaveEventUC;
+import com.example.kobenhavn.usecases.user.GetSubscriptionsInDbUC;
+import com.example.kobenhavn.usecases.user.InsertUserInDbUC;
+import com.example.kobenhavn.usecases.user.GetUserInDbUC;
+import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionUC;
+import com.example.kobenhavn.usecases.user.UpdateUserUC;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class UserViewModel extends ViewModel {
-    private final AddUserToDbUseCase addUserToDbUseCase;
-    private final UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase;
-    private final GetUserFromDbUseCase getUserFromDbUseCase;
-    private final UpdateUserUseCase updateUserUseCase;
-    private final JoinUserEventUseCase joinUserEventUseCase;
-    private final LeaveEventUseCase leaveEventUseCase;
+    private final InsertUserInDbUC insertUserInDbUC;
+    private final UpdateUserSubscriptionUC updateUserSubscriptionUC;
+    private final GetUserInDbUC getUserInDbUC;
+    private final UpdateUserUC updateUserUC;
+    private final JoinEventUC joinEventUC;
+    private final LeaveEventUC leaveEventUC;
     private final CompositeDisposable disposables = new CompositeDisposable();
-    private final GetSubscriptionsFromDbUseCase getSubscriptionsFromDbUseCase;
+    private final GetSubscriptionsInDbUC getSubscriptionsInDbUC;
 
 
-    public UserViewModel(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase, JoinUserEventUseCase joinUserEventUseCase, LeaveEventUseCase leaveEventUseCase, GetSubscriptionsFromDbUseCase getSubscriptionsFromDbUseCase) {
-        this.addUserToDbUseCase = addUserToDbUseCase;
-        this.updateUserSubscriptionUseCase = updateUserSubscriptionUseCase;
-        this.getUserFromDbUseCase = getUserFromDbUseCase;
-        this.updateUserUseCase = updateUserUseCase;
-        this.joinUserEventUseCase = joinUserEventUseCase;
-        this.leaveEventUseCase = leaveEventUseCase;
-        this.getSubscriptionsFromDbUseCase = getSubscriptionsFromDbUseCase;
+    public UserViewModel(InsertUserInDbUC insertUserInDbUC, UpdateUserSubscriptionUC updateUserSubscriptionUC, GetUserInDbUC getUserInDbUC, UpdateUserUC updateUserUC, JoinEventUC joinEventUC, LeaveEventUC leaveEventUC, GetSubscriptionsInDbUC getSubscriptionsInDbUC) {
+        this.insertUserInDbUC = insertUserInDbUC;
+        this.updateUserSubscriptionUC = updateUserSubscriptionUC;
+        this.getUserInDbUC = getUserInDbUC;
+        this.updateUserUC = updateUserUC;
+        this.joinEventUC = joinEventUC;
+        this.leaveEventUC = leaveEventUC;
+        this.getSubscriptionsInDbUC = getSubscriptionsInDbUC;
     }
 
     @Override
@@ -50,49 +49,29 @@ public class UserViewModel extends ViewModel {
         disposables.clear();
     }
 
-    public void addUser(User user){
+    public void insertUser(User user){
         Timber.e("trying to insert user");
-        disposables.add(addUserToDbUseCase.addUser(user)
+        disposables.add(insertUserInDbUC.addUser(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(u -> Timber.e("Insert user success %s", u),
                         t -> Timber.e("User alread existed")));
-
     }
-
-    public void updateSubscriptionsLocally(User user, List<Playground> updatedPlaygrounds){
-        disposables.add(updateUserSubscriptionUseCase.updateUserSubscriptionsLocally(user.getUsername(), updatedPlaygrounds)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> Timber.e("Update user subscriptions success"),
-                        t -> Timber.e("Update user subscriptions error")));
-    }
-
-    public void updateSubscriptions(User user, List<Playground> updatedPlaygrounds){
-        disposables.add(updateUserSubscriptionUseCase.updateUserSubscriptions(user.getUsername(), updatedPlaygrounds)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> Timber.e("Update user subscriptions success"),
-                        t -> Timber.e("Update user subscriptions error")));
-    }
-
 
     public LiveData<User> getUser(String username){
-        // https://developer.android.com/topic/libraries/architecture/livedata
-        return getUserFromDbUseCase.getUserLive(username);
+        return getUserInDbUC.getUserLive(username);
     }
 
-    public LiveData<Subscriptions> getSubscriptionsLive(String username){
-        return getSubscriptionsFromDbUseCase.getSubscriptionsFromDb(username);
+    public void updateUserFields(User user) {
+        disposables.add(updateUserUC.updateUserFields(user)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> Timber.e("update user success"),
+                        t -> Timber.e("update user error")));
     }
-
-    public Single<User> getUserObject(String username){
-        return getUserFromDbUseCase.getUser(username);
-    }
-
 
     public void joinEventUser(String playgroundName, String eventID, String username, ArrayList<Event> events){
-        disposables.add(joinUserEventUseCase.joinEventForUser(playgroundName, username, eventID, events)
+        disposables.add(joinEventUC.joinEventForUser(playgroundName, username, eventID, events)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> Timber.e("User joined event successfully"),
@@ -100,19 +79,22 @@ public class UserViewModel extends ViewModel {
     }
 
     public void removeEventFromUser(String playgroundName, String eventID, String username, ArrayList<Event> events){
-        disposables.add(leaveEventUseCase.RemoveEventFromUser(playgroundName, username, eventID, events)
+        disposables.add(leaveEventUC.RemoveEventFromUser(playgroundName, username, eventID, events)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> Timber.e("User is removed from event successfully"),
                         t -> Timber.e("Error in removing user from event")));
     }
 
-
-    public void updateUserFields(User user) {
-        disposables.add(updateUserUseCase.updateUserFields(user)
+    public void updateSubscriptionsLocally(User user, List<Playground> updatedPlaygrounds){
+        disposables.add(updateUserSubscriptionUC.updateUserSubscriptionsLocally(user.getUsername(), updatedPlaygrounds)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> Timber.e("update user success"),
-                        t -> Timber.e("update user error")));
+                .subscribe(() -> Timber.e("Update user subscriptions success"),
+                        t -> Timber.e("Update user subscriptions error")));
+    }
+
+    public LiveData<Subscriptions> getSubscriptionsLive(String username){
+        return getSubscriptionsInDbUC.getSubscriptionsFromDb(username);
     }
 }

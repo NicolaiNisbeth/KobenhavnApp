@@ -1,5 +1,6 @@
 package com.example.kobenhavn.view.events.future;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -35,10 +36,6 @@ public class FutureFragment extends Fragment {
     @BindView(R.id.events_enrolled_empty_msg)
     TextView _emptyView;
 
-    private UserViewModel userViewModel;
-    private EmptyRecyclerView recyclerView;
-    private FutureAdapter adapter;
-
     public FutureFragment() { }
 
     public static FutureFragment newInstance() {
@@ -46,18 +43,18 @@ public class FutureFragment extends Fragment {
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        AndroidSupportInjection.inject(this);
         final View root = inflater.inflate(R.layout.events_future_fragment, container, false);
         ButterKnife.bind(this, root);
-        recyclerView = root.findViewById(R.id.recycler_view_future);
+        EmptyRecyclerView recyclerView = root.findViewById(R.id.recycler_view_future);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
-        adapter = new FutureAdapter(root.getContext());
+        FutureAdapter adapter = new FutureAdapter(root.getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setEmptyView(_emptyView);
 
-        userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
+        UserViewModel userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
         userViewModel.getSubscriptionsLive(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), adapter::handleFutureEvents);
 
+        // TODO: pass object instead of fields
         adapter.setOnItemClickListener(event -> {
             Intent intent = new Intent(getContext(), CardActivity.class);
             intent.putExtra(CardActivity.EXTRA_DATE, (Parcelable) event.getDetails());
@@ -72,5 +69,11 @@ public class FutureFragment extends Fragment {
             startActivity(intent);
         });
         return root;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
     }
 }
