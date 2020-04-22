@@ -111,10 +111,10 @@ public class LoginActivity extends AppCompatActivity {
             _loginButton.setEnabled(formState.isDataValid());
         });
 
-        _usernameText.setText("s175565");
-        _passwordText.setText("kodeNWHN");
-
-        //showLoginSuccess(new User("s175565","Nicolai", "Nisbeth", "s175565","","","","",true, new ArrayList<>(), new ArrayList<>())); // TODO: to be removed
+        //_usernameText.setText("s175565");
+        //_passwordText.setText("kodeNWHN");
+        _usernameText.setText("s185020");
+        _passwordText.setText("nlj_nykode");
     }
 
     private void handleLoginResponse(LoginUserRxBus.LoginResponse response) {

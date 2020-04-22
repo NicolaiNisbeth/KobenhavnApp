@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Playground;
+import com.example.kobenhavn.dal.local.model.Subscriptions;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -30,8 +32,8 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
     private List<Playground> allPlaygrounds;
     private Context context;
     private UserViewModel userViewModel;
-    private User user;
     private boolean isFilterCalled;
+    private Subscriptions subscriptions ;
 
     public AddPlaygroundAdapter(Context context, List<Playground> allPlaygrounds, UserViewModel userViewModel) {
         this.allPlaygrounds = allPlaygrounds;
@@ -86,32 +88,39 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
         }
 
     }
-    public void filterPlaygroundList(User user) {
-        RemoteDataSource.loggedInUser = user;
+    public void filterSubscribedPlaygrounds(Subscriptions subscriptions) {
+        if (subscriptions == null || subscriptions.getSubscriptions().isEmpty()) return;
 
         Timber.e("filterplaygroundlist");
-        allPlaygrounds.removeIf(user.getPlaygrounds()::contains);
+        allPlaygrounds.removeIf(subscriptions.getSubscriptions()::contains);
         notifyDataSetChanged();
         isFilterCalled = true;
-        this.user = user;
+        this.subscriptions = subscriptions;
     }
 
     public void updatePlaygroundList(List<Playground> playgroundList) {
+        if (playgroundList == null || playgroundList.isEmpty()) return;
+
         Timber.e("updatePlaygroundList");
         this.allPlaygrounds.clear();
         this.allPlaygrounds.addAll(playgroundList);
+
         if (isFilterCalled){
-            filterPlaygroundList(user);
+            filterSubscribedPlaygrounds(subscriptions);
             isFilterCalled = false;
         }
+        else
+            notifyDataSetChanged();
     }
 
     public void subscribeToPlayground(int position, Playground playground){
         Toast.makeText(context, "Legeplads er tilføjet", Toast.LENGTH_SHORT).show();
         allPlaygrounds.remove(position);
-        List<Playground> updatedPlayground = user.getPlaygrounds();
-        updatedPlayground.add(playground);
-        userViewModel.updateSubscriptionsLocally(user, updatedPlayground);
+        if (subscriptions == null)
+            subscriptions = new Subscriptions(RemoteDataSource.loggedInUser.getUsername(), new ArrayList<>());
+
+        subscriptions.getSubscriptions().add(playground);
+        userViewModel.updateSubscriptionsLocally(RemoteDataSource.loggedInUser, subscriptions.getSubscriptions());
     }
 
 }

@@ -11,10 +11,11 @@ import com.example.kobenhavn.dal.local.converter.EventConverter;
 import com.example.kobenhavn.dal.local.converter.PhoneNumbersConverter;
 import com.example.kobenhavn.dal.local.converter.PlaygroundConverter;
 import com.example.kobenhavn.dal.local.converter.PlaygroundsIDConverter;
+import com.example.kobenhavn.dal.local.model.Subscriptions;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.local.model.Playground;
 
-@androidx.room.Database(entities = {Playground.class, User.class}, version = 1, exportSchema = false)
+@androidx.room.Database(entities = {Playground.class, User.class, Subscriptions.class}, version = 2, exportSchema = false)
 @TypeConverters({PlaygroundConverter.class, EventConverter.class, DetailsTimeConverter.class, PlaygroundsIDConverter.class, PhoneNumbersConverter.class})
 public abstract class Database extends RoomDatabase {
     private static Database instance;
@@ -32,4 +33,6 @@ public abstract class Database extends RoomDatabase {
     public abstract PlaygroundDAO playgroundDAO();
 
     public abstract UserDAO userDAO();
+
+    public abstract SubscriptionsDAO subscriptionsDAO();
 }

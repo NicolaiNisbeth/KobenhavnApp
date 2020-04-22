@@ -90,7 +90,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         toogleEditText(_mobileNumberView.findViewById(R.id.settings_item_middle), false, _mobileNumberView.findViewById(R.id.settings_item_right));
         _mobileNumberView.findViewById(R.id.settings_item_right).setOnClickListener(this);
 
-        ((TextView) _changePasswordView.findViewById(R.id.settings_item_left)).setText("Skift kode");
+        ((TextView) _changePasswordView.findViewById(R.id.settings_item_left)).setText("Password");
         toogleEditText(_changePasswordView.findViewById(R.id.settings_item_middle), false, _changePasswordView.findViewById(R.id.settings_item_right));
         _changePasswordView.findViewById(R.id.settings_item_right).setOnClickListener(this);
 
@@ -98,14 +98,16 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void updateUI(User user) {
+        if (user == null) return;
         RemoteDataSource.loggedInUser = user;
+
         Timber.e("UPDATE UI IS CALLED IN SETTINGS %s", user);
         _nameText.setText(user.getFirstname());
-        _numberText.setText(user.getPhonenumbers().get(0));
+        _numberText.setText(user.getPhonenumbers().size() > 0 ? user.getPhonenumbers().get(0) : "");
         ((EditText) _nameView.findViewById(R.id.settings_item_middle)).setText(user.getFirstname());
         ((EditText) _emailView.findViewById(R.id.settings_item_middle)).setText(user.getEmail());
-        ((EditText) _mobileNumberView.findViewById(R.id.settings_item_middle)).setText(user.getPhonenumbers().get(0));
-        ((EditText) _changePasswordView.findViewById(R.id.settings_item_middle)).setText(user.getPassword());
+        ((EditText) _mobileNumberView.findViewById(R.id.settings_item_middle)).setText(user.getPhonenumbers().size() > 0 ? user.getPhonenumbers().get(0) : "");
+        ((EditText) _changePasswordView.findViewById(R.id.settings_item_middle)).setText("****");
     }
 
     @Override
@@ -138,6 +140,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (RemoteDataSource.loggedInUser == null) return true;
+
         int id = item.getItemId();
         if (id == R.id.save_settings) {
             EditText _nameEdit = _nameView.findViewById(R.id.settings_item_middle);

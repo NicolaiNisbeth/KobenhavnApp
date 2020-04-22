@@ -114,6 +114,7 @@ public class RemoteDataSource {
         loggedInUser = response.body();
         if (loggedInUser.getPlaygrounds() == null) loggedInUser.setPlaygrounds(new ArrayList<>());
         if (loggedInUser.getEvents() == null) loggedInUser.setEvents(new ArrayList<>());
+        if (loggedInUser.getPhonenumbers() == null) loggedInUser.setPhonenumbers(new ArrayList<>());
         return loggedInUser;
     }
 

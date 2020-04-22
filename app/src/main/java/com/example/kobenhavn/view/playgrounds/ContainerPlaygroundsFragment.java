@@ -26,6 +26,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Playground;
+import com.example.kobenhavn.dal.local.model.Subscriptions;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.view.playgrounds.add.AddPlaygroundActivity;
@@ -90,10 +91,8 @@ public class ContainerPlaygroundsFragment extends Fragment {
         final TabLayout tabLayout = root.findViewById(R.id.playground_tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
-        userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), sectionsPagerAdapter::onUserChange);
-
-        //playgroundsViewModel = ViewModelProviders.of(this, playgroundsViewModelFactory).get(PlaygroundsViewModel.class);
-        //playgroundsViewModel.playgroundsLive().observe(getViewLifecycleOwner(), sectionsPagerAdapter::syncWithRemotePlaygrounds);
+        //userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), sectionsPagerAdapter::onUserChange);
+        userViewModel.getSubscriptionsLive(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), sectionsPagerAdapter::onUserChange);
 
 
         return root;
@@ -159,6 +158,7 @@ public class ContainerPlaygroundsFragment extends Fragment {
         public Fragment getItem(int i) {
             PlaygroundsFragment fragment = tabList.get(i).second;
             if (fragment != null){
+                // remove playground
                 fragment.setOnItemClickListener(playground -> {
                     List<Playground> updatedPlaygrounds = user.getPlaygrounds();
                     updatedPlaygrounds.remove(playground);
@@ -171,12 +171,11 @@ public class ContainerPlaygroundsFragment extends Fragment {
 
 
 
-        public void onUserChange(User user) {
-            RemoteDataSource.loggedInUser = user;
-            this.user = user;
+        public void onUserChange(Subscriptions subscriptions) {
+            if (subscriptions == null) return;
             tabList.clear();
-            for (Playground model : user.getPlaygrounds()){
-                tabList.add(new Pair<>(model.getName(), PlaygroundsFragment.newInstance(model)));
+            for (Playground playground : subscriptions.getSubscriptions()){
+                tabList.add(new Pair<>(playground.getName(), PlaygroundsFragment.newInstance(playground)));
             }
             tabList.sort((o1, o2) -> o1.first.compareTo(o2.first));
             notifyDataSetChanged();

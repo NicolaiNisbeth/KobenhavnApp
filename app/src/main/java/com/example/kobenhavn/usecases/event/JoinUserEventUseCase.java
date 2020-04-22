@@ -18,7 +18,7 @@ public class JoinUserEventUseCase {
     }
 
     public Completable joinEventForUser(String playgroundName, String username, String eventID, ArrayList<Event> events){
-        return localRepository.joinEvent(username, events)
+        return localRepository.joinEvents(username, events)
                 .andThen(remoteRepository.joinUserWithEvent(playgroundName, eventID, username));
     }
 

@@ -21,19 +21,14 @@ import retrofit2.http.DELETE;
 @Dao
 public interface UserDAO {
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long add(User user);
 
     @Query("UPDATE user_table set firstname = :firstName, email = :email, phone_number = :phoneNumber, password = :password")
     void updateUserFields(String firstName, String email, String phoneNumber, String password);
 
-
-    // TODO: how do we keep this when user is replaced
-    @Query("UPDATE user_table SET subscribed_playgrounds = :subscribed WHERE username = :username")
-    void updateSubscribedPlaygrounds(String username, List<Playground> subscribed);
-
     @Query("UPDATE user_table SET events = :enrolledEvents WHERE username = :username")
-    void UpdateEnrolledEvents(String username, ArrayList<Event> enrolledEvents);
+    void joinEvents(String username, ArrayList<Event> enrolledEvents);
 
     @Delete
     void delete(User user);

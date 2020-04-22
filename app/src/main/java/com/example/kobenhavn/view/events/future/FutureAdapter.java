@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
+import com.example.kobenhavn.dal.local.model.Subscriptions;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 
@@ -48,12 +49,11 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
         return futureEvents.size();
     }
 
-    public void handleFutureEvents(User user) {
-        RemoteDataSource.loggedInUser = user;
+    public void handleFutureEvents(Subscriptions subscriptions) {
+        if (subscriptions == null || subscriptions.getSubscriptions().isEmpty()) return;
 
         futureEvents.clear();
-
-        for (Playground playground : user.getPlaygrounds()){
+        for (Playground playground : subscriptions.getSubscriptions()){
             for (Event event : playground.getEvents()){
                 Date date = event.getDetails().getDate();
                 if (DateUtils.isToday(date.getTime()) || date.after(new Date(System.currentTimeMillis()))){

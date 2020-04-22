@@ -94,6 +94,7 @@ public class CardActivity extends AppCompatActivity {
     }
 
     private void updateBtnLayout(User user) {
+        if (user == null) return;
         RemoteDataSource.loggedInUser = user;
         this.user = user;
         List<Event> enrolledEvents = user.getEvents();

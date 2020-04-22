@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData;
 
 import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
+import com.example.kobenhavn.dal.local.model.Subscriptions;
 import com.example.kobenhavn.dal.local.model.User;
-import com.example.kobenhavn.dal.remote.RemoteDataSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +20,12 @@ public class LocalRepository implements ILocalRepository {
 
     private final PlaygroundDAO playgroundDAO;
     private final UserDAO userDAO;
+    private final SubscriptionsDAO subscriptionsDAO;
 
-    public LocalRepository(PlaygroundDAO playgroundDAO, UserDAO userDAO){
+    public LocalRepository(PlaygroundDAO playgroundDAO, UserDAO userDAO, SubscriptionsDAO subscriptionsDAO){
         this.playgroundDAO = playgroundDAO;
         this.userDAO = userDAO;
+        this.subscriptionsDAO = subscriptionsDAO;
     }
 
 
@@ -79,14 +81,6 @@ public class LocalRepository implements ILocalRepository {
         });
     }
 
-    @Override
-    public Completable updateSubscription(String username, List<Playground> playgrounds) {
-        return Completable.fromAction(() -> {
-            userDAO.updateSubscribedPlaygrounds(username, playgrounds);
-            Timber.e("Updated user locally");
-        });
-    }
-
 
 
     @Override
@@ -100,9 +94,9 @@ public class LocalRepository implements ILocalRepository {
     }
 
     @Override
-    public Completable joinEvent(String username, ArrayList<Event> enrolledEvents) {
+    public Completable joinEvents(String username, ArrayList<Event> enrolledEvents) {
         return Completable.fromAction(() -> {
-            userDAO.UpdateEnrolledEvents(username, enrolledEvents);
+            userDAO.joinEvents(username, enrolledEvents);
             Timber.e("Joined event");
         });
     }
@@ -110,8 +104,23 @@ public class LocalRepository implements ILocalRepository {
     @Override
     public Completable removeEventFromUser(String username, ArrayList<Event> events) {
         return Completable.fromAction(() -> {
-            userDAO.UpdateEnrolledEvents(username, events);
+            userDAO.joinEvents(username, events);
             Timber.e("removed event");
+        });
+    }
+
+    @Override
+    public LiveData<Subscriptions> getSubscriptionsLive(String username) {
+        return subscriptionsDAO.getSubscriptionsLive(username);
+    }
+
+    @Override
+    public Completable updateSubscription(String username, List<Playground> playgrounds) {
+        Subscriptions subscriptions = new Subscriptions(username, playgrounds);
+        return Completable.fromAction(() -> {
+            subscriptionsDAO.add(subscriptions);
+            //subscriptionsDAO.updateSubscribedPlaygrounds(username, playgrounds);
+            Timber.e("Updated user locally");
         });
     }
 }

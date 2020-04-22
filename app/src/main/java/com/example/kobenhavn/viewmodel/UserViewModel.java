@@ -5,10 +5,12 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
+import com.example.kobenhavn.dal.local.model.Subscriptions;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.usecases.event.JoinUserEventUseCase;
 import com.example.kobenhavn.usecases.event.LeaveEventUseCase;
 import com.example.kobenhavn.usecases.user.AddUserToDbUseCase;
+import com.example.kobenhavn.usecases.user.GetSubscriptionsFromDbUseCase;
 import com.example.kobenhavn.usecases.user.GetUserFromDbUseCase;
 import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionUseCase;
 import com.example.kobenhavn.usecases.user.UpdateUserUseCase;
@@ -30,15 +32,17 @@ public class UserViewModel extends ViewModel {
     private final JoinUserEventUseCase joinUserEventUseCase;
     private final LeaveEventUseCase leaveEventUseCase;
     private final CompositeDisposable disposables = new CompositeDisposable();
+    private final GetSubscriptionsFromDbUseCase getSubscriptionsFromDbUseCase;
 
 
-    public UserViewModel(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase, JoinUserEventUseCase joinUserEventUseCase, LeaveEventUseCase leaveEventUseCase) {
+    public UserViewModel(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase, JoinUserEventUseCase joinUserEventUseCase, LeaveEventUseCase leaveEventUseCase, GetSubscriptionsFromDbUseCase getSubscriptionsFromDbUseCase) {
         this.addUserToDbUseCase = addUserToDbUseCase;
         this.updateUserSubscriptionUseCase = updateUserSubscriptionUseCase;
         this.getUserFromDbUseCase = getUserFromDbUseCase;
         this.updateUserUseCase = updateUserUseCase;
         this.joinUserEventUseCase = joinUserEventUseCase;
         this.leaveEventUseCase = leaveEventUseCase;
+        this.getSubscriptionsFromDbUseCase = getSubscriptionsFromDbUseCase;
     }
 
     @Override
@@ -76,6 +80,10 @@ public class UserViewModel extends ViewModel {
     public LiveData<User> getUser(String username){
         // https://developer.android.com/topic/libraries/architecture/livedata
         return getUserFromDbUseCase.getUserLive(username);
+    }
+
+    public LiveData<Subscriptions> getSubscriptionsLive(String username){
+        return getSubscriptionsFromDbUseCase.getSubscriptionsFromDb(username);
     }
 
     public Single<User> getUserObject(String username){

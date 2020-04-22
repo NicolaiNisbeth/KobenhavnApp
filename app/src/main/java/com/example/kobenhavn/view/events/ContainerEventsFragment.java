@@ -58,9 +58,6 @@ public class ContainerEventsFragment extends Fragment {
         TabLayout tabs = root.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
-        userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), sectionsPagerAdapter::handleEnrolledEvents);
-
-
         return root;
     }
 
@@ -99,10 +96,6 @@ public class ContainerEventsFragment extends Fragment {
         @Override
         public int getCount() {
             return TAB_TITLES.length;
-        }
-
-        public void handleEnrolledEvents(User user) {
-            RemoteDataSource.loggedInUser = user;
         }
     }
 }

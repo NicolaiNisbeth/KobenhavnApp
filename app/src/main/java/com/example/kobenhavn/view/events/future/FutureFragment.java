@@ -56,7 +56,7 @@ public class FutureFragment extends Fragment {
         recyclerView.setEmptyView(_emptyView);
 
         userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
-        userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), adapter::handleFutureEvents);
+        userViewModel.getSubscriptionsLive(RemoteDataSource.loggedInUser.getUsername()).observe(getViewLifecycleOwner(), adapter::handleFutureEvents);
 
         adapter.setOnItemClickListener(event -> {
             Intent intent = new Intent(getContext(), CardActivity.class);

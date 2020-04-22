@@ -24,8 +24,6 @@ public class PlaygroundsViewModel extends ViewModel {
     private final FetchPlaygroundsUseCase fetchPlaygroundsUseCase;
     private final CompositeDisposable disposables = new CompositeDisposable();
     private MutableLiveData<List<Playground>> playgroundsLiveData = new MutableLiveData<>();
-    private MutableLiveData<List<Event>> enrolledEvents = new MutableLiveData<>();
-    private MutableLiveData<List<Event>> futureEvents = new MutableLiveData<>();
 
     public PlaygroundsViewModel(GetPlaygroundsInDbUseCase getPlaygroundsInDbUseCase,
                                 FetchPlaygroundsUseCase fetchPlaygroundsUseCase){

@@ -40,6 +40,7 @@ public class LoginUserJob extends Job {
 
         User user = RemoteDataSource.getInstance().loginUser(username, password);
         LoginUserRxBus.getInstance().post(SyncResponseType.SUCCESS, user);
+
     }
 
     @Override

@@ -1,14 +1,11 @@
 package com.example.kobenhavn.view.playgrounds.add;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.kobenhavn.R;
@@ -26,7 +23,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
-import timber.log.Timber;
 
 public class AddPlaygroundActivity extends AppCompatActivity {
 
@@ -68,7 +64,8 @@ public class AddPlaygroundActivity extends AppCompatActivity {
 
         playgroundsViewModel = ViewModelProviders.of(this, playgroundViewModelFactory).get(PlaygroundsViewModel.class);
         playgroundsViewModel.playgroundsLive().observe(this, recyclerViewAdapter::updatePlaygroundList);
-        userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(this, recyclerViewAdapter::filterPlaygroundList);
+        //userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername()).observe(this, recyclerViewAdapter::filterPlaygroundList);
+        userViewModel.getSubscriptionsLive(RemoteDataSource.loggedInUser.getUsername()).observe(this, recyclerViewAdapter::filterSubscribedPlaygrounds);
     }
 
     @Override

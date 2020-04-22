@@ -7,6 +7,7 @@ import com.example.kobenhavn.dal.local.Database;
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.local.LocalRepository;
 import com.example.kobenhavn.dal.local.PlaygroundDAO;
+import com.example.kobenhavn.dal.local.SubscriptionsDAO;
 import com.example.kobenhavn.dal.local.UserDAO;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import com.example.kobenhavn.dal.remote.RemoteRepository;
@@ -55,8 +56,14 @@ class AppModule {
 
     @Singleton
     @Provides
-    ILocalRepository provideLocalRepository(PlaygroundDAO playgroundDAO, UserDAO userDAO) {
-        return new LocalRepository(playgroundDAO, userDAO);
+    SubscriptionsDAO provideSubscriptionsDAO(Context context){
+        return Database.getInstance(context).subscriptionsDAO();
+    }
+
+    @Singleton
+    @Provides
+    ILocalRepository provideLocalRepository(PlaygroundDAO playgroundDAO, UserDAO userDAO, SubscriptionsDAO subscriptionsDAO) {
+        return new LocalRepository(playgroundDAO, userDAO, subscriptionsDAO);
     }
 
     @Singleton

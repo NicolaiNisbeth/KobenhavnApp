@@ -4,6 +4,7 @@ import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import com.example.kobenhavn.usecases.event.JoinUserEventUseCase;
 import com.example.kobenhavn.usecases.event.LeaveEventUseCase;
+import com.example.kobenhavn.usecases.user.GetSubscriptionsFromDbUseCase;
 import com.example.kobenhavn.usecases.user.UpdateUserSubscriptionUseCase;
 import com.example.kobenhavn.view.MainLifecycleObserver;
 import com.example.kobenhavn.usecases.playground.InsertPlaygroundsInDbUseCase;
@@ -39,8 +40,13 @@ class MenuModule {
     }
 
     @Provides
-    UserViewModelFactory provideUserViewModelFactory(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase, JoinUserEventUseCase joinUserEventUseCase, LeaveEventUseCase leaveEventUseCase){
-        return new UserViewModelFactory(addUserToDbUseCase, updateUserSubscriptionUseCase, getUserFromDbUseCase, updateUserUseCase, joinUserEventUseCase, leaveEventUseCase);
+    UserViewModelFactory provideUserViewModelFactory(AddUserToDbUseCase addUserToDbUseCase, UpdateUserSubscriptionUseCase updateUserSubscriptionUseCase, GetUserFromDbUseCase getUserFromDbUseCase, UpdateUserUseCase updateUserUseCase, JoinUserEventUseCase joinUserEventUseCase, LeaveEventUseCase leaveEventUseCase, GetSubscriptionsFromDbUseCase getSubscriptionsFromDbUseCase){
+        return new UserViewModelFactory(addUserToDbUseCase, updateUserSubscriptionUseCase, getUserFromDbUseCase, updateUserUseCase, joinUserEventUseCase, leaveEventUseCase, getSubscriptionsFromDbUseCase);
+    }
+
+    @Provides
+    GetSubscriptionsFromDbUseCase provideGetSubscriptions(ILocalRepository localRepository){
+        return new GetSubscriptionsFromDbUseCase(localRepository);
     }
 
     @Provides

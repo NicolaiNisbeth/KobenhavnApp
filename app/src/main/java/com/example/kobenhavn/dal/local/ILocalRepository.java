@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
+import com.example.kobenhavn.dal.local.model.Subscriptions;
 import com.example.kobenhavn.dal.local.model.User;
 
 import java.util.ArrayList;
@@ -31,7 +32,9 @@ public interface ILocalRepository {
     Single<User> getUser(String username);
 
 
-    Completable joinEvent(String username, ArrayList<Event> enrolledEvents);
+    Completable joinEvents(String username, ArrayList<Event> enrolledEvents);
 
     Completable removeEventFromUser(String username, ArrayList<Event> events);
+
+    LiveData<Subscriptions> getSubscriptionsLive(String username);
 }
