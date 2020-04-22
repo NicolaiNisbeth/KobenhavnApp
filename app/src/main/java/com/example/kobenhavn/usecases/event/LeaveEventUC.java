@@ -2,6 +2,7 @@ package com.example.kobenhavn.usecases.event;
 
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.local.model.Event;
+import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 
 import java.util.ArrayList;
@@ -18,8 +19,8 @@ public class LeaveEventUC {
         this.remoteRepository = remoteRepository;
     }
 
-    public Completable RemoveEventFromUser(String playgroundName, String username, String eventID, ArrayList<Event> events){
-        return localRepository.removeEvent(username, events)
-                .andThen(remoteRepository.removeEventFromUser(playgroundName, eventID, username));
+    public Completable RemoveEventFromUser(Event event, User user, String playgroundName){
+        return localRepository.deleteEvent(event, user)
+                .andThen(remoteRepository.removeEventFromUser(playgroundName, event.getId(), user.getUsername()));
     }
 }

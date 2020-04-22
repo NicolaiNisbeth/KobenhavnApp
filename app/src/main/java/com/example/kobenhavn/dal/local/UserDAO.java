@@ -20,8 +20,6 @@ public interface UserDAO {
     @Query("UPDATE user_table set firstname = :firstName, email = :email, phone_number = :phoneNumber, password = :password")
     void updateUserFields(String firstName, String email, String phoneNumber, String password);
 
-    @Query("UPDATE user_table SET events = :enrolledEvents WHERE username = :username")
-    void updateEventParticipation(String username, ArrayList<Event> enrolledEvents);
 
     @Query("SELECT * FROM user_table WHERE username = :username")
     LiveData<User> getUserLive(String username);

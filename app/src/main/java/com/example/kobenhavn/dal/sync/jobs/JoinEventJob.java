@@ -50,7 +50,7 @@ public class JoinEventJob extends Job {
 
         // remote call was successful--the Comment will be updated locally to reflect that sync is no longer pending
 
-        Event joinedEvent = LocaleUtils.cloneEvent(event, false);
+        Event joinedEvent = LocaleUtils.cloneEvent(event, user.getUsername(), false);
         JoinEventRxBus.getInstance().post(RemoteResponseType.SUCCESS, joinedEvent, user);
     }
 

@@ -29,15 +29,16 @@ public interface ILocalRepository {
 
     LiveData<User> getUserLiveData(String username);
 
-    Completable joinEvent(String username, ArrayList<Event> enrolledEvents);
-
-    Completable removeEvent(String username, ArrayList<Event> events);
+    LiveData<List<Event>> getEventsLiveData(String username);
 
     LiveData<Subscriptions> getSubscriptionsLiveData(String username);
 
     Completable joinEvent(Event event, User user);
 
+
     Completable updateEvent(Event event, User user);
 
     Completable deleteEvent(Event event, User user);
+
+    Completable insertEvents(List<Event> events);
 }

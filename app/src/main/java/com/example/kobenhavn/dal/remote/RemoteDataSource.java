@@ -98,8 +98,8 @@ public class RemoteDataSource {
             throw new RemoteException(response);
 
         loggedInUser = response.body();
-        if (loggedInUser.getEvents() == null) loggedInUser.setEvents(new ArrayList<>());
         if (loggedInUser.getPhonenumbers() == null) loggedInUser.setPhonenumbers(new ArrayList<>());
+        if (loggedInUser.getEvents() == null) loggedInUser.setEvents(new ArrayList<>());
         return loggedInUser;
     }
 

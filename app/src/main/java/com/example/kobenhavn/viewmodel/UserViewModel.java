@@ -7,9 +7,11 @@ import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.Subscriptions;
 import com.example.kobenhavn.dal.local.model.User;
+import com.example.kobenhavn.usecases.event.GetEventsInDbUC;
 import com.example.kobenhavn.usecases.event.JoinEventUC;
 import com.example.kobenhavn.usecases.event.LeaveEventUC;
 import com.example.kobenhavn.usecases.user.GetSubscriptionsInDbUC;
+import com.example.kobenhavn.usecases.event.InsertEventsUC;
 import com.example.kobenhavn.usecases.user.InsertUserInDbUC;
 import com.example.kobenhavn.usecases.user.GetUserInDbUC;
 import com.example.kobenhavn.usecases.user.UpdateSubscriptionUC;
@@ -32,9 +34,11 @@ public class UserViewModel extends ViewModel {
     private final LeaveEventUC leaveEventUC;
     private final CompositeDisposable disposables = new CompositeDisposable();
     private final GetSubscriptionsInDbUC getSubscriptionsInDbUC;
+    private final GetEventsInDbUC getEventsInDbUC;
+    private final InsertEventsUC insertEventsUC;
 
 
-    public UserViewModel(InsertUserInDbUC insertUserInDbUC, UpdateSubscriptionUC updateSubscriptionUC, GetUserInDbUC getUserInDbUC, UpdateUserUC updateUserUC, JoinEventUC joinEventUC, LeaveEventUC leaveEventUC, GetSubscriptionsInDbUC getSubscriptionsInDbUC) {
+    public UserViewModel(InsertUserInDbUC insertUserInDbUC, UpdateSubscriptionUC updateSubscriptionUC, GetUserInDbUC getUserInDbUC, UpdateUserUC updateUserUC, JoinEventUC joinEventUC, LeaveEventUC leaveEventUC, GetSubscriptionsInDbUC getSubscriptionsInDbUC, GetEventsInDbUC getEventsInDbUC, InsertEventsUC insertEventsUC) {
         this.insertUserInDbUC = insertUserInDbUC;
         this.updateSubscriptionUC = updateSubscriptionUC;
         this.getUserInDbUC = getUserInDbUC;
@@ -42,6 +46,8 @@ public class UserViewModel extends ViewModel {
         this.joinEventUC = joinEventUC;
         this.leaveEventUC = leaveEventUC;
         this.getSubscriptionsInDbUC = getSubscriptionsInDbUC;
+        this.getEventsInDbUC = getEventsInDbUC;
+        this.insertEventsUC = insertEventsUC;
     }
 
     @Override
@@ -78,8 +84,8 @@ public class UserViewModel extends ViewModel {
                         t -> Timber.e("Error in user joining event")));
     }
 
-    public void removeEventFromUser(String playgroundName, String eventID, String username, ArrayList<Event> events){
-        disposables.add(leaveEventUC.RemoveEventFromUser(playgroundName, username, eventID, events)
+    public void removeEventFromUser(Event event, User user, String playgroundName){
+        disposables.add(leaveEventUC.RemoveEventFromUser(event, user, playgroundName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> Timber.e("User is removed from event successfully"),
@@ -96,5 +102,18 @@ public class UserViewModel extends ViewModel {
 
     public LiveData<Subscriptions> getSubscriptionsLive(String username){
         return getSubscriptionsInDbUC.getSubscriptionsFromDb(username);
+    }
+
+    public LiveData<List<Event>> getEventsLive(String username){
+        return getEventsInDbUC.getEventsLive(username);
+    }
+
+    public void insertEvents(List<Event> events) {
+        disposables.add(insertEventsUC.insertEvents(events)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> Timber.e("Insert event success"),
+                        t -> Timber.e("Insert event failure")));
+
     }
 }

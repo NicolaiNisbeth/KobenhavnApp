@@ -27,6 +27,7 @@ import com.example.kobenhavn.viewmodel.UserViewModel;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -58,8 +59,8 @@ public class EnrolledFragment extends Fragment {
 
         // setup observer
         UserViewModel userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
-        LiveData<User> liveDataUser = userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername());
-        liveDataUser.observe(getViewLifecycleOwner(), adapter::updateEnrolledList);
+        LiveData<List<Event>> liveEvent = userViewModel.getEventsLive(RemoteDataSource.loggedInUser.getUsername());
+        liveEvent.observe(getViewLifecycleOwner(), adapter::updateEnrolledList);
 
         // TODO: pass object instead of fields
         adapter.setOnItemClickListener(event -> {

@@ -51,12 +51,11 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
         return events.size();
     }
 
-    void updateEnrolledList(User user) {
-        if (user == null) return;
 
-        RemoteDataSource.loggedInUser = user;
-        events.clear();
-        events.addAll(user.getEvents());
+    void updateEnrolledList(List<Event> events) {
+        if (events == null || events.isEmpty()) return;
+        this.events.clear();
+        this.events.addAll(events);
         notifyDataSetChanged();
     }
 

@@ -1,23 +1,56 @@
 package com.example.kobenhavn.dal.local.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+@Entity(tableName = "event_table")
 public class Event implements Serializable {
+
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "id")
     private String id;
+
+    @ColumnInfo(name = "username")
+    private String username;
+
+    @ColumnInfo(name = "name")
     private String name;
+
+    @ColumnInfo(name = "imagepath")
     private String imagepath;
+
+    @ColumnInfo(name = "subtitle")
     private String subtitle;
+
+    @ColumnInfo(name = "description")
     private String description;
+
+    @ColumnInfo(name = "participants")
     private int participants;
+
+    @ColumnInfo(name = "playground_name")
     private String playgroundName;
+
+    @ColumnInfo(name = "details")
     private Details details;
+
+    @ColumnInfo(name = "sync_pending")
     private boolean syncPending;
 
     // constructor for when syncing is successful
-    public Event(String id, String name, String imagepath, String subtitle, String description, int participants, String playgroundName, Details details, boolean syncPending) {
+    public Event(@NotNull String id, String username, String name, String imagepath, String subtitle, String description, int participants, String playgroundName, Details details, boolean syncPending) {
         this.id = id;
+        this.username = username;
         this.name = name;
         this.imagepath = imagepath;
         this.subtitle = subtitle;
@@ -28,9 +61,11 @@ public class Event implements Serializable {
         this.syncPending = syncPending;
     }
 
-    // constructor
-    public Event(String id, String name, String imagepath, String subtitle, String description, int participants, String playgroundName, Details details) {
+
+    @Ignore
+    public Event(@NotNull String id, String username, String name, String imagepath, String subtitle, String description, int participants, String playgroundName, Details details) {
         this.id = id;
+        this.username = username;
         this.name = name;
         this.imagepath = imagepath;
         this.subtitle = subtitle;
@@ -45,6 +80,7 @@ public class Event implements Serializable {
     public String toString() {
         return "Event{" +
                 "id='" + id + '\'' +
+                ", username='" + username + '\'' +
                 ", name='" + name + '\'' +
                 ", imagepath='" + imagepath + '\'' +
                 ", subtitle='" + subtitle + '\'' +
@@ -56,8 +92,14 @@ public class Event implements Serializable {
                 '}';
     }
 
+    @NonNull
     public String getId() {
         return id;
+    }
+
+    @NonNull
+    public String getUsername() {
+        return username;
     }
 
     public String getName() {
@@ -90,6 +132,10 @@ public class Event implements Serializable {
 
     public boolean isSyncPending() {
         return syncPending;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override

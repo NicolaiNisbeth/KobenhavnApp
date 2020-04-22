@@ -76,9 +76,11 @@ public class CardActivity extends AppCompatActivity {
         playgroundName = intent.getStringExtra(EXTRA_PLAYGROUND_NAME);
         eventID = intent.getStringExtra(EXTRA_EVENT_ID);
 
-        event = new Event(eventID, intent.getStringExtra(EXTRA_NAME), intent.getStringExtra(EXTRA_IMAGE_PATH), intent.getStringExtra(EXTRA_SUBTITLE)
+        event = new Event(eventID, RemoteDataSource.loggedInUser.getUsername() ,intent.getStringExtra(EXTRA_NAME), intent.getStringExtra(EXTRA_IMAGE_PATH), intent.getStringExtra(EXTRA_SUBTITLE)
         ,intent.getStringExtra(EXTRA_DESCRIPTION), intent.getIntExtra(EXTRA_INTERESTED, 0), intent.getStringExtra(EXTRA_PLAYGROUND_NAME)
         ,details);
+
+        user = RemoteDataSource.loggedInUser;
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -88,16 +90,29 @@ public class CardActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
-        LiveData<User> userLiveData = userViewModel.getUser(RemoteDataSource.loggedInUser.getUsername());
-        userLiveData.observe(this, this::updateBtnLayout);
+        LiveData<List<Event>> eventLiveData = userViewModel.getEventsLive(RemoteDataSource.loggedInUser.getUsername());
+        eventLiveData.observe(this, this::updateBtnLayout);
     }
+
+    private void updateBtnLayout(List<Event> enrolledEvents) {
+        enrolled = enrolledEvents.contains(event);
+        if (enrolled){
+            int color = getResources().getColor(R.color.design_default_color_error);
+            _enrollButton.setBackgroundColor(color);
+            _enrollButton.setText("Afmeld");
+        }
+        else {
+            int color = getResources().getColor(R.color.colorPrimary);
+            _enrollButton.setBackgroundColor(color);
+            _enrollButton.setText("Tilmeld");
+        }
+    }
+
 
     private void updateBtnLayout(User user) {
         if (user == null) return;
         RemoteDataSource.loggedInUser = user;
         this.user = user;
-        List<Event> enrolledEvents = user.getEvents();
-        enrolled = enrolledEvents.contains(event);
         if (enrolled){
             int color = getResources().getColor(R.color.design_default_color_error);
             _enrollButton.setBackgroundColor(color);
@@ -115,8 +130,7 @@ public class CardActivity extends AppCompatActivity {
     void onBtnClick(){
         if (enrolled){
             Toast.makeText(this, "Du er nu afmeldt", Toast.LENGTH_SHORT).show();
-            user.getEvents().remove(event);
-            userViewModel.removeEventFromUser(playgroundName, eventID, user.getUsername(), user.getEvents());
+            userViewModel.removeEventFromUser(event, user, playgroundName);
             finish();
         }
         else {

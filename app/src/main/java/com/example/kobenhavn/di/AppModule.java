@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.kobenhavn.App;
 import com.example.kobenhavn.dal.local.Database;
+import com.example.kobenhavn.dal.local.EventDAO;
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.local.LocalRepository;
 import com.example.kobenhavn.dal.local.PlaygroundDAO;
@@ -27,14 +28,20 @@ class AppModule {
 
     @Singleton
     @Provides
-    ILocalRepository provideLocalRepository(PlaygroundDAO playgroundDAO, UserDAO userDAO, SubscriptionsDAO subscriptionsDAO) {
-        return new LocalRepository(playgroundDAO, userDAO, subscriptionsDAO);
+    ILocalRepository provideLocalRepository(PlaygroundDAO playgroundDAO, UserDAO userDAO, SubscriptionsDAO subscriptionsDAO, EventDAO eventDAO) {
+        return new LocalRepository(playgroundDAO, userDAO, subscriptionsDAO, eventDAO);
     }
 
     @Singleton
     @Provides
     IRemoteRepository provideRemoteRepository() {
         return new RemoteRepository();
+    }
+
+    @Singleton
+    @Provides
+    EventDAO provideEventDAO(Context context){
+        return Database.getInstance(context).eventDAO();
     }
 
     @Singleton

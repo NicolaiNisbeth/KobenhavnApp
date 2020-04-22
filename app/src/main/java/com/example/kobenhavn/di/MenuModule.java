@@ -3,6 +3,8 @@ package com.example.kobenhavn.di;
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import com.example.kobenhavn.usecases.event.DeleteEventUC;
+import com.example.kobenhavn.usecases.event.GetEventsInDbUC;
+import com.example.kobenhavn.usecases.event.InsertEventsUC;
 import com.example.kobenhavn.usecases.event.JoinEventUC;
 import com.example.kobenhavn.usecases.event.LeaveEventUC;
 import com.example.kobenhavn.usecases.event.UpdateEventUC;
@@ -49,8 +51,18 @@ class MenuModule {
     }
 
     @Provides
-    UserViewModelFactory provideUserViewModelFactory(InsertUserInDbUC insertUserInDbUC, UpdateSubscriptionUC updateSubscriptionUC, GetUserInDbUC getUserInDbUC, UpdateUserUC updateUserUC, JoinEventUC joinEventUC, LeaveEventUC leaveEventUC, GetSubscriptionsInDbUC getSubscriptionsInDbUC){
-        return new UserViewModelFactory(insertUserInDbUC, updateSubscriptionUC, getUserInDbUC, updateUserUC, joinEventUC, leaveEventUC, getSubscriptionsInDbUC);
+    UserViewModelFactory provideUserViewModelFactory(InsertUserInDbUC insertUserInDbUC, UpdateSubscriptionUC updateSubscriptionUC, GetUserInDbUC getUserInDbUC, UpdateUserUC updateUserUC, JoinEventUC joinEventUC, LeaveEventUC leaveEventUC, GetSubscriptionsInDbUC getSubscriptionsInDbUC, GetEventsInDbUC getEventsInDbUC, InsertEventsUC insertEventsUC){
+        return new UserViewModelFactory(insertUserInDbUC, updateSubscriptionUC, getUserInDbUC, updateUserUC, joinEventUC, leaveEventUC, getSubscriptionsInDbUC, getEventsInDbUC, insertEventsUC);
+    }
+
+    @Provides
+    GetEventsInDbUC provideGetEvents(ILocalRepository localRepository){
+        return new GetEventsInDbUC(localRepository);
+    }
+
+    @Provides
+    InsertEventsUC provideInsertEvents(ILocalRepository localRepository){
+        return new InsertEventsUC(localRepository);
     }
 
     @Provides
