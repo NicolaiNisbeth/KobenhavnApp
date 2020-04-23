@@ -10,7 +10,6 @@ import com.example.kobenhavn.dal.local.converter.DetailsConverter;
 import com.example.kobenhavn.dal.local.converter.PlaygroundConverter;
 import com.example.kobenhavn.dal.local.converter.TimeConverter;
 import com.example.kobenhavn.dal.local.converter.EventConverter;
-import com.example.kobenhavn.dal.local.converter.PlaygroundListConverter;
 import com.example.kobenhavn.dal.local.converter.StringListConverter;
 import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Subscription;
@@ -18,7 +17,7 @@ import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.local.model.Playground;
 
 @androidx.room.Database(entities = {Playground.class, User.class, Subscription.class, Event.class}, version = 1, exportSchema = false)
-@TypeConverters({PlaygroundListConverter.class, EventConverter.class, StringListConverter.class, TimeConverter.class, DetailsConverter.class, PlaygroundConverter.class})
+@TypeConverters({PlaygroundConverter.class, EventConverter.class, StringListConverter.class, TimeConverter.class, DetailsConverter.class, PlaygroundConverter.class})
 public abstract class Database extends RoomDatabase {
     private static Database instance;
     private static String DB_NAME = "offlinedb";
