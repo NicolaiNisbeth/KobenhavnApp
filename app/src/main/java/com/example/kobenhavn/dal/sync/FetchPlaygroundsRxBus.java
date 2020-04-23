@@ -7,6 +7,9 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
+/**
+ * Taken from https://proandroiddev.com/offline-apps-its-easier-than-you-think-9ff97701a73f
+ */
 public class FetchPlaygroundsRxBus {
 
     private static FetchPlaygroundsRxBus instance;
@@ -32,12 +35,11 @@ public class FetchPlaygroundsRxBus {
         return relay;
     }
 
-
     public static class FetchPlaygroundResponse {
         public final RemoteResponseType type;
         public final List<Playground> playgrounds;
 
-        public FetchPlaygroundResponse(RemoteResponseType type, List<Playground> playgrounds) {
+        FetchPlaygroundResponse(RemoteResponseType type, List<Playground> playgrounds) {
             this.type = type;
             this.playgrounds = playgrounds;
         }

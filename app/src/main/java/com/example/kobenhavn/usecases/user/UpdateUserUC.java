@@ -18,7 +18,7 @@ public class UpdateUserUC {
 
     public Completable updateUserFields(User user) {
         Single<User> result = localRepository.updateUserFields(user);
-        return result.flatMapCompletable(remoteRepository::syncUser);
+        return result.flatMapCompletable(remoteRepository::updateUser);
 
     }
 }

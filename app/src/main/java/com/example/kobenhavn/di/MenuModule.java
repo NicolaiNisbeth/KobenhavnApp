@@ -4,17 +4,18 @@ import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import com.example.kobenhavn.usecases.event.DeleteEventUC;
 import com.example.kobenhavn.usecases.event.GetEventsInDbUC;
-import com.example.kobenhavn.usecases.event.InsertEventsUC;
+import com.example.kobenhavn.usecases.event.InsertEventsInDbUC;
 import com.example.kobenhavn.usecases.event.JoinEventUC;
 import com.example.kobenhavn.usecases.event.LeaveEventUC;
 import com.example.kobenhavn.usecases.event.UpdateEventUC;
 import com.example.kobenhavn.usecases.playground.FetchPlaygroundUC;
 import com.example.kobenhavn.usecases.playground.GetPlaygroundsInDbUC;
 import com.example.kobenhavn.usecases.playground.InsertPlaygroundsInDbUC;
-import com.example.kobenhavn.usecases.user.GetSubscriptionsInDbUC;
+import com.example.kobenhavn.usecases.subscription.InsertSubscriptionInDb;
+import com.example.kobenhavn.usecases.subscription.RemoveSubscriptionInDb;
+import com.example.kobenhavn.usecases.subscription.GetSubscriptionsInDbUC;
 import com.example.kobenhavn.usecases.user.GetUserInDbUC;
 import com.example.kobenhavn.usecases.user.InsertUserInDbUC;
-import com.example.kobenhavn.usecases.user.UpdateSubscriptionUC;
 import com.example.kobenhavn.usecases.user.UpdateUserUC;
 import com.example.kobenhavn.view.MainLifecycleObserver;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
@@ -24,13 +25,16 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Define CommentsActivity-specific dependencies here.
+ * Define MainActivity-specific dependencies here.
  */
 @Module
 class MenuModule {
 
+    //TODO Declare less responsible by refactoring into submodules
+
     @Provides
-    MainLifecycleObserver providePlaygroundLifecycleObserver(InsertPlaygroundsInDbUC insertPlaygroundsInDbUC, DeleteEventUC deleteEventUC, UpdateEventUC updateEventUC) {
+    MainLifecycleObserver providePlaygroundLifecycleObserver(InsertPlaygroundsInDbUC insertPlaygroundsInDbUC,
+                                                             DeleteEventUC deleteEventUC, UpdateEventUC updateEventUC) {
         return new MainLifecycleObserver(insertPlaygroundsInDbUC, deleteEventUC, updateEventUC);
     }
 
@@ -51,8 +55,24 @@ class MenuModule {
     }
 
     @Provides
-    UserViewModelFactory provideUserViewModelFactory(InsertUserInDbUC insertUserInDbUC, UpdateSubscriptionUC updateSubscriptionUC, GetUserInDbUC getUserInDbUC, UpdateUserUC updateUserUC, JoinEventUC joinEventUC, LeaveEventUC leaveEventUC, GetSubscriptionsInDbUC getSubscriptionsInDbUC, GetEventsInDbUC getEventsInDbUC, InsertEventsUC insertEventsUC){
-        return new UserViewModelFactory(insertUserInDbUC, updateSubscriptionUC, getUserInDbUC, updateUserUC, joinEventUC, leaveEventUC, getSubscriptionsInDbUC, getEventsInDbUC, insertEventsUC);
+    UserViewModelFactory provideUserViewModelFactory(InsertUserInDbUC insertUserInDbUC, GetUserInDbUC getUserInDbUC,
+                                                     UpdateUserUC updateUserUC, JoinEventUC joinEventUC,
+                                                     LeaveEventUC leaveEventUC, GetSubscriptionsInDbUC getSubscriptionsInDbUC,
+                                                     GetEventsInDbUC getEventsInDbUC, InsertEventsInDbUC insertEventsInDbUC,
+                                                     RemoveSubscriptionInDb removeSubscriptionInDb, InsertSubscriptionInDb insertSubscriptionInDb){
+        return new UserViewModelFactory(insertUserInDbUC, getUserInDbUC, updateUserUC, joinEventUC,
+                leaveEventUC, getSubscriptionsInDbUC, getEventsInDbUC, insertEventsInDbUC, removeSubscriptionInDb,
+                insertSubscriptionInDb);
+    }
+
+    @Provides
+    RemoveSubscriptionInDb provideRemoveSubscription(ILocalRepository localRepository){
+        return new RemoveSubscriptionInDb(localRepository);
+    }
+
+    @Provides
+    InsertSubscriptionInDb provideInsertSubscription(ILocalRepository localRepository){
+        return new InsertSubscriptionInDb(localRepository);
     }
 
     @Provides
@@ -61,8 +81,8 @@ class MenuModule {
     }
 
     @Provides
-    InsertEventsUC provideInsertEvents(ILocalRepository localRepository){
-        return new InsertEventsUC(localRepository);
+    InsertEventsInDbUC provideInsertEvents(ILocalRepository localRepository){
+        return new InsertEventsInDbUC(localRepository);
     }
 
     @Provides
@@ -91,11 +111,6 @@ class MenuModule {
     }
 
     @Provides
-    UpdateSubscriptionUC provideUpdateUserInDbUseCase(ILocalRepository localRepository, IRemoteRepository remoteRepository){
-        return new UpdateSubscriptionUC(localRepository, remoteRepository);
-    }
-
-    @Provides
     GetUserInDbUC provideGetUserFromDbUseCase(ILocalRepository localRepository){
         return new GetUserInDbUC(localRepository);
     }
@@ -111,7 +126,8 @@ class MenuModule {
     }
 
     @Provides
-    FetchPlaygroundUC provideFetchPlaygroundsUseCase(ILocalRepository localRepository, IRemoteRepository remoteRepository){
+    FetchPlaygroundUC provideFetchPlaygroundsUseCase(ILocalRepository localRepository,
+                                                     IRemoteRepository remoteRepository){
         return new FetchPlaygroundUC(localRepository, remoteRepository);
     }
 }

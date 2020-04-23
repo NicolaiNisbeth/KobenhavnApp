@@ -1,9 +1,11 @@
-package com.example.kobenhavn.usecases.user;
+package com.example.kobenhavn.usecases.subscription;
 
 import androidx.lifecycle.LiveData;
 
 import com.example.kobenhavn.dal.local.ILocalRepository;
-import com.example.kobenhavn.dal.local.model.Subscriptions;
+import com.example.kobenhavn.dal.local.model.Subscription;
+
+import java.util.List;
 
 public class GetSubscriptionsInDbUC {
     private ILocalRepository localRepository;
@@ -12,7 +14,7 @@ public class GetSubscriptionsInDbUC {
         this.localRepository = localRepository;
     }
 
-    public LiveData<Subscriptions> getSubscriptionsFromDb(String username){
+    public LiveData<List<Subscription>> getSubscriptionsFromDb(String username){
         return localRepository.getSubscriptionsLiveData(username);
     }
 }

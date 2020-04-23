@@ -1,4 +1,4 @@
-package com.example.kobenhavn.dal.sync.jobs;
+package com.example.kobenhavn.dal.sync.job;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -6,50 +6,56 @@ import androidx.annotation.Nullable;
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
+import com.example.kobenhavn.dal.local.CloneUtils;
+import com.example.kobenhavn.dal.local.model.Event;
+import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.dal.remote.RemoteException;
-import com.example.kobenhavn.dal.sync.RemoveEventRxBus;
+import com.example.kobenhavn.dal.sync.JoinEventRxBus;
 import com.example.kobenhavn.dal.sync.RemoteResponseType;
-import com.example.kobenhavn.dal.sync.SyncUserRxBus;
-import com.example.kobenhavn.dal.sync.jobs.setup.JobPriority;
+import com.example.kobenhavn.dal.sync.job.setup.JobPriority;
 
 import timber.log.Timber;
 
-public class RemoveEventJob extends Job {
-    private static final String TAG = RemoveEventJob.class.getCanonicalName();
-    private final String playgroundName;
-    private final String eventID;
-    private final String username;
+public class JoinEventJob extends Job {
 
-    public RemoveEventJob(String playgroundName, String eventID, String username) {
+    private static final String TAG = JoinEventJob.class.getCanonicalName();
+    private final String playgroundName;
+    private final Event event;
+    private final User user;
+
+    public JoinEventJob(String playgroundName, Event event, User user) {
         super(new Params(JobPriority.MID)
                 .requireNetwork()
                 .groupBy(TAG)
                 .persist());
 
         this.playgroundName = playgroundName;
-        this.eventID = eventID;
-        this.username = username;
+        this.event = event;
+        this.user = user;
     }
 
     @Override
     public void onAdded() {
-        Timber.e("User leave event job was added to priority queue");
+        Timber.e("User join event job was added to priority queue");
     }
 
     @Override
     public void onRun() throws Throwable {
-        Timber.e("Executing remove user from event job");
+        Timber.e("Executing user join event job");
 
-        RemoteDataSource.getInstance().removeUserFromEvent(playgroundName, eventID, username);
-        RemoveEventRxBus.getInstance().post(RemoteResponseType.SUCCESS, true);
+        // if any exception is thrown, it will be handled by shouldReRunOnThrowable()
+        RemoteDataSource.getInstance().joinEvent(playgroundName, event.getId(), user.getUsername());
+
+        // remote call was successful--the Comment will be updated locally to reflect that sync is no longer pending
+        Event joinedEvent = CloneUtils.cloneEvent(event, user.getUsername(), false);
+        JoinEventRxBus.getInstance().post(RemoteResponseType.SUCCESS, joinedEvent, user);
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
-        // sync to remote failed
         Timber.e("Canceling job. reason: %d, throwable: %s", cancelReason, throwable);
-        SyncUserRxBus.getInstance().post(RemoteResponseType.FAILED, null);
+        JoinEventRxBus.getInstance().post(RemoteResponseType.SUCCESS, event, user);
     }
 
     @Override

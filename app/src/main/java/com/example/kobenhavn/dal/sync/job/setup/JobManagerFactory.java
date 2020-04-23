@@ -1,4 +1,4 @@
-package com.example.kobenhavn.dal.sync.jobs.setup;
+package com.example.kobenhavn.dal.sync.job.setup;
 
 import android.content.Context;
 import android.os.Build;

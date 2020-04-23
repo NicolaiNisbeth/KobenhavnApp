@@ -5,8 +5,6 @@ import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 
-import java.util.ArrayList;
-
 import io.reactivex.Completable;
 
 public class LeaveEventUC {
@@ -21,6 +19,6 @@ public class LeaveEventUC {
 
     public Completable RemoveEventFromUser(Event event, User user, String playgroundName){
         return localRepository.deleteEvent(event, user)
-                .andThen(remoteRepository.removeEventFromUser(playgroundName, event.getId(), user.getUsername()));
+                .andThen(remoteRepository.leaveEvent(playgroundName, event.getId(), user.getUsername()));
     }
 }

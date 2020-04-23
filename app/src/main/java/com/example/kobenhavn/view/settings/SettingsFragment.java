@@ -66,13 +66,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         ButterKnife.bind(this, root);
 
         // setup toolbar_item
-        setHasOptionsMenu(true);
-        toolbar = root.findViewById(R.id.indstillinger_toolbar);
-        AppCompatActivity activity = ((AppCompatActivity) getActivity());
-        activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        TextView title = toolbar.findViewById(R.id.toolbar_title);
-        title.setText("Indstillinger");
+        setupToolbar(root);
 
         authenticationViewModel = ViewModelProviders.of(this, authenticationViewModelFactory).get(AuthenticationViewModel.class);
         userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
@@ -196,5 +190,15 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         } else {
             viewById.setImageResource(R.drawable.ic_arrow_right);
         }
+    }
+
+    private void setupToolbar(View root) {
+        setHasOptionsMenu(true);
+        toolbar = root.findViewById(R.id.indstillinger_toolbar);
+        AppCompatActivity activity = ((AppCompatActivity) getActivity());
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView title = toolbar.findViewById(R.id.toolbar_title);
+        title.setText("Indstillinger");
     }
 }

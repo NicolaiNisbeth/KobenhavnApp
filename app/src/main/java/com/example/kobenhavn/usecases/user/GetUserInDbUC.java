@@ -5,8 +5,6 @@ import androidx.lifecycle.LiveData;
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.local.model.User;
 
-import io.reactivex.Single;
-
 public class GetUserInDbUC {
     private final ILocalRepository localRepository;
 
@@ -15,7 +13,7 @@ public class GetUserInDbUC {
     }
 
     public LiveData<User> getUserLive(String username){
-        return localRepository.getUserLiveData(username);
+        return localRepository.getUserLive(username);
     }
 
 }

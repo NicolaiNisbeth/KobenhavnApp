@@ -4,6 +4,9 @@ import com.jakewharton.rxrelay2.PublishRelay;
 
 import io.reactivex.Observable;
 
+/**
+ * Taken from https://proandroiddev.com/offline-apps-its-easier-than-you-think-9ff97701a73f
+ */
 public class SignupUserRxBus {
     private static SignupUserRxBus instance;
     private final PublishRelay<SignupResponse> relay;
@@ -30,7 +33,7 @@ public class SignupUserRxBus {
     public static class SignupResponse {
         public final RemoteResponseType type;
 
-        public SignupResponse(RemoteResponseType type) {
+        SignupResponse(RemoteResponseType type) {
             this.type = type;
         }
     }

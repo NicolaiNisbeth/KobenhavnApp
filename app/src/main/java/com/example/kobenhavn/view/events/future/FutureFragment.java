@@ -45,6 +45,7 @@ public class FutureFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.events_future_fragment, container, false);
         ButterKnife.bind(this, root);
+
         EmptyRecyclerView recyclerView = root.findViewById(R.id.recycler_view_future);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
         FutureAdapter adapter = new FutureAdapter(root.getContext());

@@ -13,17 +13,17 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/future_date_text"
+            android:id="@+id/future_time_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            />
+        <TextView
+            android:id="@+id/future_playground_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            />
-
-        <TextView
-            android:id="@+id/future_subtitle_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             />
 
         <TextView
@@ -33,25 +33,11 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             />
 
-        <TextView
-            android:id="@+id/future_time_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            />
-
         <ImageView
             android:id="@+id/aktivitet_billede"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_launcher"
-            />
-
-        <TextView
-            android:id="@+id/future_description_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             />
 
         <TextView

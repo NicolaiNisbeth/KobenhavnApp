@@ -1,4 +1,4 @@
-package com.example.kobenhavn.dal.sync.jobs;
+package com.example.kobenhavn.dal.sync.job;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -6,59 +6,50 @@ import androidx.annotation.Nullable;
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
-import com.example.kobenhavn.dal.local.LocaleUtils;
-import com.example.kobenhavn.dal.local.model.Event;
+import com.example.kobenhavn.dal.local.CloneUtils;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.dal.remote.RemoteException;
-import com.example.kobenhavn.dal.sync.JoinEventRxBus;
 import com.example.kobenhavn.dal.sync.RemoteResponseType;
 import com.example.kobenhavn.dal.sync.SyncUserRxBus;
-import com.example.kobenhavn.dal.sync.jobs.setup.JobPriority;
+import com.example.kobenhavn.dal.sync.job.setup.JobPriority;
 
 import timber.log.Timber;
 
-public class JoinEventJob extends Job {
-
-    private static final String TAG = JoinEventJob.class.getCanonicalName();
-    private final String playgroundName;
-    private final Event event;
+public class UpdateUserJob extends Job {
+    private final static String TAG = UpdateUserJob.class.getCanonicalName();
     private final User user;
 
-    public JoinEventJob(String playgroundName, Event event, User user) {
+    public UpdateUserJob(User user) {
         super(new Params(JobPriority.MID)
-                .requireNetwork()
-                .groupBy(TAG)
-                .persist());
+        .requireNetwork()
+        .groupBy(TAG)
+        .persist());
 
-        this.playgroundName = playgroundName;
-        this.event = event;
         this.user = user;
     }
 
     @Override
     public void onAdded() {
-        Timber.e("User join event job was added to priority queue");
+        Timber.e("Added sync user job to priority queue");
     }
 
     @Override
     public void onRun() throws Throwable {
-        Timber.e("Executing user join event job");
+        Timber.e("Executing job for %s", user);
 
         // if any exception is thrown, it will be handled by shouldReRunOnThrowable()
-        RemoteDataSource.getInstance().joinUserWithEvent(playgroundName, event.getId(), user.getUsername());
+        RemoteDataSource.getInstance().updateUser(user);
 
         // remote call was successful--the Comment will be updated locally to reflect that sync is no longer pending
-
-        Event joinedEvent = LocaleUtils.cloneEvent(event, user.getUsername(), false);
-        JoinEventRxBus.getInstance().post(RemoteResponseType.SUCCESS, joinedEvent, user);
+        User updatedUser = CloneUtils.cloneUser(user, false);
+        SyncUserRxBus.getInstance().post(RemoteResponseType.SUCCESS, updatedUser);
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
-        // sync to remote failed
         Timber.e("Canceling job. reason: %d, throwable: %s", cancelReason, throwable);
-        JoinEventRxBus.getInstance().post(RemoteResponseType.SUCCESS, event, user);
+        SyncUserRxBus.getInstance().post(RemoteResponseType.FAILED, user);
     }
 
     @Override

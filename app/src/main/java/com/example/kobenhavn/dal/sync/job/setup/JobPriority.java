@@ -1,4 +1,4 @@
-package com.example.kobenhavn.dal.sync.jobs.setup;
+package com.example.kobenhavn.dal.sync.job.setup;
 
 /**
  * Taken from https://proandroiddev.com/offline-apps-its-easier-than-you-think-9ff97701a73f

@@ -6,6 +6,9 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * Immutable POJO
+ */
 public class Details implements Parcelable, Serializable {
     private Date date;
     private Date startTime;
@@ -27,25 +30,14 @@ public class Details implements Parcelable, Serializable {
         return date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public Date getStartTime() {
         return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
     }
 
     public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
 
     @Override
     public String toString() {

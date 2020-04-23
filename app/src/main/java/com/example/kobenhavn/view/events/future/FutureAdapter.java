@@ -11,10 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Event;
-import com.example.kobenhavn.dal.local.model.Playground;
-import com.example.kobenhavn.dal.local.model.Subscriptions;
-import com.example.kobenhavn.dal.local.model.User;
-import com.example.kobenhavn.dal.remote.RemoteDataSource;
+import com.example.kobenhavn.dal.local.model.Subscription;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -49,16 +46,15 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
         return futureEvents.size();
     }
 
-    void handleFutureEvents(Subscriptions subscriptions) {
-        if (subscriptions == null || subscriptions.getSubscriptions().isEmpty()) return;
+    void handleFutureEvents(List<Subscription> subscriptions) {
+        if (subscriptions == null) return;
 
         futureEvents.clear();
-        for (Playground playground : subscriptions.getSubscriptions()){
-            for (Event event : playground.getEvents()){
+        for (Subscription subscription : subscriptions){
+            for (Event event : subscription.getPlayground().getEvents()){
                 Date date = event.getDetails().getDate();
                 if (DateUtils.isToday(date.getTime()) || date.after(new Date(System.currentTimeMillis()))){
                     futureEvents.add(event);
-
                 }
             }
         }
@@ -67,14 +63,12 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.future_date_text) TextView _dateText;
-        @BindView(R.id.future_subtitle_text) TextView _subtitleText;
-        @BindView(R.id.future_title_text) TextView _titleText;
         @BindView(R.id.future_time_text) TextView _timeText;
-        @BindView(R.id.future_description_text) TextView _descriptionText;
+        @BindView(R.id.future_playground_name) TextView _playgroundName;
+        @BindView(R.id.future_title_text) TextView _titleText;
         @BindView(R.id.future_interested_text) TextView _interestedText;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
@@ -88,11 +82,9 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
 
         void bindTo(int position) {
             Event event = futureEvents.get(position);
-            _dateText.setText(event.getDetails().getDate().toString());
-            _subtitleText.setText(event.getSubtitle());
+            _timeText.setText(event.getDetails().getDate().toString());
+            _playgroundName.setText(event.getPlaygroundName());
             _titleText.setText(event.getName());
-            _timeText.setText(event.getDetails().getStartTime().toString());
-            _descriptionText.setText(event.getDescription());
             _interestedText.setText(String.valueOf(event.getParticipants()));
         }
     }
@@ -101,7 +93,7 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
         void onItemClick(Event event);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 }

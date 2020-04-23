@@ -12,8 +12,8 @@ import com.example.kobenhavn.dal.local.SubscriptionsDAO;
 import com.example.kobenhavn.dal.local.UserDAO;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import com.example.kobenhavn.dal.remote.RemoteRepository;
-import com.example.kobenhavn.dal.sync.jobs.setup.GCMJobService;
-import com.example.kobenhavn.dal.sync.jobs.setup.SchedulerJobService;
+import com.example.kobenhavn.dal.sync.job.setup.GCMJobService;
+import com.example.kobenhavn.dal.sync.job.setup.SchedulerJobService;
 
 import javax.inject.Singleton;
 
@@ -21,7 +21,7 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * This is where you will inject application-wide dependencies.
+ * Application-wide dependencies.
  */
 @Module
 class AppModule {

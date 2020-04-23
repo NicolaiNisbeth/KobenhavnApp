@@ -4,6 +4,9 @@ import com.example.kobenhavn.dal.local.model.User;
 import com.jakewharton.rxrelay2.PublishRelay;
 import io.reactivex.Observable;
 
+/**
+ * Taken from https://proandroiddev.com/offline-apps-its-easier-than-you-think-9ff97701a73f
+ */
 public class LoginUserRxBus {
     private static LoginUserRxBus instance;
     private final PublishRelay<LoginResponse> relay;
@@ -27,12 +30,11 @@ public class LoginUserRxBus {
         return relay;
     }
 
-
     public static class LoginResponse {
         public final RemoteResponseType type;
         public final User user;
 
-        public LoginResponse(RemoteResponseType type, User user) {
+        LoginResponse(RemoteResponseType type, User user) {
             this.type = type;
             this.user = user;
         }

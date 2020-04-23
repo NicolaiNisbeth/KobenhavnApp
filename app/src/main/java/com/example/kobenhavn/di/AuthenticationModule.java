@@ -9,7 +9,7 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Define CommentsActivity-specific dependencies here.
+ *Authentication-specific dependencies here.
  */
 @Module
 class AuthenticationModule {

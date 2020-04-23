@@ -1,25 +1,18 @@
 package com.example.kobenhavn.dal.local.model;
 
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
- * Immutable POJO that represents a playground
+ * Immutable POJO
  */
 @Entity(tableName = "playground_table")
 public class Playground implements Serializable, Parcelable {
@@ -123,7 +116,6 @@ public class Playground implements Serializable, Parcelable {
         this.syncPending = true;
         this.events = events;
     }
-
 
     public Playground(@NonNull String id, String name, String imagepath, boolean toiletPossibilities, boolean hasSoccerField, String streetName, int streetNumber, String commune, int zipCode, boolean syncPending, ArrayList<Event> events) {
         this.id = id;

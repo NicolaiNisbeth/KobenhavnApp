@@ -7,14 +7,16 @@ import io.reactivex.Completable;
 import io.reactivex.CompletableSource;
 import io.reactivex.functions.Function;
 
+/**
+ * Responsible for CRUD operations against remote repository
+ */
 public interface IRemoteRepository {
-
     Completable loginUser(String username, String password);
     Completable signupUser(String name, String username, String password);
-    Completable syncUser(User user);
+    Completable updateUser(User user);
 
     Completable fetchPlaygrounds();
 
     Completable joinEvent(String playgroundName, Event event, User user);
-    Completable removeEventFromUser(String playgroundName, String eventID, String username);
+    Completable leaveEvent(String playgroundName, String eventID, String username);
 }

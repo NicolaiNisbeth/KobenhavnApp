@@ -42,11 +42,11 @@
         </activity>
         <activity android:name=".view.authentication.SignUpActivity"/>
 
-        <service android:name=".dal.sync.jobs.setup.SchedulerJobService"
+        <service android:name=".dal.sync.job.setup.SchedulerJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <service
-            android:name=".dal.sync.jobs.setup.GCMJobService"
+            android:name=".dal.sync.job.setup.GCMJobService"
             android:exported="true"
             android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
             <intent-filter>

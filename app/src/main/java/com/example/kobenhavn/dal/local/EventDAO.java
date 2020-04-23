@@ -11,8 +11,6 @@ import com.example.kobenhavn.dal.local.model.Event;
 
 import java.util.List;
 
-
-
 @Dao
 public interface EventDAO {
 
@@ -22,9 +20,9 @@ public interface EventDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<Event> events);
 
-    @Query("SELECT * FROM event_table WHERE username = :username")
-    LiveData<List<Event>> getEventsLive(String username);
-
     @Delete
     void deleteEvent(Event event);
+
+    @Query("SELECT * FROM event_table WHERE username = :username")
+    LiveData<List<Event>> getEventsLive(String username);
 }

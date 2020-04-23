@@ -1,11 +1,8 @@
 package com.example.kobenhavn.view.playgrounds;
 
-import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,41 +11,33 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Playground;
-import com.example.kobenhavn.dal.remote.RemoteDataSource;
-import com.example.kobenhavn.view.events.enrolled.EnrolledAdapter;
-import com.example.kobenhavn.viewmodel.UserViewModel;
-import com.example.kobenhavn.viewmodel.UserViewModelFactory;
-
-import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import dagger.android.support.AndroidSupportInjection;
-import timber.log.Timber;
 
 public class PlaygroundsFragment extends Fragment {
 
-    @BindView(R.id.future_date_text) TextView _titleText;
-    @BindView(R.id.future_subtitle_text) TextView _addresseText;
+    @BindView(R.id.future_playground_name) TextView _titleText;
+    @BindView(R.id.future_playground_name_text) TextView _addresseText;
     @BindView(R.id.future_title_text) TextView _descriptionText;
     @BindView(R.id.future_time_text) TextView _assignedPedagoguesText;
     @BindView(R.id.legepladser_info_img_url) ImageView _imageView;
 
-    private static final String LEGEPLADS_MODEL = "com.example.kobenhavn.ui.legepladser.playgroundsModel";
+    private static final String PLAYGROUNDS_MODEL = "com.example.kobenhavn.ui.legepladser.playgroundsModel";
+    private static final String SUBSCRIPTION_ID = "com.example.kobenhavn.ui.legepladser.subscriptionID";
     private Playground playground;
+    private long subscriptionID;
     private OnItemClickListener listener;
 
     public PlaygroundsFragment() { }
 
-    static PlaygroundsFragment newInstance(Playground model) {
+    static PlaygroundsFragment newInstance(Playground model, long id) {
         PlaygroundsFragment fragment = new PlaygroundsFragment();
         Bundle args = new Bundle();
-        args.putParcelable(LEGEPLADS_MODEL, model);
+        args.putParcelable(PLAYGROUNDS_MODEL, model);
+        args.putLong(SUBSCRIPTION_ID, id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,7 +46,8 @@ public class PlaygroundsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            playground = getArguments().getParcelable(LEGEPLADS_MODEL);
+            playground = getArguments().getParcelable(PLAYGROUNDS_MODEL);
+            subscriptionID = getArguments().getLong(SUBSCRIPTION_ID);
         }
     }
 
@@ -74,7 +64,7 @@ public class PlaygroundsFragment extends Fragment {
     @OnClick(R.id.playground_delete_btn)
     void onDeletePlayground(){
         if (listener != null){
-            listener.onItemClick(playground);
+            listener.onItemClick(playground, subscriptionID);
         }
     }
 
@@ -83,6 +73,6 @@ public class PlaygroundsFragment extends Fragment {
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Playground playground);
+        void onItemClick(Playground playground, long subscriptionsID);
     }
 }

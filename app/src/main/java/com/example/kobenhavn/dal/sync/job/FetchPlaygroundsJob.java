@@ -1,50 +1,53 @@
-package com.example.kobenhavn.dal.sync.jobs;
+package com.example.kobenhavn.dal.sync.job;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.birbit.android.jobqueue.Job;
 import com.birbit.android.jobqueue.Params;
 import com.birbit.android.jobqueue.RetryConstraint;
+import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.dal.remote.RemoteException;
-import com.example.kobenhavn.dal.sync.SignupUserRxBus;
+import com.example.kobenhavn.dal.sync.FetchPlaygroundsRxBus;
 import com.example.kobenhavn.dal.sync.RemoteResponseType;
-import com.example.kobenhavn.dal.sync.jobs.setup.JobPriority;
+import com.example.kobenhavn.dal.sync.job.setup.JobPriority;
+
+import java.util.List;
+
 import timber.log.Timber;
 
-public class SignupUserJob extends Job {
+public class FetchPlaygroundsJob extends Job {
 
-    private static final String TAG = SignupUserJob.class.getCanonicalName();
-    private final String name;
-    private final String username;
-    private final String password;
+    private static final String TAG = FetchPlaygroundsJob.class.getCanonicalName();
 
-    public SignupUserJob(String name, String username, String password) {
+    public FetchPlaygroundsJob() {
         super(new Params(JobPriority.HIGH)
                 .requireNetwork()
-                .groupBy(TAG));
-
-        this.name = name;
-        this.username = username;
-        this.password = password;
+                .groupBy(TAG)
+                .persist());
     }
 
     @Override
     public void onAdded() {
-        Timber.e("Sign up user job is added to priority queue");
+        Timber.e("Added fetch playgrounds job to priority queue");
     }
 
     @Override
     public void onRun() throws Throwable {
-        Timber.e("Executing login user job");
+        Timber.e("Executing fetching playground job");
 
-        RemoteDataSource.getInstance().signupUser(name, username, password);
-        SignupUserRxBus.getInstance().post(RemoteResponseType.SUCCESS);
+        // if any exception is thrown, it will be handled by shouldReRunOnThrowable()
+        List<Playground> playgrounds = RemoteDataSource.getInstance().getPlaygrounds();
+
+        // remote call was successful--the Comment will be updated locally to reflect that sync is no longer pending
+        FetchPlaygroundsRxBus.getInstance().publishFetchingResponse(RemoteResponseType.SUCCESS, playgrounds);
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
-        SignupUserRxBus.getInstance().post(RemoteResponseType.FAILED);
+        Timber.e("Canceling job. reason: %d, throwable: %s", cancelReason, throwable);
+        FetchPlaygroundsRxBus.getInstance().publishFetchingResponse(RemoteResponseType.FAILED, null);
     }
 
     @Override

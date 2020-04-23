@@ -1,4 +1,4 @@
-package com.example.kobenhavn.dal.sync.jobs;
+package com.example.kobenhavn.dal.sync.job;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,7 +11,7 @@ import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.dal.remote.RemoteException;
 import com.example.kobenhavn.dal.sync.LoginUserRxBus;
 import com.example.kobenhavn.dal.sync.RemoteResponseType;
-import com.example.kobenhavn.dal.sync.jobs.setup.JobPriority;
+import com.example.kobenhavn.dal.sync.job.setup.JobPriority;
 
 import timber.log.Timber;
 
@@ -38,13 +38,17 @@ public class LoginUserJob extends Job {
     public void onRun() throws Throwable {
         Timber.e("Executing login user job");
 
+        // if any exception is thrown, it will be handled by shouldReRunOnThrowable()
         User user = RemoteDataSource.getInstance().loginUser(username, password);
+
+        // remote call was successful--the Comment will be updated locally to reflect that sync is no longer pending
         LoginUserRxBus.getInstance().post(RemoteResponseType.SUCCESS, user);
 
     }
 
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
+        Timber.e("Canceling job. reason: %d, throwable: %s", cancelReason, throwable);
         LoginUserRxBus.getInstance().post(RemoteResponseType.FAILED, null);
     }
 

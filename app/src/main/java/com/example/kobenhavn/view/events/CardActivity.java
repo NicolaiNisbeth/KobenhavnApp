@@ -40,12 +40,10 @@ public class CardActivity extends AppCompatActivity {
     public static final String EXTRA_EVENT_ID = "com.example.kobenhavn.EXTRA_EVENT_ID";
     public static final String EXTRA_IMAGE_PATH = "com.example.kobenhavn.EXTRA_IMAGE_PATH";
 
-    @BindView(R.id.future_date_text) TextView _dateText;
-    @BindView(R.id.future_subtitle_text) TextView _subtitleText;
+    @BindView(R.id.future_playground_name_text) TextView _playgroundNameText;
     @BindView(R.id.future_title_text) TextView _titleText;
     @BindView(R.id.future_time_text) TextView _timeText;
     @BindView(R.id.future_description_text) TextView _descriptionText;
-    @BindView(R.id.future_interested_text) TextView _interestedText;
     @BindView(R.id.deltag) Button _enrollButton;
 
     @Inject
@@ -56,6 +54,7 @@ public class CardActivity extends AppCompatActivity {
     private String eventID;
     private Event event;
     private User user;
+    private Details details;
     private boolean enrolled;
 
     @Override
@@ -65,32 +64,32 @@ public class CardActivity extends AppCompatActivity {
         setContentView(R.layout.events_card_activity);
         ButterKnife.bind(this);
 
+        // TODO: beautify date presentation
         Intent intent = getIntent();
-        Details details = intent.getParcelableExtra(EXTRA_DATE);
-        _dateText.setText(details.getStartTime().toString());
-        _subtitleText.setText(intent.getStringExtra(EXTRA_SUBTITLE));
-        _titleText.setText(intent.getStringExtra(EXTRA_NAME));
-        _timeText.setText(intent.getStringExtra(EXTRA_STARTTIME));
-        _descriptionText.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
-        _interestedText.setText("" + intent.getIntExtra(EXTRA_INTERESTED, -1));
+        details = intent.getParcelableExtra(EXTRA_DATE);
         playgroundName = intent.getStringExtra(EXTRA_PLAYGROUND_NAME);
         eventID = intent.getStringExtra(EXTRA_EVENT_ID);
-
-        event = new Event(eventID, RemoteDataSource.loggedInUser.getUsername() ,intent.getStringExtra(EXTRA_NAME), intent.getStringExtra(EXTRA_IMAGE_PATH), intent.getStringExtra(EXTRA_SUBTITLE)
-        ,intent.getStringExtra(EXTRA_DESCRIPTION), intent.getIntExtra(EXTRA_INTERESTED, 0), intent.getStringExtra(EXTRA_PLAYGROUND_NAME)
-        ,details);
-
+        _playgroundNameText.setText(playgroundName);
+        _titleText.setText(intent.getStringExtra(EXTRA_NAME));
+        _timeText.setText(String.format("%s - %s", intent.getStringExtra(EXTRA_STARTTIME), details.getEndTime().toString()));
+        _descriptionText.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
         user = RemoteDataSource.loggedInUser;
+        event = new Event(
+                eventID,
+                user.getUsername(),
+                intent.getStringExtra(EXTRA_NAME),
+                intent.getStringExtra(EXTRA_IMAGE_PATH),
+                intent.getStringExtra(EXTRA_SUBTITLE),
+                intent.getStringExtra(EXTRA_DESCRIPTION),
+                intent.getIntExtra(EXTRA_INTERESTED, 0),
+                intent.getStringExtra(EXTRA_PLAYGROUND_NAME),
+                details
+        );
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        TextView title = toolbar.findViewById(R.id.toolbar_title);
-        title.setText(details.getDate().toString());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        setupToolbar();
 
         userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
-        LiveData<List<Event>> eventLiveData = userViewModel.getEventsLive(RemoteDataSource.loggedInUser.getUsername());
+        LiveData<List<Event>> eventLiveData = userViewModel.getEventsLive(user.getUsername());
         eventLiveData.observe(this, this::updateBtnLayout);
     }
 
@@ -108,24 +107,6 @@ public class CardActivity extends AppCompatActivity {
         }
     }
 
-
-    private void updateBtnLayout(User user) {
-        if (user == null) return;
-        RemoteDataSource.loggedInUser = user;
-        this.user = user;
-        if (enrolled){
-            int color = getResources().getColor(R.color.design_default_color_error);
-            _enrollButton.setBackgroundColor(color);
-            _enrollButton.setText("Afmeld");
-        }
-        else {
-            int color = getResources().getColor(R.color.colorPrimary);
-            _enrollButton.setBackgroundColor(color);
-            _enrollButton.setText("Tilmeld");
-        }
-    }
-
-
     @OnClick(R.id.deltag)
     void onBtnClick(){
         if (enrolled){
@@ -139,5 +120,14 @@ public class CardActivity extends AppCompatActivity {
             finish();
 
         }
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        TextView title = toolbar.findViewById(R.id.toolbar_title);
+        title.setText(details.getDate().toString());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 }

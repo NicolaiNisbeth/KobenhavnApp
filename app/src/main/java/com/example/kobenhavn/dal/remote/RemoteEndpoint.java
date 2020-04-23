@@ -21,30 +21,27 @@ import retrofit2.http.Path;
  *
  */
 public interface RemoteEndpoint {
-    // computer locale ip
-    String BASE_URL = "http://192.168.1.12:8088/rest/";
-
-    @GET("playgrounds")
-    Call<List<Playground>> getPlaygrounds();
-
-    @GET("post/{id}")
-    Call<List<Event>> getEvents(@Path("id") long playgroundName);
+    String BASE_URL = "http://192.168.1.12:8088/rest/"; // Locale IP
 
     @POST("employee/login")
     Call<User> loginUser(@Body User user);
 
-    @POST("posts")
+    @POST("posts") // TODO: not implemented
     Call<Boolean> signupUser(String name, String username, String password);
 
-    @POST("playgrounds/{pID}/events/{eID}/participants/{uID}")
-    Call<User> joinUserWithEvent(@Path("pID") String playgroundName,
-                                 @Path("eID") String eventID,
-                                 @Path("uID") String username);
     @PUT("employee/update")
     Call<User> updateUserInfo(@Body User user);
 
+    @POST("playgrounds/{pID}/events/{eID}/participants/{uID}")
+    Call<User> joinEvent(@Path("pID") String playgroundName,
+                         @Path("eID") String eventID,
+                         @Path("uID") String username);
+
     @DELETE("playgrounds/{pID}/events/{eID}/participants/{uID}")
-    Call<User> removeUserFromEvent(@Path("pID") String playgroundName,
-                                   @Path("eID") String eventID,
-                                   @Path("uID") String username);
+    Call<User> leaveEvent(@Path("pID") String playgroundName,
+                          @Path("eID") String eventID,
+                          @Path("uID") String username);
+
+    @GET("playgrounds")
+    Call<List<Playground>> getPlaygrounds();
 }

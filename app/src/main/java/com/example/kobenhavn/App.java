@@ -5,7 +5,7 @@ import android.app.Application;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.kobenhavn.dal.sync.jobs.setup.JobManagerFactory;
+import com.example.kobenhavn.dal.sync.job.setup.JobManagerFactory;
 import com.example.kobenhavn.di.DaggerAppComponent;
 import javax.inject.Inject;
 import dagger.android.AndroidInjector;

@@ -31,33 +31,22 @@ public class AddPlaygroundActivity extends AppCompatActivity {
 
     @BindView(R.id.events_enrolled_empty_msg) TextView _emptyView;
 
-    private EmptyRecyclerView recyclerView;
-    private AddPlaygroundAdapter recyclerViewAdapter;
-    private PlaygroundsViewModel playgroundsViewModel;
-    private UserViewModel userViewModel;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playgrounds_add_activity);
         ButterKnife.bind(this);
+        setupToolbar();
 
-        Toolbar toolbar = findViewById(R.id.legepladser_tilfoj_toolbar);
-        setSupportActionBar(toolbar);
-        TextView title = toolbar.findViewById(R.id.toolbar_title);
-        title.setText("Tilføj Legeplads");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
-        recyclerViewAdapter = new AddPlaygroundAdapter(this, new ArrayList<>(), userViewModel);
-        recyclerView = findViewById(R.id.recycler_view_tilfoj_legeplads);
+        UserViewModel userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
+        AddPlaygroundAdapter recyclerViewAdapter = new AddPlaygroundAdapter(this, new ArrayList<>(), userViewModel);
+        EmptyRecyclerView recyclerView = findViewById(R.id.recycler_view_tilfoj_legeplads);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.setEmptyView(_emptyView);
 
-        playgroundsViewModel = ViewModelProviders.of(this, playgroundViewModelFactory).get(PlaygroundsViewModel.class);
+        PlaygroundsViewModel playgroundsViewModel = ViewModelProviders.of(this, playgroundViewModelFactory).get(PlaygroundsViewModel.class);
         playgroundsViewModel.playgroundsLive().observe(this, recyclerViewAdapter::updatePlaygroundList);
         userViewModel.getSubscriptionsLive(RemoteDataSource.loggedInUser.getUsername()).observe(this, recyclerViewAdapter::filterSubscribedPlaygrounds);
     }
@@ -66,5 +55,14 @@ public class AddPlaygroundActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.legepladser_tilfoj_toolbar);
+        setSupportActionBar(toolbar);
+        TextView title = toolbar.findViewById(R.id.toolbar_title);
+        title.setText("Tilføj Legeplads");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 }

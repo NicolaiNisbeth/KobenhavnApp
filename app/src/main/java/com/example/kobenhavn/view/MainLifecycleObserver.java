@@ -13,7 +13,6 @@ import com.example.kobenhavn.dal.sync.RemoteResponseType;
 import com.example.kobenhavn.dal.sync.SyncUserRxBus;
 import com.example.kobenhavn.usecases.event.DeleteEventUC;
 import com.example.kobenhavn.usecases.event.UpdateEventUC;
-import com.example.kobenhavn.usecases.playground.GetPlaygroundsInDbUC;
 import com.example.kobenhavn.usecases.playground.InsertPlaygroundsInDbUC;
 
 import java.util.List;
@@ -24,7 +23,7 @@ import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
- * Updates local database after remote comment sync requests
+ * Updates local database after remote sync requests
  */
 public class MainLifecycleObserver implements LifecycleObserver {
     private final InsertPlaygroundsInDbUC insertPlaygroundsInDbUC;
@@ -41,7 +40,6 @@ public class MainLifecycleObserver implements LifecycleObserver {
         disposables.add(FetchPlaygroundsRxBus.getInstance()
                 .toObservable()
                 .subscribe(this::handleFetchResponse, t -> Timber.e(t, "error handling playground fetch response")));
-
         /*
 
         disposables.add(SyncUserRxBus.getInstance()
@@ -51,7 +49,6 @@ public class MainLifecycleObserver implements LifecycleObserver {
         disposables.add(JoinEventRxBus.getInstance()
                 .toObservable()
                 .subscribe(this::handlerEventResponse, t -> Timber.e("error handling sync event response")));
-
  */
     }
 
@@ -67,56 +64,43 @@ public class MainLifecycleObserver implements LifecycleObserver {
 
         disposables.add(FetchPlaygroundsRxBus.getInstance()
                 .toObservable()
-                .subscribe(this::handleFetchResponse, t -> Timber.e(t, "error handling playground fetch response")));
+                .subscribe(this::handleFetchResponse,
+                        t -> Timber.e(t, "error handling playground fetch response")));
 
         disposables.add(SyncUserRxBus.getInstance()
                 .toObservable()
-                .subscribe(this::handleUserResponse, t -> Timber.e(t, "error handling user sync response")));
+                .subscribe(this::handleUserResponse,
+                        t -> Timber.e(t, "error handling user sync response")));
 
         disposables.add(JoinEventRxBus.getInstance()
                 .toObservable()
-                .subscribe(this::handlerEventResponse, t -> Timber.e("error handling sync event response")));
+                .subscribe(this::handleEventResponse,
+                        t -> Timber.e("error handling sync event response")));
     }
 
-    private void handlerEventResponse(JoinEventRxBus.JoinEventResponse response) {
+    private void handleEventResponse(JoinEventRxBus.JoinEventResponse response) {
         Event joinedEvent = response.event;
         User user = response.user;
-
-        if (response.type == RemoteResponseType.SUCCESS){
-            Timber.d("received sync comment success event for comment %s", joinedEvent);
-            disposables.add(updateEventUC.updateEvent(joinedEvent, user)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> Timber.d("update event success"),
-                            t -> Timber.e(t, "update event error")));
-        }
-        else {
-            Timber.d("received sync comment failed event for comment %s", joinedEvent);
-            disposables.add(deleteEventUC.deleteEvent(joinedEvent, user)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> Timber.d("delete event success"),
-                            t -> Timber.e(t, "delete event error")));
-        }
+        if (response.type == RemoteResponseType.SUCCESS) onEventSucces(joinedEvent, user);
+        else onEventFailure(joinedEvent, user);
     }
 
-    private void handleUserResponse(SyncUserRxBus.SyncUserResponse response) {
-        if (response.type == RemoteResponseType.SUCCESS){
-            onSyncingSuccess(response.user);
-        } else {
-            onSyncingFailed(response.user);
-        }
+    private void onEventFailure(Event joinedEvent, User user) {
+        Timber.d("received sync comment failed event for comment %s", joinedEvent);
+        disposables.add(deleteEventUC.deleteEvent(joinedEvent, user)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> Timber.d("delete event success"),
+                        t -> Timber.e(t, "delete event error")));
     }
 
-    private void onSyncingSuccess(User user) {
-        Timber.e("Successfully synced users");
-        // update subscriptions
-
-    }
-
-    private void onSyncingFailed(User user) {
-        // TODO: revert local update to ensure data integrity
-        Timber.e("Failed to sync user");
+    private void onEventSucces(Event joinedEvent, User user) {
+        Timber.d("received sync comment success event for comment %s", joinedEvent);
+        disposables.add(updateEventUC.updateEvent(joinedEvent, user)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> Timber.d("update event success"),
+                        t -> Timber.e(t, "update event error")));
     }
 
     private void handleFetchResponse(FetchPlaygroundsRxBus.FetchPlaygroundResponse response) {
@@ -138,4 +122,6 @@ public class MainLifecycleObserver implements LifecycleObserver {
     }
 
     private void onFetchingFailed(List<Playground> playground) { }
+
+    private void handleUserResponse(SyncUserRxBus.SyncUserResponse response) { }
 }

@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/future_date_text"
+            android:id="@+id/future_playground_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
@@ -19,7 +19,7 @@
             />
 
         <TextView
-            android:id="@+id/future_subtitle_text"
+            android:id="@+id/future_playground_name_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"

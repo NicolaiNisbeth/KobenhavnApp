@@ -26,7 +26,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Playground;
-import com.example.kobenhavn.dal.local.model.Subscriptions;
+import com.example.kobenhavn.dal.local.model.Subscription;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.view.playgrounds.add.AddPlaygroundActivity;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
@@ -47,7 +47,6 @@ import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 
 public class ContainerPlaygroundsFragment extends Fragment {
-    private Toolbar toolbar;
 
     @BindView(R.id.events_enrolled_empty_msg)
     TextView _emptyView;
@@ -65,15 +64,7 @@ public class ContainerPlaygroundsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.playgrounds_container_fragment, container, false);
         ButterKnife.bind(this, root);
-
-        // setup toolbar_item
-        setHasOptionsMenu(true);
-        toolbar = root.findViewById(R.id.legeplads_toolbar);
-        AppCompatActivity activity = ((AppCompatActivity)getActivity());
-        activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        TextView title = toolbar.findViewById(R.id.toolbar_title);
-        title.setText("Legepladser");
+        setupToolbar(root);
 
         userViewModel = ViewModelProviders.of(this, userViewModelFactory).get(UserViewModel.class);
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(root.getContext(), getChildFragmentManager(), new ArrayList<>(), _emptyView, userViewModel);
@@ -111,12 +102,11 @@ public class ContainerPlaygroundsFragment extends Fragment {
     }
 
     static class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+
         private final TextView _emptyView;
         private final UserViewModel viewModel;
         private Context context;
         private ArrayList<Pair<String, PlaygroundsFragment>> tabList;
-        private Subscriptions subscriptions;
-
         public SectionsPagerAdapter(Context context, FragmentManager fm, ArrayList<Pair<String, PlaygroundsFragment>> tabList, TextView _emptyView, UserViewModel viewModel) {
             super(fm);
             this.context = context;
@@ -141,35 +131,27 @@ public class ContainerPlaygroundsFragment extends Fragment {
             return PagerAdapter.POSITION_NONE;
         }
 
-        /**
-         * TO UNSUBSCRIBE
-         * @param i
-         * @return
-         */
         @NotNull
         @Override
         public Fragment getItem(int i) {
             PlaygroundsFragment fragment = tabList.get(i).second;
             if (fragment != null){
-                // remove playground
-                fragment.setOnItemClickListener(playground -> {
-                    List<Playground> updatedPlaygrounds = subscriptions.getSubscriptions();
-                    updatedPlaygrounds.remove(playground);
-                    viewModel.updateSubscriptionsLocally(RemoteDataSource.loggedInUser, updatedPlaygrounds);
+                fragment.setOnItemClickListener((playground, id) -> {
+                    viewModel.removeSubscriptionLocally(RemoteDataSource.loggedInUser, playground, id);
                     Toast.makeText(context, "Legeplads blev fjernet", Toast.LENGTH_SHORT).show();
                 });
             }
             return Objects.requireNonNull(tabList.get(i).second);
         }
 
-        void onSubscriptionChange(Subscriptions subscriptions) {
+        void onSubscriptionChange(List<Subscription> subscriptions) {
             if (subscriptions == null) return;
 
-            this.subscriptions = subscriptions;
             tabList.clear();
-            for (Playground playground : subscriptions.getSubscriptions()){
-                tabList.add(new Pair<>(playground.getName(), PlaygroundsFragment.newInstance(playground)));
-            }
+            subscriptions.forEach(subscription -> {
+                Playground playground = subscription.getPlayground();
+                tabList.add(new Pair<>(playground.getName(), PlaygroundsFragment.newInstance(playground, subscription.getId())));
+            });
             tabList.sort((o1, o2) -> o1.first.compareTo(o2.first));
 
             if (tabList != null && tabList.size() > 0) _emptyView.setVisibility(View.GONE);
@@ -177,5 +159,15 @@ public class ContainerPlaygroundsFragment extends Fragment {
 
             notifyDataSetChanged();
         }
+
+    }
+    private void setupToolbar(View root) {
+        setHasOptionsMenu(true);
+        Toolbar toolbar = root.findViewById(R.id.legeplads_toolbar);
+        AppCompatActivity activity = ((AppCompatActivity)getActivity());
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView title = toolbar.findViewById(R.id.toolbar_title);
+        title.setText("Legepladser");
     }
 }

@@ -6,6 +6,9 @@ import com.jakewharton.rxrelay2.PublishRelay;
 
 import io.reactivex.Observable;
 
+/**
+ * Taken from https://proandroiddev.com/offline-apps-its-easier-than-you-think-9ff97701a73f
+ */
 public class JoinEventRxBus {
     private static JoinEventRxBus instance;
     private final PublishRelay<JoinEventResponse> relay;
@@ -29,13 +32,12 @@ public class JoinEventRxBus {
         return relay;
     }
 
-
     public static class JoinEventResponse  {
         public final RemoteResponseType type;
         public final Event event;
         public final User user;
 
-        public JoinEventResponse(RemoteResponseType type, Event event, User user) {
+        JoinEventResponse(RemoteResponseType type, Event event, User user) {
             this.type = type;
             this.event = event;
             this.user = user;

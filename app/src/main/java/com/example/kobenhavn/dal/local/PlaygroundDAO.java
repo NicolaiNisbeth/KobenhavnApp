@@ -22,9 +22,6 @@ public interface PlaygroundDAO  {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAllPlaygrounds(List<Playground> playgrounds);
 
-    @Update
-    void update(List<Playground> playgrounds);
-
     @Query("SELECT * FROM playground_table")
     Flowable<List<Playground>> getPlaygrounds();
 }

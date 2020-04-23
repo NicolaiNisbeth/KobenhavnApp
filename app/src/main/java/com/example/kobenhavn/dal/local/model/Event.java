@@ -11,8 +11,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+
 /**
- * Immutable POJO that represents an event
+ * Immutable POJO
  */
 @Entity(tableName = "event_table")
 public class Event implements Serializable {
@@ -48,50 +49,6 @@ public class Event implements Serializable {
 
     @ColumnInfo(name = "sync_pending")
     private boolean syncPending;
-
-    public Event(@NotNull String id, String username, String name, String imagepath, String subtitle, String description, int participants, String playgroundName, Details details, boolean syncPending) {
-        this.id = id;
-        this.username = username;
-        this.name = name;
-        this.imagepath = imagepath;
-        this.subtitle = subtitle;
-        this.description = description;
-        this.participants = participants;
-        this.playgroundName = playgroundName;
-        this.details = details;
-        this.syncPending = syncPending;
-    }
-
-
-    @Ignore
-    public Event(@NotNull String id, String username, String name, String imagepath, String subtitle, String description, int participants, String playgroundName, Details details) {
-        this.id = id;
-        this.username = username;
-        this.name = name;
-        this.imagepath = imagepath;
-        this.subtitle = subtitle;
-        this.description = description;
-        this.participants = participants;
-        this.playgroundName = playgroundName;
-        this.details = details;
-        this.syncPending = true;
-    }
-
-    @Override
-    public String toString() {
-        return "Event{" +
-                "id='" + id + '\'' +
-                ", username='" + username + '\'' +
-                ", name='" + name + '\'' +
-                ", imagepath='" + imagepath + '\'' +
-                ", subtitle='" + subtitle + '\'' +
-                ", description='" + description + '\'' +
-                ", participants=" + participants +
-                ", playgroundName='" + playgroundName + '\'' +
-                ", details=" + details +
-                ", syncPending=" + syncPending +
-                '}';
-    }
 
     @NonNull
     public String getId() {
@@ -133,6 +90,49 @@ public class Event implements Serializable {
 
     public boolean isSyncPending() {
         return syncPending;
+    }
+
+    public Event(@NotNull String id, String username, String name, String imagepath, String subtitle, String description, int participants, String playgroundName, Details details, boolean syncPending) {
+        this.id = id;
+        this.username = username;
+        this.name = name;
+        this.imagepath = imagepath;
+        this.subtitle = subtitle;
+        this.description = description;
+        this.participants = participants;
+        this.playgroundName = playgroundName;
+        this.details = details;
+        this.syncPending = syncPending;
+    }
+
+    @Ignore
+    public Event(@NotNull String id, String username, String name, String imagepath, String subtitle, String description, int participants, String playgroundName, Details details) {
+        this.id = id;
+        this.username = username;
+        this.name = name;
+        this.imagepath = imagepath;
+        this.subtitle = subtitle;
+        this.description = description;
+        this.participants = participants;
+        this.playgroundName = playgroundName;
+        this.details = details;
+        this.syncPending = true;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", name='" + name + '\'' +
+                ", imagepath='" + imagepath + '\'' +
+                ", subtitle='" + subtitle + '\'' +
+                ", description='" + description + '\'' +
+                ", participants=" + participants +
+                ", playgroundName='" + playgroundName + '\'' +
+                ", details=" + details +
+                ", syncPending=" + syncPending +
+                '}';
     }
 
     @Override

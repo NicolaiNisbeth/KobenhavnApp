@@ -12,27 +12,26 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kobenhavn.R;
+import com.example.kobenhavn.dal.local.CloneUtils;
 import com.example.kobenhavn.dal.local.model.Playground;
-import com.example.kobenhavn.dal.local.model.Subscriptions;
+import com.example.kobenhavn.dal.local.model.Subscription;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdapter.ViewHolder> {
 
     private List<Playground> playgrounds;
     private Context context;
     private UserViewModel userViewModel;
+    private List<Subscription> subscriptions;
     private boolean isFilterCalled;
-    private Subscriptions subscriptions ;
 
     AddPlaygroundAdapter(Context context, List<Playground> playgrounds, UserViewModel userViewModel) {
         this.playgrounds = playgrounds;
@@ -48,15 +47,9 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
     }
 
     @Override
-    public void onBindViewHolder(AddPlaygroundAdapter.ViewHolder holder, int position) {
-        if (playgrounds == null || playgrounds.isEmpty()) return;
-
+    public void onBindViewHolder(@NotNull AddPlaygroundAdapter.ViewHolder holder, int position) {
+        if (playgrounds == null) return;
         Playground playground = playgrounds.get(position);
-        if (playground.isSyncPending())
-            holder._titleText.setTextColor(Color.LTGRAY);
-        else
-            holder._titleText.setTextColor(Color.BLACK);
-
         holder.bindTo(playground);
     }
 
@@ -73,7 +66,6 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
             _imageButton.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
@@ -85,25 +77,26 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
         void bindTo(Playground playground) {
             _titleText.setText(playground.getName());
             _addressText.setText(String.format("%s %s", playground.getStreetName(), playground.getStreetNumber()));
+            _titleText.setTextColor(playground.isSyncPending() ? Color.LTGRAY : Color.BLACK);
         }
     }
 
-    void filterSubscribedPlaygrounds(Subscriptions subscriptions) {
-        if (subscriptions == null || subscriptions.getSubscriptions().isEmpty()) return;
-
-        Timber.e("filterplaygroundlist");
-        playgrounds.removeIf(subscriptions.getSubscriptions()::contains);
+    public void filterSubscribedPlaygrounds(List<Subscription> subscriptions) {
+        if (subscriptions == null) return;
+        this.subscriptions = subscriptions;
+        playgrounds.removeIf(playground -> subscriptions.contains(
+                CloneUtils.cloneSubscription(playground, RemoteDataSource.loggedInUser.getUsername()))
+        );
         notifyDataSetChanged();
         isFilterCalled = true;
-        this.subscriptions = subscriptions;
     }
 
     void updatePlaygroundList(List<Playground> playgroundList) {
-        if (playgroundList == null || playgroundList.isEmpty()) return;
+        if (playgroundList == null) return;
+        playgrounds.clear();
+        playgrounds.addAll(playgroundList);
 
-        Timber.e("updatePlaygroundList");
-        this.playgrounds.clear();
-        this.playgrounds.addAll(playgroundList);
+        // both filter and update are async and the order matters!
         if (isFilterCalled){
             filterSubscribedPlaygrounds(subscriptions);
             isFilterCalled = false;
@@ -114,16 +107,10 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
     }
 
     private void subscribeToPlayground(int position, Playground playground){
-        if (playgrounds == null || playgrounds.isEmpty()) return;
-
+        if (playgrounds == null) return;
         Toast.makeText(context, "Legeplads er tilføjet", Toast.LENGTH_SHORT).show();
         playgrounds.remove(position);
-
-        if (subscriptions == null)
-            subscriptions = new Subscriptions(RemoteDataSource.loggedInUser.getUsername(), new ArrayList<>());
-
-        subscriptions.getSubscriptions().add(playground);
-        userViewModel.updateSubscriptionsLocally(RemoteDataSource.loggedInUser, subscriptions.getSubscriptions());
+        Subscription subscription = CloneUtils.cloneSubscription(playground, RemoteDataSource.loggedInUser.getUsername());
+        userViewModel.insertSubscriptionLocally(RemoteDataSource.loggedInUser, subscription);
     }
-
 }

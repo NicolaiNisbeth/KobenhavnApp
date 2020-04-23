@@ -12,10 +12,14 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         app:tabIndicatorHeight="0dp"
         app:tabMode="fixed"
         app:tabMaxWidth="0dp"
         app:tabGravity="fill"
+        app:tabTextAppearance="@style/CustomTabLayout"
+
+
         />
 
     <androidx.viewpager.widget.ViewPager

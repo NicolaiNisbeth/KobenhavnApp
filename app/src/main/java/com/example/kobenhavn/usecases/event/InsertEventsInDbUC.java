@@ -7,10 +7,10 @@ import java.util.List;
 
 import io.reactivex.Completable;
 
-public class InsertEventsUC {
+public class InsertEventsInDbUC {
     private final ILocalRepository localRepository;
 
-    public InsertEventsUC(ILocalRepository localRepository) {
+    public InsertEventsInDbUC(ILocalRepository localRepository) {
         this.localRepository = localRepository;
     }
 

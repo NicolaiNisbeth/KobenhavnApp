@@ -3,6 +3,8 @@ package com.example.kobenhavn.view;
 import android.os.Bundle;
 
 import com.example.kobenhavn.R;
+import com.example.kobenhavn.dal.local.model.User;
+import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -44,6 +46,8 @@ public class MainActivity extends DaggerAppCompatActivity {
         setContentView(R.layout.main_activity);
 
         getLifecycle().addObserver(mainLifecycleObserver);
+        // TO test with no connection
+        //RemoteDataSource.loggedInUser = new User("anonymous", "123");
 
         // Bottom Navigation
         BottomNavigationView navView = findViewById(R.id.nav_view);
