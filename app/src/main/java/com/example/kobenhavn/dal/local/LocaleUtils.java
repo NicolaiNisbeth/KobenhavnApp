@@ -17,8 +17,8 @@ public class LocaleUtils {
                 from.getImagepath(), from.getStatus(), from.getWebsite(), from.getPhonenumbers(), from.isSyncPending(), from.getEvents());
     }
 
-    public static Event cloneEvent(Event from, String eventID, String username){
-        return new Event(eventID, from.getName(), username, from.getImagepath(), from.getSubtitle(), from.getDescription(),
+    public static Event cloneEvent(Event from, String username){
+        return new Event(from.getId(), username, from.getName(), from.getImagepath(), from.getSubtitle(), from.getDescription(),
                 from.getParticipants(), from.getPlaygroundName(), from.getDetails(), from.isSyncPending());
     }
 

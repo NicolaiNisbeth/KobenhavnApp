@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.kobenhavn.dal.local.LocaleUtils;
 import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.sync.LoginUserRxBus;
 import com.example.kobenhavn.dal.sync.RemoteResponseType;
@@ -29,6 +30,7 @@ import com.example.kobenhavn.viewmodel.UserViewModel;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -147,9 +149,12 @@ public class LoginActivity extends AppCompatActivity {
 
     public void showLoginSuccess(User user) {
         userViewModel.insertUser(user);
-        user.getEvents().forEach(event -> event.setUsername(user.getUsername()));
-        userViewModel.insertEvents(user.getEvents());
+        List<Event> mutatedEvents = user.getEvents().stream()
+                .map(event -> LocaleUtils.cloneEvent(event, user.getUsername()))
+                .collect(Collectors.toList());
+        userViewModel.insertEvents(mutatedEvents);
         playgroundsViewModel.fetchPlaygrounds();
+
         String welcome = getString(R.string.welcome) + user.getFirstname();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, MainActivity.class);

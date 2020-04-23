@@ -53,7 +53,7 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
 
 
     void updateEnrolledList(List<Event> events) {
-        if (events == null || events.isEmpty()) return;
+        if (events == null) return;
         this.events.clear();
         this.events.addAll(events);
         notifyDataSetChanged();

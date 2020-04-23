@@ -11,7 +11,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
-
+/**
+ * Immutable POJO that represents an event
+ */
 @Entity(tableName = "event_table")
 public class Event implements Serializable {
 
@@ -47,7 +49,6 @@ public class Event implements Serializable {
     @ColumnInfo(name = "sync_pending")
     private boolean syncPending;
 
-    // constructor for when syncing is successful
     public Event(@NotNull String id, String username, String name, String imagepath, String subtitle, String description, int participants, String playgroundName, Details details, boolean syncPending) {
         this.id = id;
         this.username = username;
@@ -132,10 +133,6 @@ public class Event implements Serializable {
 
     public boolean isSyncPending() {
         return syncPending;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     @Override

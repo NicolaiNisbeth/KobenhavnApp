@@ -18,14 +18,6 @@ public class JoinEventUC {
         this.remoteRepository = remoteRepository;
     }
 
-    /*
-    public Completable joinEventForUser(String playgroundName, String username, String eventID, ArrayList<Event> events){
-        return localRepository.joinEvent(username, events)
-                .andThen(remoteRepository.joinEvent(playgroundName, eventID, username));
-    }
-
-     */
-
     public Completable joinEventForUser(Event event, User user, String playgroundName) {
         return localRepository.joinEvent(event, user)
                 .andThen(remoteRepository.joinEvent(playgroundName, event, user));

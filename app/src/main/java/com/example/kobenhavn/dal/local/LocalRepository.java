@@ -90,7 +90,7 @@ public class LocalRepository implements ILocalRepository {
 
     @Override
     public Completable joinEvent(Event event, User user) {
-        Event joinedEvent = LocaleUtils.cloneEvent(event, event.getId(), user.getUsername());
+        Event joinedEvent = LocaleUtils.cloneEvent(event, user.getUsername());
         Timber.e("event stored %s", joinedEvent);
         return Completable.fromAction(() -> eventDAO.add(joinedEvent));
     }
@@ -104,7 +104,7 @@ public class LocalRepository implements ILocalRepository {
     @Override
     public Completable deleteEvent(Event event, User user) {
         Timber.d("deleting event with id %s", event.getId());
-        Event toBeDeleted = LocaleUtils.cloneEvent(event, event.getId(), user.getUsername());
+        Event toBeDeleted = LocaleUtils.cloneEvent(event, user.getUsername());
         return Completable.fromAction(() -> eventDAO.deleteEvent(toBeDeleted));
     }
 
