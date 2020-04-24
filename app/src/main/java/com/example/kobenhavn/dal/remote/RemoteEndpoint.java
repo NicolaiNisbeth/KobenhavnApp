@@ -21,8 +21,8 @@ import retrofit2.http.Path;
  *
  */
 public interface RemoteEndpoint {
-    String BASE_URL = "http://192.168.1.12:8080/rest/"; // Locale IP
-    //String BASE_URL = "http://18.185.121.182:8088/rest/";
+    //String BASE_URL = "http://192.168.1.12:8080/rest/"; // Locale IP
+    String BASE_URL = "http://18.185.121.182:8080/rest/"; // amazon IP
 
     @POST("employee/login")
     Call<User> loginUser(@Body User user);

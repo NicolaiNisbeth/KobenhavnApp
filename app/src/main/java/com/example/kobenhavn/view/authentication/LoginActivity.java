@@ -114,8 +114,8 @@ public class LoginActivity extends AppCompatActivity {
             _loginButton.setEnabled(formState.isDataValid());
         });
 
-        _usernameText.setText("s175565");
-        _passwordText.setText("kodeNWHN");
+        //_usernameText.setText("s175565");
+        //_passwordText.setText("kodeNWHN");
         //_usernameText.setText("s185020");
         //_passwordText.setText("nlj_nykode");
     }
