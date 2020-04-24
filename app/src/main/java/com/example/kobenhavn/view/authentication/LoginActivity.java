@@ -130,6 +130,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login() {
+        // TODO: if no connection make sure to stop spinning and inform user
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Autentificere...");
         progressDialog.show();
