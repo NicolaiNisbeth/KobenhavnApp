@@ -7,12 +7,9 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.Subscription;
 
 import java.util.List;
-
-import io.reactivex.Completable;
 
 @Dao
 public interface SubscriptionsDAO {

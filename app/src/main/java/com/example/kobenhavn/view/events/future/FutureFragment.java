@@ -61,7 +61,8 @@ public class FutureFragment extends Fragment {
             intent.putExtra(CardActivity.EXTRA_DATE, (Parcelable) event.getDetails());
             intent.putExtra(CardActivity.EXTRA_NAME, event.getName());
             intent.putExtra(CardActivity.EXTRA_IMAGE_PATH, event.getImagepath());
-            intent.putExtra(CardActivity.EXTRA_STARTTIME, event.getDetails().getStartTime().toString());
+            if (event.getDetails() != null)
+                intent.putExtra(CardActivity.EXTRA_STARTTIME, event.getDetails().getStartTime().toString());
             intent.putExtra(CardActivity.EXTRA_SUBTITLE, event.getSubtitle());
             intent.putExtra(CardActivity.EXTRA_DESCRIPTION, event.getDescription());
             intent.putExtra(CardActivity.EXTRA_INTERESTED, event.getParticipants());

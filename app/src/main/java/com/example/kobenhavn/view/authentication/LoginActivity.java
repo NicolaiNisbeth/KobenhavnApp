@@ -17,11 +17,11 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.kobenhavn.dal.local.CloneUtils;
 import com.example.kobenhavn.dal.local.model.Event;
+import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.sync.LoginUserRxBus;
 import com.example.kobenhavn.dal.sync.RemoteResponseType;
 import com.example.kobenhavn.view.MainActivity;
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModelFactory;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;

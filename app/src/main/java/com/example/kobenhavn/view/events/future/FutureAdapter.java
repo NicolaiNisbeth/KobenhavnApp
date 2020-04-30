@@ -1,7 +1,6 @@
 package com.example.kobenhavn.view.events.future;
 
 import android.content.Context;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import com.example.kobenhavn.dal.local.model.Subscription;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -51,12 +49,7 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
 
         futureEvents.clear();
         for (Subscription subscription : subscriptions){
-            for (Event event : subscription.getPlayground().getEvents()){
-                Date date = event.getDetails().getDate();
-                if (DateUtils.isToday(date.getTime()) || date.after(new Date(System.currentTimeMillis()))){
-                    futureEvents.add(event);
-                }
-            }
+            futureEvents.addAll(subscription.getPlayground().getEvents());
         }
         notifyDataSetChanged();
     }
@@ -82,10 +75,11 @@ public class FutureAdapter extends RecyclerView.Adapter<FutureAdapter.ViewHolder
 
         void bindTo(int position) {
             Event event = futureEvents.get(position);
-            _timeText.setText(event.getDetails().getDate().toString());
             _playgroundName.setText(event.getPlaygroundName());
             _titleText.setText(event.getName());
             _interestedText.setText(String.valueOf(event.getParticipants()));
+            if (event.getDetails() != null)
+                _timeText.setText(event.getDetails().getDate().toString());
         }
     }
 

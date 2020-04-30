@@ -4,8 +4,6 @@ import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.User;
 
 import io.reactivex.Completable;
-import io.reactivex.CompletableSource;
-import io.reactivex.functions.Function;
 
 /**
  * Responsible for CRUD operations against remote repository

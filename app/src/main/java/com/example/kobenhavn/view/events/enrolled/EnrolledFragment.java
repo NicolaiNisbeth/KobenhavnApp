@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Parcelable;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Event;
-import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.view.EmptyRecyclerView;
 import com.example.kobenhavn.view.events.CardActivity;
@@ -67,7 +65,8 @@ public class EnrolledFragment extends Fragment {
             Intent intent = new Intent(getContext(), CardActivity.class);
             intent.putExtra(CardActivity.EXTRA_DATE, (Parcelable) event.getDetails());
             intent.putExtra(CardActivity.EXTRA_NAME, event.getName());
-            intent.putExtra(CardActivity.EXTRA_STARTTIME, event.getDetails().getStartTime().toString());
+            if (event.getDetails() != null)
+                intent.putExtra(CardActivity.EXTRA_STARTTIME, event.getDetails().getStartTime().toString());
             intent.putExtra(CardActivity.EXTRA_SUBTITLE, event.getSubtitle());
             intent.putExtra(CardActivity.EXTRA_DESCRIPTION, event.getDescription());
             intent.putExtra(CardActivity.EXTRA_INTERESTED, event.getParticipants());

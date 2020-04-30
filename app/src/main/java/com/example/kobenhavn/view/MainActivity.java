@@ -3,8 +3,6 @@ package com.example.kobenhavn.view;
 import android.os.Bundle;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.dal.local.model.User;
-import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

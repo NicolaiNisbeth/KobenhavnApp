@@ -1,7 +1,7 @@
 package com.example.kobenhavn.dal.remote;
 
-import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.local.model.Playground;
+import com.example.kobenhavn.dal.local.model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

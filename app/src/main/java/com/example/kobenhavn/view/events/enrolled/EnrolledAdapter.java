@@ -6,15 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kobenhavn.R;
 import com.example.kobenhavn.dal.local.model.Event;
-import com.example.kobenhavn.dal.local.model.User;
-import com.example.kobenhavn.dal.remote.RemoteDataSource;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -83,7 +79,8 @@ public class EnrolledAdapter extends RecyclerView.Adapter<EnrolledAdapter.ViewHo
             //_dateText.setText(event.getDetails().getDate().toString());
             _subtitleText.setText(event.getPlaygroundName());
             _titleText.setText(event.getName());
-            _timeText.setText(event.getDetails().getStartTime().toString());
+            if (event.getDetails() != null)
+                _timeText.setText(event.getDetails().getStartTime().toString());
             _interestedText.setText(String.valueOf(event.getParticipants()));
             _titleText.setTextColor(event.isSyncPending() ? Color.LTGRAY : Color.BLACK);
         }

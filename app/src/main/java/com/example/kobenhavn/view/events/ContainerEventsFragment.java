@@ -2,7 +2,6 @@ package com.example.kobenhavn.view.events;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,30 +11,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.kobenhavn.R;
-import com.example.kobenhavn.dal.local.model.Event;
-import com.example.kobenhavn.dal.local.model.Playground;
-import com.example.kobenhavn.dal.local.model.User;
-import com.example.kobenhavn.dal.remote.RemoteDataSource;
 import com.example.kobenhavn.view.events.future.FutureFragment;
 import com.example.kobenhavn.view.events.enrolled.EnrolledFragment;
-import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
-import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
-import com.example.kobenhavn.viewmodel.UserViewModel;
-import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 import com.google.android.material.tabs.TabLayout;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Objects;
-
-import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 

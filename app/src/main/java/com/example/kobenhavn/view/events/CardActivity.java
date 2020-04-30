@@ -71,7 +71,8 @@ public class CardActivity extends AppCompatActivity {
         eventID = intent.getStringExtra(EXTRA_EVENT_ID);
         _playgroundNameText.setText(playgroundName);
         _titleText.setText(intent.getStringExtra(EXTRA_NAME));
-        _timeText.setText(String.format("%s - %s", intent.getStringExtra(EXTRA_STARTTIME), details.getEndTime().toString()));
+        if (details != null)
+            _timeText.setText(String.format("%s - %s", intent.getStringExtra(EXTRA_STARTTIME), details.getEndTime().toString()));
         _descriptionText.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
         user = RemoteDataSource.loggedInUser;
         event = new Event(
@@ -126,7 +127,7 @@ public class CardActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         TextView title = toolbar.findViewById(R.id.toolbar_title);
-        title.setText(details.getDate().toString());
+        if (details != null) title.setText(details.getDate().toString());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
