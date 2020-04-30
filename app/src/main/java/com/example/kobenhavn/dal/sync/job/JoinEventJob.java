@@ -64,7 +64,7 @@ public class JoinEventJob extends Job {
             RemoteException exception = (RemoteException) throwable;
 
             int statusCode = exception.getResponse().code();
-            if (statusCode >= 400 && statusCode < 500) {
+            if (statusCode >= 400 && statusCode <= 500) {
                 return RetryConstraint.CANCEL;
             }
         }
