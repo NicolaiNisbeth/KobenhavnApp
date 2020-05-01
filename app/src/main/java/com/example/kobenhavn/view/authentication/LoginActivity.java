@@ -194,21 +194,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showErrorMsg(Throwable throwable) {
-        if (throwable instanceof ConnectException){
+        if (throwable instanceof ConnectException)
             _emailLayout.setError("Service er nede. Prøv igen senere.");
-        }
-        else if (throwable instanceof InterruptedException){
+        else if (throwable instanceof InterruptedException)
             _emailLayout.setError("Ingen forbindelse. Tjek netværk.");
-        }
-        else if (throwable instanceof RemoteException){
+        else if (throwable instanceof RemoteException) {
             RemoteException exception = (RemoteException) throwable;
             int statusCode = exception.getResponse().code();
-            if (statusCode >= 400 && statusCode < 500){
-                _emailLayout.setError("Ugyldige logininformationer.");
-            }
-            else if (statusCode >= 500){
+            if (statusCode == HttpURLConnection.HTTP_UNAUTHORIZED)
+                _emailLayout.setError("Forkert adgangskode.");
+            else if (statusCode == HttpURLConnection.HTTP_NOT_FOUND)
+                _emailLayout.setError("Username findes ikke, lav en account.");
+            else if (statusCode >= HttpURLConnection.HTTP_INTERNAL_ERROR)
                 _emailLayout.setError("Service er nede. Prøv igen senere.");
-            }
         }
     }
 }
