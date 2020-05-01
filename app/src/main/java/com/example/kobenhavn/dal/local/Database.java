@@ -16,7 +16,7 @@ import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.Subscription;
 import com.example.kobenhavn.dal.local.model.User;
 
-@androidx.room.Database(entities = {Playground.class, User.class, Subscription.class, Event.class}, version = 1, exportSchema = false)
+@androidx.room.Database(entities = {Playground.class, User.class, Subscription.class, Event.class}, version = 2, exportSchema = false)
 @TypeConverters({PlaygroundConverter.class, EventConverter.class, StringListConverter.class, TimeConverter.class, DetailsConverter.class, PlaygroundConverter.class})
 public abstract class Database extends RoomDatabase {
     private static Database instance;

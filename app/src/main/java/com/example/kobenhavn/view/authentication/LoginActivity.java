@@ -2,6 +2,9 @@ package com.example.kobenhavn.view.authentication;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import android.content.Intent;
@@ -15,9 +18,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.birbit.android.jobqueue.RetryConstraint;
 import com.example.kobenhavn.dal.local.CloneUtils;
 import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.User;
+import com.example.kobenhavn.dal.remote.RemoteException;
 import com.example.kobenhavn.dal.sync.LoginUserRxBus;
 import com.example.kobenhavn.dal.sync.RemoteResponseType;
 import com.example.kobenhavn.view.MainActivity;
@@ -30,6 +35,10 @@ import com.example.kobenhavn.viewmodel.UserViewModel;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -121,11 +130,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void handleLoginResponse(LoginUserRxBus.LoginResponse response) {
-        progressDialog.dismiss();
         if (response.type == RemoteResponseType.SUCCESS) {
             showLoginSuccess(response.user);
         } else {
-            showLoginFailed();
+            showLoginFailed(response.throwable);
         }
     }
 
@@ -134,7 +142,10 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Autentificere...");
         progressDialog.show();
-        authViewModel.loginUser(_usernameText.getText().toString(), _passwordText.getText().toString());
+        if (isOnline())
+            authViewModel.loginUser(_usernameText.getText().toString(), _passwordText.getText().toString());
+        else
+            showLoginFailed(new InterruptedException());
     }
 
     private void startSignUp() {
@@ -148,6 +159,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void showLoginSuccess(User user) {
+        progressDialog.dismiss();
         userViewModel.insertUser(user);
         List<Event> mutatedEvents = user.getEvents().stream()
                 .map(event -> CloneUtils.cloneEvent(event, user.getUsername()))
@@ -163,11 +175,40 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    private void showLoginFailed() {
+    private void showLoginFailed(Throwable throwable) {
+        progressDialog.dismiss();
         _loginButton.setEnabled(false);
         _usernameText.setText("");
         _usernameText.requestFocus();
         _passwordText.setText("");
-        _emailLayout.setError("Ugyldige logininformationer.");
+        showErrorMsg(throwable);
+    }
+
+    /**
+     * Taken from: https://stackoverflow.com/questions/4530846/how-to-programmatically-check-availibilty-of-internet-connection-in-android
+     */
+    private boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm != null ? cm.getActiveNetworkInfo() : null;
+        return netInfo != null && netInfo.isConnected();
+    }
+
+    private void showErrorMsg(Throwable throwable) {
+        if (throwable instanceof ConnectException){
+            _emailLayout.setError("Service er nede. Prøv igen senere.");
+        }
+        else if (throwable instanceof InterruptedException){
+            _emailLayout.setError("Ingen forbindelse. Tjek netværk.");
+        }
+        else if (throwable instanceof RemoteException){
+            RemoteException exception = (RemoteException) throwable;
+            int statusCode = exception.getResponse().code();
+            if (statusCode >= 400 && statusCode < 500){
+                _emailLayout.setError("Ugyldige logininformationer.");
+            }
+            else if (statusCode >= 500){
+                _emailLayout.setError("Service er nede. Prøv igen senere.");
+            }
+        }
     }
 }
