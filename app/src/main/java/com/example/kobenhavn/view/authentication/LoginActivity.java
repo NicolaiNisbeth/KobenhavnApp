@@ -18,7 +18,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.birbit.android.jobqueue.RetryConstraint;
 import com.example.kobenhavn.dal.local.CloneUtils;
 import com.example.kobenhavn.dal.local.model.Event;
 import com.example.kobenhavn.dal.local.model.User;
@@ -35,10 +34,8 @@ import com.example.kobenhavn.viewmodel.UserViewModel;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.io.IOException;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -181,7 +178,7 @@ public class LoginActivity extends AppCompatActivity {
         _usernameText.setText("");
         _usernameText.requestFocus();
         _passwordText.setText("");
-        showErrorMsg(throwable);
+        showErrorMessage(throwable);
     }
 
     /**
@@ -193,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
         return netInfo != null && netInfo.isConnected();
     }
 
-    private void showErrorMsg(Throwable throwable) {
+    private void showErrorMessage(Throwable throwable) {
         if (throwable instanceof ConnectException)
             _emailLayout.setError("Service er nede. Prøv igen senere.");
         else if (throwable instanceof InterruptedException)
