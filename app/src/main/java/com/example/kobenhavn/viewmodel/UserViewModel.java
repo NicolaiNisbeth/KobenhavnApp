@@ -62,7 +62,7 @@ public class UserViewModel extends ViewModel {
         disposables.add(insertUserInDbUC.addUser(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(u -> Timber.e("insert user success %s", u),
+                .subscribe(u -> Timber.e("insert user success %s", u.getId()),
                         t -> Timber.e("insert user failure")));
     }
 

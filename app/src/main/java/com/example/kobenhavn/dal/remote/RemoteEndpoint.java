@@ -28,7 +28,7 @@ public interface RemoteEndpoint {
     Call<Boolean> signupUser(String name, String username, String password);
 
     @PUT("users/{username}")
-    Call<User> updateUserInfo(@Body User user, @Path("username") String username);
+    Call<User> updateUserInfo(@Body RequestBody user, @Path("username") String username);
 
     @POST("playgrounds/{pID}/events/{eID}/participants/{uID}")
     Call<User> joinEvent(@Path("pID") String playgroundName,

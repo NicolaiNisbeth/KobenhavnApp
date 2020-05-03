@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -72,7 +74,14 @@ public class RemoteDataSource {
 
     public void updateUser(User user) throws RemoteException, IOException {
         user.setEvents(null);
-        Response<User> response = API.updateUserInfo(user, user.getUsername()).execute();
+        String stringify = new Gson().toJson(user);
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("usermodel", stringify)
+                .build();
+
+        Response<User> response = API.updateUserInfo(requestBody, user.getUsername()).execute();
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
     }

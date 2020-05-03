@@ -24,8 +24,7 @@ public class FetchPlaygroundsJob extends Job {
     public FetchPlaygroundsJob() {
         super(new Params(JobPriority.HIGH)
                 .requireNetwork()
-                .groupBy(TAG)
-                .persist());
+                .groupBy(TAG));
     }
 
     @Override

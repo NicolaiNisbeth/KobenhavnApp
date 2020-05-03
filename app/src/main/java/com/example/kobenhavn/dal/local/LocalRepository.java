@@ -66,7 +66,7 @@ public class LocalRepository implements ILocalRepository {
     @Override
     public Completable insertSubscription(User user, Subscription subscription) {
         Subscription toBeInserted = CloneUtils.cloneSubscription(subscription.getPlayground(), user.getUsername());
-        Timber.d("inserting subscription %s", toBeInserted);
+        Timber.d("inserting subscription %s", toBeInserted.getId());
         return Completable.fromAction(() -> subscriptionsDAO.add(toBeInserted));
     }
 
@@ -85,13 +85,13 @@ public class LocalRepository implements ILocalRepository {
     @Override
     public Completable joinEvent(Event event, User user) {
         Event joinedEvent = CloneUtils.cloneEvent(event, user.getUsername());
-        Timber.e("event stored %s", joinedEvent);
+        Timber.e("event stored %s", joinedEvent.getId());
         return Completable.fromAction(() -> eventDAO.add(joinedEvent));
     }
 
     @Override
     public Completable insertEvents(List<Event> events) {
-        Timber.e("Insert events %s", events);
+        Timber.e("Insert events");
         return Completable.fromAction(() -> eventDAO.insertAll(events));
     }
 

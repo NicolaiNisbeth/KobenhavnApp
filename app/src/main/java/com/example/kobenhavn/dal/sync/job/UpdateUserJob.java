@@ -36,7 +36,7 @@ public class UpdateUserJob extends Job {
 
     @Override
     public void onRun() throws Throwable {
-        Timber.e("Executing job for %s", user);
+        Timber.e("Executing job for %s", user.getId());
 
         // if any exception is thrown, it will be handled by shouldReRunOnThrowable()
         RemoteDataSource.getInstance().updateUser(user);
