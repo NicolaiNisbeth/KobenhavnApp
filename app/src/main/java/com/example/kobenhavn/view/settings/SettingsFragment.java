@@ -98,12 +98,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         if (user == null) return;
         RemoteDataSource.loggedInUser = user;
 
-        Timber.e("UPDATE UI IS CALLED IN SETTINGS %s", user);
         _nameText.setText(user.getFirstname());
-        _numberText.setText(user.getPhonenumbers().size() > 0 ? user.getPhonenumbers().get(0) : "");
+        _numberText.setText(user.getPhoneNumbers().size() > 0 ? user.getPhoneNumbers().get(0) : "");
         ((EditText) _nameView.findViewById(R.id.settings_item_middle)).setText(user.getFirstname());
         ((EditText) _emailView.findViewById(R.id.settings_item_middle)).setText(user.getEmail());
-        ((EditText) _mobileNumberView.findViewById(R.id.settings_item_middle)).setText(user.getPhonenumbers().size() > 0 ? user.getPhonenumbers().get(0) : "");
+        ((EditText) _mobileNumberView.findViewById(R.id.settings_item_middle)).setText(user.getPhoneNumbers().size() > 0 ? user.getPhoneNumbers().get(0) : "");
         ((EditText) _changePasswordView.findViewById(R.id.settings_item_middle)).setText("****");
     }
 
@@ -158,7 +157,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             String password = _passwordEdit.getText().toString();
             RemoteDataSource.loggedInUser.setFirstname(firstName);
             RemoteDataSource.loggedInUser.setEmail(email);
-            RemoteDataSource.loggedInUser.getPhonenumbers().add(0, phoneNumber);
+            RemoteDataSource.loggedInUser.getPhoneNumbers().add(0, phoneNumber);
             RemoteDataSource.loggedInUser.setPassword(password);
 
             userViewModel.updateUserFields(RemoteDataSource.loggedInUser);

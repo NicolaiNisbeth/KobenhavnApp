@@ -53,12 +53,13 @@ public class RemoteDataSource {
     }
 
     public static User loginUser(String username, String password) throws RemoteException, IOException {
+        getInstance();
         Response<User> response = API.loginUser(new User(username, password)).execute();
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
 
         loggedInUser = response.body();
-        if (loggedInUser.getPhonenumbers() == null) loggedInUser.setPhonenumbers(new ArrayList<>());
+        if (loggedInUser.getPhoneNumbers() == null) loggedInUser.setPhoneNumbers(new ArrayList<>());
         if (loggedInUser.getEvents() == null) loggedInUser.setEvents(new ArrayList<>());
         return loggedInUser;
     }
@@ -70,7 +71,8 @@ public class RemoteDataSource {
     }
 
     public void updateUser(User user) throws RemoteException, IOException {
-        Response<User> response = API.updateUserInfo(user).execute();
+        user.setEvents(null);
+        Response<User> response = API.updateUserInfo(user, user.getUsername()).execute();
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
     }

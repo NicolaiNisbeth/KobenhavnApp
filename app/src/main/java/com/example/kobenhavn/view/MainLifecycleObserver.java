@@ -38,9 +38,12 @@ public class MainLifecycleObserver implements LifecycleObserver {
 
 
 
+        /*
         disposables.add(FetchPlaygroundsRxBus.getInstance()
                 .toObservable()
                 .subscribe(this::handleFetchResponse, t -> Timber.e(t, "error handling playground fetch response")));
+
+         */
         /*
 
         disposables.add(SyncUserRxBus.getInstance()

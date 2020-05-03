@@ -46,7 +46,7 @@ public class LocalRepository implements ILocalRepository {
     @Override
     public Single<User> updateUserFields(User user) {
         return Single.fromCallable(() -> {
-            userDAO.updateUserFields(user.getFirstname(), user.getEmail(), user.getPhonenumbers().get(0), user.getPassword());
+            userDAO.updateUserFields(user.getFirstname(), user.getEmail(), user.getPhoneNumbers().get(0), user.getPassword());
             Timber.e("updating user fields");
             return CloneUtils.cloneUser(user, false);
         });

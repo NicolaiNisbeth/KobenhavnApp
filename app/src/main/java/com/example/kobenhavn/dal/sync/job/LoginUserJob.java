@@ -39,9 +39,9 @@ public class LoginUserJob extends Job {
         Timber.e("Executing login user job");
 
         // if any exception is thrown, it will be handled by shouldReRunOnThrowable()
-        User user = RemoteDataSource.getInstance().loginUser(username, password);
+        User user = RemoteDataSource.loginUser(username, password);
 
-        // remote call was successful--the Comment will be updated locally to reflect that sync is no longer pending
+        // remote call was successful
         LoginUserRxBus.getInstance().post(RemoteResponseType.SUCCESS, user);
 
     }

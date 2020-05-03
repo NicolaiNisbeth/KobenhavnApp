@@ -50,7 +50,7 @@ public class User implements Serializable {
     private String website;
 
     @ColumnInfo(name = "phone_number")
-    private List<String> phonenumbers;
+    private List<String> phoneNumbers;
 
     @ColumnInfo(name = "events")
     private ArrayList<Event> events = new ArrayList<>();
@@ -91,8 +91,8 @@ public class User implements Serializable {
         return imagepath;
     }
 
-    public List<String> getPhonenumbers() {
-        return phonenumbers;
+    public List<String> getPhoneNumbers() {
+        return phoneNumbers;
     }
 
     public String getStatus() {
@@ -135,8 +135,8 @@ public class User implements Serializable {
         this.imagepath = imagepath;
     }
 
-    public void setPhonenumbers(List<String> phonenumbers) {
-        this.phonenumbers = phonenumbers;
+    public void setPhoneNumbers(List<String> phoneNumbers) {
+        this.phoneNumbers = phoneNumbers;
     }
 
     public void setSyncPending(boolean syncPending) {
@@ -150,21 +150,21 @@ public class User implements Serializable {
     }
 
     @Ignore
-    public User(String firstname, String lastname, String username, String password, String email, String imagepath, String status, String website, List<String> phonenumbers) {
+    public User(String firstname, String lastname, String username, String password, String email, String imagepath, String status, String website, List<String> phoneNumbers) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.username = username;
         this.password = password;
         this.email = email;
         this.imagepath = imagepath;
-        this.phonenumbers = phonenumbers;
+        this.phoneNumbers = phoneNumbers;
         this.status = status;
         this.website = website;
         this.syncPending = true;
     }
 
 
-    public User(@NonNull String id, String firstname, String lastname, String username, String password, String email, String imagepath, String status, String website, List<String> phonenumbers, boolean syncPending, ArrayList<Event> events) {
+    public User(@NonNull String id, String firstname, String lastname, String username, String password, String email, String imagepath, String status, String website, List<String> phoneNumbers, boolean syncPending, ArrayList<Event> events) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -174,7 +174,7 @@ public class User implements Serializable {
         this.imagepath = imagepath;
         this.status = status;
         this.website = website;
-        this.phonenumbers = phonenumbers;
+        this.phoneNumbers = phoneNumbers;
         this.syncPending = syncPending;
         this.events = events;
     }
@@ -190,7 +190,7 @@ public class User implements Serializable {
                 ", email='" + email + '\'' +
                 ", imagepath='" + imagepath + '\'' +
                 ", status='" + status + '\'' +
-                ", phonenumbers=" + phonenumbers +
+                ", phonenumbers=" + phoneNumbers +
                 ", syncPending=" + syncPending +
                 ", website='" + website + '\'' +
                 ", events=" + events +

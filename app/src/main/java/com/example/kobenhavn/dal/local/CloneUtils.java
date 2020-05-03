@@ -10,13 +10,13 @@ public class CloneUtils {
         return new User(
                 from.getId(), from.getFirstname(), from.getLastname(),
                 from.getUsername(), from.getPassword(), from.getEmail(),
-                from.getImagepath(), from.getStatus(), from.getWebsite(), from.getPhonenumbers(), syncPending, from.getEvents());
+                from.getImagepath(), from.getStatus(), from.getWebsite(), from.getPhoneNumbers(), syncPending, from.getEvents());
     }
 
     public static User cloneUser(User from, String id){
         return new User(id, from.getFirstname(), from.getLastname(),
                 from.getUsername(), from.getPassword(), from.getEmail(),
-                from.getImagepath(), from.getStatus(), from.getWebsite(), from.getPhonenumbers(), from.isSyncPending(), from.getEvents());
+                from.getImagepath(), from.getStatus(), from.getWebsite(), from.getPhoneNumbers(), from.isSyncPending(), from.getEvents());
     }
 
     public static Event cloneEvent(Event from, String username){
