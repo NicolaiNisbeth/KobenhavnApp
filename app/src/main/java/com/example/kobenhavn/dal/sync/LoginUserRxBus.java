@@ -26,17 +26,27 @@ public class LoginUserRxBus {
         relay.accept(new LoginResponse(eventType, user));
     }
 
+    public void post(RemoteResponseType eventType, Throwable throwable) {
+        relay.accept(new LoginResponse(eventType, throwable));
+    }
+
     public Observable<LoginResponse> toObservable() {
         return relay;
     }
 
     public static class LoginResponse {
-        public final RemoteResponseType type;
-        public final User user;
+        public RemoteResponseType type;
+        public User user;
+        public Throwable throwable;
 
         LoginResponse(RemoteResponseType type, User user) {
             this.type = type;
             this.user = user;
+        }
+
+        LoginResponse(RemoteResponseType type, Throwable throwable){
+            this.type = type;
+            this.throwable = throwable;
         }
     }
 }

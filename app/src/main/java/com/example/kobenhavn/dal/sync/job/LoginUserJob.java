@@ -49,7 +49,7 @@ public class LoginUserJob extends Job {
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
         Timber.e("Canceling job. reason: %d, throwable: %s", cancelReason, throwable);
-        LoginUserRxBus.getInstance().post(RemoteResponseType.FAILED, null);
+        LoginUserRxBus.getInstance().post(RemoteResponseType.FAILED, throwable);
     }
 
     @Override
@@ -63,6 +63,6 @@ public class LoginUserJob extends Job {
             }
         }
 
-        return RetryConstraint.RETRY;
+        return RetryConstraint.CANCEL;
     }
 }
