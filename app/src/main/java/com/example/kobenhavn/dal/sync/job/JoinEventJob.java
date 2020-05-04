@@ -55,7 +55,7 @@ public class JoinEventJob extends Job {
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
         Timber.e("Canceling job. reason: %d, throwable: %s", cancelReason, throwable);
-        JoinEventRxBus.getInstance().post(RemoteResponseType.SUCCESS, event, user);
+        JoinEventRxBus.getInstance().post(RemoteResponseType.FAILED, event, user);
     }
 
     @Override

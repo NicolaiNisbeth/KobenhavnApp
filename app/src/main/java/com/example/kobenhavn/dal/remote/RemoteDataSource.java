@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -67,7 +68,14 @@ public class RemoteDataSource {
     }
 
     public void signupUser(String name, String username, String password) throws IOException, RemoteException {
-        Response<Boolean> response = API.signupUser(name, username, password).execute();
+        User user = new User(name,"", username, password, username, "", "", "", Collections.emptyList());
+        String stringify = new Gson().toJson(user);
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("usermodel", stringify)
+                .build();
+
+        Response<User> response = API.signupUser(requestBody, username).execute();
         if (response == null || !response.isSuccessful() || response.errorBody() != null)
             throw new RemoteException(response);
     }
@@ -75,7 +83,6 @@ public class RemoteDataSource {
     public void updateUser(User user) throws RemoteException, IOException {
         user.setEvents(null);
         String stringify = new Gson().toJson(user);
-
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("usermodel", stringify)

@@ -1,5 +1,7 @@
 package com.example.kobenhavn.di;
 
+import android.graphics.Paint;
+
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import com.example.kobenhavn.usecases.event.DeleteEventUC;
@@ -34,8 +36,8 @@ class MenuModule {
 
     @Provides
     MainLifecycleObserver providePlaygroundLifecycleObserver(InsertPlaygroundsInDbUC insertPlaygroundsInDbUC,
-                                                             DeleteEventUC deleteEventUC, UpdateEventUC updateEventUC) {
-        return new MainLifecycleObserver(insertPlaygroundsInDbUC, deleteEventUC, updateEventUC);
+                                                             DeleteEventUC deleteEventUC, UpdateEventUC updateEventUC, JoinEventUC joinEventUC) {
+        return new MainLifecycleObserver(insertPlaygroundsInDbUC, deleteEventUC, updateEventUC, joinEventUC);
     }
 
     @Provides

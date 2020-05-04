@@ -11,6 +11,8 @@ import com.example.kobenhavn.dal.local.model.Event;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+
 @Dao
 public interface EventDAO {
 
@@ -25,4 +27,7 @@ public interface EventDAO {
 
     @Query("SELECT * FROM event_table WHERE username = :username")
     LiveData<List<Event>> getEventsLive(String username);
+
+    @Query("DELETE FROM event_table")
+    Completable clearAll();
 }

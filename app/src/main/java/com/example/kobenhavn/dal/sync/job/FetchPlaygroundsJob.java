@@ -37,8 +37,7 @@ public class FetchPlaygroundsJob extends Job {
         Timber.e("Executing fetching playground job");
 
         // if any exception is thrown, it will be handled by shouldReRunOnThrowable()
-        List<Playground> playgrounds = RemoteDataSource.getInstance().
-                getPlaygrounds();
+        List<Playground> playgrounds = RemoteDataSource.getInstance().getPlaygrounds();
 
         // remote call was successful--the Comment will be updated locally to reflect that sync is no longer pending
         FetchPlaygroundsRxBus.getInstance().publishFetchingResponse(RemoteResponseType.SUCCESS, playgrounds);

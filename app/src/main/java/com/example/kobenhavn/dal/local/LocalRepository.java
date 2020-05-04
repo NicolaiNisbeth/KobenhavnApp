@@ -113,4 +113,9 @@ public class LocalRepository implements ILocalRepository {
         return eventDAO.getEventsLive(username);
     }
 
+    @Override
+    public Completable clearAll() {
+        return eventDAO.clearAll();
+    }
+
 }

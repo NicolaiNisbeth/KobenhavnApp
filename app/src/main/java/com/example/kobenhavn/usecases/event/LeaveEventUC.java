@@ -19,6 +19,6 @@ public class LeaveEventUC {
 
     public Completable RemoveEventFromUser(Event event, User user, String playgroundName){
         return localRepository.deleteEvent(event, user)
-                .andThen(remoteRepository.leaveEvent(playgroundName, event.getId(), user.getUsername()));
+                .andThen(remoteRepository.leaveEvent(playgroundName, event, user));
     }
 }

@@ -42,7 +42,7 @@ public class RemoteRepository implements IRemoteRepository {
     }
 
     @Override
-    public Completable leaveEvent(String playgroundName, String eventID, String username) {
-        return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new LeaveEventJob(playgroundName, eventID, username)));
+    public Completable leaveEvent(String playgroundName, Event event, User user) {
+        return Completable.fromAction(() -> JobManagerFactory.getJobManager().addJobInBackground(new LeaveEventJob(playgroundName, event, user)));
     }
 }

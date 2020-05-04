@@ -17,8 +17,6 @@ import java.util.List;
 @Entity(tableName = "user_table")
 public class User implements Serializable {
 
-    @PrimaryKey
-    @NonNull
     @ColumnInfo(name = "id")
     private String id;
 
@@ -28,6 +26,8 @@ public class User implements Serializable {
     @ColumnInfo(name = "lastname")
     private String lastname;
 
+    @PrimaryKey
+    @NonNull
     @ColumnInfo(name = "username")
     private String username;
 

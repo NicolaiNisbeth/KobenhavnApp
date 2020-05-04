@@ -21,4 +21,8 @@ public class JoinEventUC {
                 .andThen(remoteRepository.joinEvent(playgroundName, event, user));
 
     }
+
+    public Completable joinEventForUser(Event event, User user){
+        return localRepository.joinEvent(event, user);
+    }
 }

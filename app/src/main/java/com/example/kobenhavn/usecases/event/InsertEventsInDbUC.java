@@ -15,6 +15,7 @@ public class InsertEventsInDbUC {
     }
 
     public Completable insertEvents(List<Event> events){
-        return localRepository.insertEvents(events);
+        return localRepository.clearAll().andThen(localRepository.insertEvents(events));
     }
+
 }

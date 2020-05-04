@@ -7,6 +7,9 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -22,11 +25,11 @@ public class Playground implements Serializable, Parcelable {
         public Playground[] newArray(int size){return new Playground[size];}
     };
 
-    @PrimaryKey
-    @NonNull
     @ColumnInfo(name = "id")
     private String id;
 
+    @PrimaryKey
+    @NonNull
     @ColumnInfo(name = "name")
     private String name;
 
@@ -103,7 +106,7 @@ public class Playground implements Serializable, Parcelable {
     }
 
     @Ignore
-    public Playground(@NonNull String id, String name, String imagepath, boolean toiletPossibilities, boolean hasSoccerField, String streetName, int streetNumber, String commune, int zipCode, ArrayList<Event> events) {
+    public Playground(@NonNull String id, @NotNull String name, String imagepath, boolean toiletPossibilities, boolean hasSoccerField, String streetName, int streetNumber, String commune, int zipCode, ArrayList<Event> events) {
         this.id = id;
         this.name = name;
         this.imagepath = imagepath;
@@ -117,7 +120,7 @@ public class Playground implements Serializable, Parcelable {
         this.events = events;
     }
 
-    public Playground(@NonNull String id, String name, String imagepath, boolean toiletPossibilities, boolean hasSoccerField, String streetName, int streetNumber, String commune, int zipCode, boolean syncPending, ArrayList<Event> events) {
+    public Playground(@NonNull String id, @NotNull String name, String imagepath, boolean toiletPossibilities, boolean hasSoccerField, String streetName, int streetNumber, String commune, int zipCode, boolean syncPending, ArrayList<Event> events) {
         this.id = id;
         this.name = name;
         this.imagepath = imagepath;

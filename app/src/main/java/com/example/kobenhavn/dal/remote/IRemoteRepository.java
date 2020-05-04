@@ -16,5 +16,5 @@ public interface IRemoteRepository {
     Completable fetchPlaygrounds();
 
     Completable joinEvent(String playgroundName, Event event, User user);
-    Completable leaveEvent(String playgroundName, String eventID, String username);
+    Completable leaveEvent(String playgroundName, Event event, User user);
 }

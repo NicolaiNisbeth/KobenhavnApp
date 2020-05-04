@@ -118,7 +118,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             toogleEditText(_nameView.findViewById(R.id.settings_item_middle), true, _nameView.findViewById(R.id.settings_item_right));
 
         } else if (v == _emailView.findViewById(R.id.settings_item_right)) {
-            toogleEditText(_emailView.findViewById(R.id.settings_item_middle), true, _emailView.findViewById(R.id.settings_item_right));
+            //toogleEditText(_emailView.findViewById(R.id.settings_item_middle), true, _emailView.findViewById(R.id.settings_item_right));
 
         } else if (v == _mobileNumberView.findViewById(R.id.settings_item_right)) {
             toogleEditText(_mobileNumberView.findViewById(R.id.settings_item_middle), true, _mobileNumberView.findViewById(R.id.settings_item_right));

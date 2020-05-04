@@ -38,4 +38,6 @@ public interface ILocalRepository {
     Completable updateEvent(Event event, User user);
     Completable deleteEvent(Event event, User user);
     LiveData<List<Event>> getEventsLiveData(String username);
+
+    Completable clearAll();
 }

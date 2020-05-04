@@ -24,8 +24,8 @@ public interface RemoteEndpoint {
     @POST("users/login")
     Call<User> loginUser(@Body User user);
 
-    @POST("posts") // TODO: not implemented
-    Call<Boolean> signupUser(String name, String username, String password);
+    @POST("users/{username}")
+    Call<User> signupUser(@Body RequestBody user, @Path("username") String username);
 
     @PUT("users/{username}")
     Call<User> updateUserInfo(@Body RequestBody user, @Path("username") String username);
