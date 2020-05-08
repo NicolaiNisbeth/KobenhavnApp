@@ -2,7 +2,10 @@ package com.example.kobenhavn.view.authentication;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,12 +18,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.kobenhavn.R;
+import com.example.kobenhavn.dal.remote.RemoteException;
 import com.example.kobenhavn.dal.sync.SignupUserRxBus;
 import com.example.kobenhavn.dal.sync.RemoteResponseType;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModel;
 import com.example.kobenhavn.viewmodel.AuthenticationViewModelFactory;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.net.ConnectException;
+import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 
 import javax.inject.Inject;
 
@@ -112,11 +120,10 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void handleSignupResponse(SignupUserRxBus.SignupResponse response) {
-        progressDialog.dismiss();
         if (response.type == RemoteResponseType.SUCCESS) {
             showSignupSuccess();
         } else {
-            showSignupFailed();
+            showSignupFailed(response.throwable);
         }
     }
 
@@ -124,10 +131,14 @@ public class SignUpActivity extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
-        authViewModel.signupUser(_nameText.getText().toString(), _usernameText.getText().toString(), _passwordText.getText().toString());
+        if (isOnline())
+            authViewModel.signupUser(_nameText.getText().toString(), _usernameText.getText().toString(), _passwordText.getText().toString());
+        else
+            showSignupFailed(new InterruptedException());
     }
 
     public void showSignupSuccess() {
+        progressDialog.dismiss();
         Toast.makeText(this, "Du er hermed oprettet. Vær venlig at logge ind.", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, LoginActivity.class);
         setResult(Activity.RESULT_OK);
@@ -135,10 +146,31 @@ public class SignUpActivity extends AppCompatActivity {
         finish();
     }
 
-    public void showSignupFailed() {
-        _usernameText.setText("");
+    public void showSignupFailed(Throwable throwable) {
+        progressDialog.dismiss();
         _usernameText.requestFocus();
-        _usernameLayout.setError("Email er allerede taget.");
         _signupButton.setEnabled(false);
+        showErrorMessage(throwable);
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm != null ? cm.getActiveNetworkInfo() : null;
+        return netInfo != null && netInfo.isConnected();
+    }
+
+    private void showErrorMessage(Throwable throwable) {
+        if (throwable instanceof ConnectException || throwable instanceof SocketTimeoutException)
+            _usernameText.setError("Service er nede. Prøv igen senere.");
+        else if (throwable instanceof InterruptedException)
+            _usernameText.setError("Ingen forbindelse. Tjek netværk.");
+        else if (throwable instanceof RemoteException) {
+            RemoteException exception = (RemoteException) throwable;
+            int statusCode = exception.getResponse().code();
+            if (statusCode == HttpURLConnection.HTTP_CONFLICT)
+                _usernameText.setError("Email er allerede i brug.");
+            else if (statusCode >= HttpURLConnection.HTTP_INTERNAL_ERROR)
+                _usernameText.setError("Service er nede. Prøv igen senere.");
+        }
     }
 }

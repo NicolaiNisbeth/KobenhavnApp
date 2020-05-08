@@ -36,6 +36,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -191,7 +192,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showErrorMessage(Throwable throwable) {
-        if (throwable instanceof ConnectException)
+        if (throwable instanceof ConnectException || throwable instanceof SocketTimeoutException)
             _emailLayout.setError("Service er nede. Prøv igen senere.");
         else if (throwable instanceof InterruptedException)
             _emailLayout.setError("Ingen forbindelse. Tjek netværk.");

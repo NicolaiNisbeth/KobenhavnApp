@@ -48,7 +48,7 @@ public class SignupUserJob extends Job {
     @Override
     protected void onCancel(int cancelReason, @Nullable Throwable throwable) {
         Timber.e("Canceling job. reason: %d, throwable: %s", cancelReason, throwable);
-        SignupUserRxBus.getInstance().post(RemoteResponseType.FAILED);
+        SignupUserRxBus.getInstance().post(RemoteResponseType.FAILED, throwable);
     }
 
     @Override

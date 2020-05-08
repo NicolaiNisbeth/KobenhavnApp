@@ -26,15 +26,25 @@ public class SignupUserRxBus {
         relay.accept(new SignupResponse(eventType));
     }
 
+    public void post(RemoteResponseType eventType, Throwable throwable){
+        relay.accept(new SignupResponse(eventType, throwable));
+    }
+
     public Observable<SignupResponse> toObservable() {
         return relay;
     }
 
     public static class SignupResponse {
         public final RemoteResponseType type;
+        public Throwable throwable;
 
         SignupResponse(RemoteResponseType type) {
             this.type = type;
+        }
+
+        SignupResponse(RemoteResponseType type, Throwable throwable) {
+            this.type = type;
+            this.throwable = throwable;
         }
     }
 }
