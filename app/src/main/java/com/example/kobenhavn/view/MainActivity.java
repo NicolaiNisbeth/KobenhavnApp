@@ -3,10 +3,12 @@ package com.example.kobenhavn.view;
 import android.os.Bundle;
 
 import com.example.kobenhavn.R;
+import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.lifecycle.LifecycleRegistry;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -44,6 +46,9 @@ public class MainActivity extends DaggerAppCompatActivity {
         setContentView(R.layout.main_activity);
 
         getLifecycle().addObserver(mainLifecycleObserver);
+        PlaygroundsViewModel playgroundsViewModel = ViewModelProviders.of(this, viewModelFactory).get(PlaygroundsViewModel.class);
+        playgroundsViewModel.fetchPlaygrounds();
+
         // TO test with no connection
         //RemoteDataSource.loggedInUser = new User("anonymous", "123");
 

@@ -1,9 +1,13 @@
 package com.example.kobenhavn.dal.remote;
 
 import com.example.kobenhavn.dal.local.model.Event;
+import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
 
+import java.util.List;
+
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 
 /**
  * Responsible for CRUD operations against remote repository

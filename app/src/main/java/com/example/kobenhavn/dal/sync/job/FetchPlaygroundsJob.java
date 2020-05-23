@@ -60,6 +60,6 @@ public class FetchPlaygroundsJob extends Job {
             }
         }
 
-        return RetryConstraint.CANCEL;
+        return RetryConstraint.createExponentialBackoff(3, 2000);
     }
 }

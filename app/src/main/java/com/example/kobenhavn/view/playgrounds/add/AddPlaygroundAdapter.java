@@ -16,6 +16,7 @@ import com.example.kobenhavn.dal.local.CloneUtils;
 import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.Subscription;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
+import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
 import com.example.kobenhavn.viewmodel.UserViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -82,22 +83,25 @@ public class AddPlaygroundAdapter extends RecyclerView.Adapter<AddPlaygroundAdap
     }
 
     public void filterSubscribedPlaygrounds(List<Subscription> subscriptions) {
+        System.out.println("filtersubscribedplayground " + subscriptions);
         if (subscriptions == null) return;
         this.subscriptions = subscriptions;
         playgrounds.removeIf(playground -> subscriptions.contains(
                 CloneUtils.cloneSubscription(playground, RemoteDataSource.loggedInUser.getUsername()))
         );
+
         notifyDataSetChanged();
         isFilterCalled = true;
     }
 
     void updatePlaygroundList(List<Playground> playgroundList) {
+        System.out.println("updateplaygroundList " + playgroundList);
         if (playgroundList == null) return;
         playgrounds.clear();
         playgrounds.addAll(playgroundList);
 
         // both filter and update are async and the order matters!
-        if (isFilterCalled){
+        if (!isFilterCalled){
             filterSubscribedPlaygrounds(subscriptions);
             isFilterCalled = false;
         }

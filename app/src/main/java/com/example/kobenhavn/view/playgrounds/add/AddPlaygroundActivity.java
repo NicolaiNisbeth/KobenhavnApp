@@ -9,7 +9,12 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.kobenhavn.R;
+import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.remote.RemoteDataSource;
+import com.example.kobenhavn.dal.sync.FetchPlaygroundsRxBus;
+import com.example.kobenhavn.dal.sync.LoginUserRxBus;
+import com.example.kobenhavn.dal.sync.RemoteResponseType;
+import com.example.kobenhavn.usecases.playground.InsertPlaygroundsInDbUC;
 import com.example.kobenhavn.view.EmptyRecyclerView;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModel;
 import com.example.kobenhavn.viewmodel.PlaygroundsViewModelFactory;
@@ -17,12 +22,17 @@ import com.example.kobenhavn.viewmodel.UserViewModel;
 import com.example.kobenhavn.viewmodel.UserViewModelFactory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class AddPlaygroundActivity extends AppCompatActivity {
 
@@ -49,7 +59,9 @@ public class AddPlaygroundActivity extends AppCompatActivity {
         PlaygroundsViewModel playgroundsViewModel = ViewModelProviders.of(this, playgroundViewModelFactory).get(PlaygroundsViewModel.class);
         playgroundsViewModel.playgroundsLive().observe(this, recyclerViewAdapter::updatePlaygroundList);
         userViewModel.getSubscriptionsLive(RemoteDataSource.loggedInUser.getUsername()).observe(this, recyclerViewAdapter::filterSubscribedPlaygrounds);
+
     }
+
 
     @Override
     public boolean onSupportNavigateUp() {

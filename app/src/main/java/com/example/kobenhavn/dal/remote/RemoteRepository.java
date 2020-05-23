@@ -1,6 +1,7 @@
 package com.example.kobenhavn.dal.remote;
 
 import com.example.kobenhavn.dal.local.model.Event;
+import com.example.kobenhavn.dal.local.model.Playground;
 import com.example.kobenhavn.dal.local.model.User;
 import com.example.kobenhavn.dal.sync.job.FetchPlaygroundsJob;
 import com.example.kobenhavn.dal.sync.job.LoginUserJob;
@@ -9,7 +10,14 @@ import com.example.kobenhavn.dal.sync.job.SignupUserJob;
 import com.example.kobenhavn.dal.sync.job.UpdateUserJob;
 import com.example.kobenhavn.dal.sync.job.JoinEventJob;
 import com.example.kobenhavn.dal.sync.job.setup.JobManagerFactory;
+
+import java.util.List;
+
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
 
 /**
  * Adds a new job in background thread to be fired at remote REST API

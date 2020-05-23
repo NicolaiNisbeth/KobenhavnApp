@@ -163,7 +163,6 @@ public class LoginActivity extends AppCompatActivity {
                 .map(event -> CloneUtils.cloneEvent(event, user.getUsername()))
                 .collect(Collectors.toList());
         userViewModel.insertEvents(mutatedEvents);
-        playgroundsViewModel.fetchPlaygrounds();
 
         String welcome = getString(R.string.welcome) + user.getFirstname();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();

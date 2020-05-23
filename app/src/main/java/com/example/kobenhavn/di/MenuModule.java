@@ -1,7 +1,5 @@
 package com.example.kobenhavn.di;
 
-import android.graphics.Paint;
-
 import com.example.kobenhavn.dal.local.ILocalRepository;
 import com.example.kobenhavn.dal.remote.IRemoteRepository;
 import com.example.kobenhavn.usecases.event.DeleteEventUC;
@@ -52,8 +50,9 @@ class MenuModule {
 
     @Provides
     PlaygroundsViewModelFactory providePlaygroundViewModelFactory(GetPlaygroundsInDbUC getPlayground,
-                                                                  FetchPlaygroundUC fetchPlaygrounds){
-        return new PlaygroundsViewModelFactory(getPlayground, fetchPlaygrounds);
+                                                                  FetchPlaygroundUC fetchPlaygrounds,
+                                                                  InsertPlaygroundsInDbUC insertPlaygroundsInDb){
+        return new PlaygroundsViewModelFactory(getPlayground, fetchPlaygrounds, insertPlaygroundsInDb);
     }
 
     @Provides
