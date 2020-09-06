@@ -1,5 +1,5 @@
 # About
-The app is acting as a client in a distributed system, fetching data from an API and respond accordingly to the 8 fallacies of distributed system.
+The app is acting as a client in a distributed system, fetching data from an API and responding accordingly to the 8 fallacies of distributed system.
 The app should not be evaluated based on its appearance but rather it's architecture, dataflow and error handling.
 
 Cool features:
