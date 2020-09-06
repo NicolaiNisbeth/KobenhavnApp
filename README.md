@@ -20,4 +20,5 @@ Due to the nature of the app acting as a client, it is dependent upon the server
 And because the server has been taken down, the way of using the app is by running the server locally and log in on the app using username: root and password: root
 
 The app can be accessed via appetizer: https://appetize.io/app/5ju9u0r276mrxgn8djv9ych684
+
 Or runned locally.
